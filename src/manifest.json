@@ -1,0 +1,36 @@
+{
+  "manifest_version": 2,
+  "name": "MoSo-in-Firefox",
+  "version": "1.0",
+
+  "applications": {
+    "gecko": {
+      "id": "moso@mozilla.com",
+      "strict_min_version": "71.0",
+      "update_url": "https://fpn.firefox.com/downloads/browser/updates.json"
+    }
+  },
+
+  "description": "A proof of concept to run MoSo into the browser",
+
+  "icons": {
+    "48": "icons/logo.svg",
+    "96": "icons/logo.svg"
+  },
+
+  "incognito": "spanning",
+
+  "background": {
+    "page": "background/page.html"
+  },
+
+  "browser_action": {
+    "default_icon": "icons/logo.svg",
+    "default_title": "MoSo",
+    "default_popup": "popup/main.html"
+  },
+
+  "permissions": [
+      "storage"
+  ]
+}
