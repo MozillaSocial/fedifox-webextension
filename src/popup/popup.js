@@ -36,6 +36,18 @@ class Popup {
           await View.setView("initialize");
           return;
 
+        case STATE_AUTHENTICATING:
+          await View.setView("authenticating");
+          return;
+
+        case STATE_AUTH_FAILED:
+          await View.setView("authfailed");
+          return;
+
+        case STATE_MAIN:
+          await View.setView("main");
+          return;
+
         default:
           await View.setView("error", "internalError");
           return;

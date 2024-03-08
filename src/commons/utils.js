@@ -5,8 +5,11 @@
 // The user has not selected a default server.
 const STATE_INITIALIZE = "initialize";
 
-// We are trying to connect to a server.
-const STATE_CONNECTING = "connecting";
+// We are trying to connect to a server and start the authentication.
+const STATE_AUTHENTICATING = "authenticating";
+
+// The authentication failed
+const STATE_AUTH_FAILED = "auth_failed";
 
 // The main state: the user is authenticated
 const STATE_MAIN = "main";

@@ -13,13 +13,13 @@ class StorageUtils {
     });
   }
 
-  async getServerDomain() {
-    return this.#getStorageKey("serverDomain");
+  async getServerHost() {
+    return this.#getStorageKey("serverHost");
   }
 
-  async setServerDomain(serverDomain) {
+  async setServerHost(serverHost) {
     await browser.storage.local.set({
-      serverDomain
+      serverHost
     });
   }
 

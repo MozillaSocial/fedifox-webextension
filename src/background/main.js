@@ -127,11 +127,13 @@ class Main {
 
   async #handleEventInternal(type, data) {
     switch (type) {
-      case 'connectToServer':
-        await this.#masto.connectToServer(data);
+      case 'connectToHost':
+        await this.#masto.connectToHost(data);
         break;
 
-        // TODO: the magic goes here!
+      case 'reset':
+        this.setState(STATE_INITIALIZE);
+        break;
 
       default:
         console.error("Invalid event: " + type);

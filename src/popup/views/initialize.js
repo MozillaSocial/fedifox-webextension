@@ -20,7 +20,8 @@ class ViewInitialize extends View {
   async handleClickEvent(e) {
     if (e.target.id === "connectToServerButton") {
       // TODO: the validation of the URL needs to happen here!!
-      await View.sendMessage("connectToServer", document.getElementById("connectToServer").value);
+      await View.sendMessage("connectToHost", new URL(document.getElementById("connectToServer").value).hostname);
+      View.close();
     }
   }
 }
