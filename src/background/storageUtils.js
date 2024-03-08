@@ -13,6 +13,26 @@ class StorageUtils {
     });
   }
 
+  async getServerDomain() {
+    return this.#getStorageKey("serverDomain");
+  }
+
+  async setServerDomain(serverDomain) {
+    await browser.storage.local.set({
+      serverDomain
+    });
+  }
+
+  async getAccessToken() {
+    return this.#getStorageKey("accessToken");
+  }
+
+  async setAccessToken(accessToken) {
+    await browser.storage.local.set({
+      accessToken
+    });
+  }
+
   async #getStorageKey(key) {
     let data = await browser.storage.local.get([key]);
     return data[key];

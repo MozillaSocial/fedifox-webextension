@@ -37,7 +37,7 @@ export class UI extends Component {
     // Let's send the initial data.
     port.onMessage.addListener(async message => {
       log("Message received from the panel", message);
-      // TODO
+      this.sendMessage(message.type, message.data);
     });
 
     port.onDisconnect.addListener(_ => {

@@ -8,7 +8,9 @@ class Popup {
   #port;
 
   async init() {
-    const {View} = await import("./view.js");
+    const {
+      View
+    } = await import("./view.js");
 
     // Let's start showing something...
     await View.setView("loading");
@@ -30,8 +32,8 @@ class Popup {
       }
 
       switch (msg.state) {
-        case STATE_LOADING:
-          await View.setView("loading");
+        case STATE_INITIALIZE:
+          await View.setView("initialize");
           return;
 
         default:

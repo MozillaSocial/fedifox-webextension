@@ -11,12 +11,18 @@ import {
 import {
   UI
 } from './ui.js';
+import {
+  StateObserver
+} from './stateobserver.js';
+import {
+  Masto
+} from './masto.js';
 import StorageUtils from "./storageUtils.js";
 
 const log = Logger.logger('Main');
 
 class Main {
-  #state = STATE_LOADING;
+  #state = STATE_INITIALIZE;
   #observers = new Set();
 
   // We want to avoid the processing of events during the initialization.
@@ -27,18 +33,23 @@ class Main {
   #handlingEvent = true;
   #pendingEvents = [];
 
+  #masto;
+
   constructor() {
     log('CTOR');
 
     new Logger(this);
+    new StateObserver(this);
     new UI(this);
+    this.#masto = new Masto(this);
   }
 
   // Initialization of the main finite-state-machine.
   async init() {
     log('init');
 
-    this.#state = await StorageUtils.getState() || STATE_LOADING;
+    this.#state = await this.#computeInitialState();
+    log(`current state: ${this.state}`);
 
     // Let's initialize the observers.
     for (const observer of this.#observers) {
@@ -49,6 +60,18 @@ class Main {
     // the meantime.
     this.#handlingEvent = false;
     this.#syncProcessPendingEvents();
+  }
+
+  // Not all the states are acceptable as the initial one.
+  async #computeInitialState() {
+    const state = await StorageUtils.getState() || STATE_INITIALIZE;
+    if (![STATE_INITIALIZE, STATE_MAIN].includes(state)) {
+      return STATE_INITIALIZE;
+    }
+
+    // TODO: validate the access-token?
+
+    return state;
   }
 
   // The main state getter
@@ -65,7 +88,7 @@ class Main {
   }
 
   registerObserver(observer) {
-    console.assert(observer instanceof Component);
+    assert(observer instanceof Component, 'Observers must be Components');
     this.#observers.add(observer);
   }
 
@@ -104,7 +127,11 @@ class Main {
 
   async #handleEventInternal(type, data) {
     switch (type) {
-      // TODO: the magic goes here!
+      case 'connectToServer':
+        await this.#masto.connectToServer(data);
+        break;
+
+        // TODO: the magic goes here!
 
       default:
         console.error("Invalid event: " + type);

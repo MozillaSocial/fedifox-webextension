@@ -21,13 +21,23 @@ export class View {
       return;
     }
 
-    View.#currentView = view;
-
     const content = document.getElementById("content");
     content.innerHTML = "";
 
+    if (View.#currentView) {
+      content.removeEventListener("click", view);
+      content.removeEventListener("submit", view);
+      content.removeEventListener("dragstart", view);
+    }
+
+    View.#currentView = view;
+
     let template = View.#currentView.show(data);
     if (template && template instanceof Template) {
+      content.addEventListener("click", view);
+      content.addEventListener("submit", view);
+      content.addEventListener("dragstart", view);
+
       template.renderTo(content);
     }
 
