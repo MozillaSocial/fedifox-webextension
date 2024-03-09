@@ -23,12 +23,17 @@ class StorageUtils {
     });
   }
 
+  async getHostname() {
+    return this.#getStorageKey("hostname");
+  }
+
   async getAccessToken() {
     return this.#getStorageKey("accessToken");
   }
 
-  async setAccessToken(accessToken) {
+  async setHostnameAndAccessToken(hostname, accessToken) {
     await browser.storage.local.set({
+      hostname,
       accessToken
     });
   }

@@ -12,7 +12,7 @@ export class Component {
   }
 
   // To overwrite, if needed.
-  init() {}
+  async init() {}
 
   // To overwrite, if needed.
   stateChanged() {}

@@ -15,6 +15,20 @@ const log = Logger.logger('Masto');
 const SCOPES = 'read write push';
 
 export class Masto extends Component {
+  #hostname;
+  #accessToken;
+
+  async init() {
+    log("init");
+
+    this.#hostname = await StorageUtils.getHostname();
+    this.#accessToken = await StorageUtils.getAccessToken();
+
+    if (this.state === STATE_MAIN) {
+      this.#fetchPublicTimeline();
+    }
+  }
+
   async connectToHost(hostname) {
     assert(this.state === STATE_INITIALIZE, "Invalid state");
 
@@ -27,15 +41,27 @@ export class Masto extends Component {
       const appCode = await this.#oauth2Authentication(hostname, appData);
       const accessToken = await this.#fetchAccessToken(hostname, appData, appCode);
 
-      await StorageUtils.setAccessToken(accessToken);
+      await StorageUtils.setHostnameAndAccessToken(hostname, accessToken);
+
+      this.#hostname = hostname;
+      this.#accessToken = accessToken;
+
       this.setState(STATE_MAIN);
     } catch (e) {
       this.setState(STATE_AUTH_FAILED);
     }
+  }
 
+  stateChanged() {
+    if (this.state === STATE_MAIN) {
+      this.#fetchPublicTimeline();
+    }
   }
 
   async #createApplication(hostname) {
+    assert(this.state === STATE_AUTHENTICATING, "Invalid state");
+    log("Registering the application");
+
     const manifest = await browser.runtime.getManifest();
 
     const formData = new FormData();
@@ -52,8 +78,10 @@ export class Masto extends Component {
     return await request.json();
   }
 
-
   async #oauth2Authentication(hostname, appData) {
+    assert(this.state === STATE_AUTHENTICATING, "Invalid state");
+    log("Triggering the oauth2 authentication flow");
+
     const authorizeURL = new URL(`https://${hostname}/oauth/authorize`);
     authorizeURL.searchParams.set('client_id', appData.client_id);
     authorizeURL.searchParams.set('scope', SCOPES);
@@ -70,6 +98,9 @@ export class Masto extends Component {
   }
 
   async #fetchAccessToken(hostname, appData, code) {
+    assert(this.state === STATE_AUTHENTICATING, "Invalid state");
+    log("Requesting the access token");
+
     const formData = new FormData();
     formData.append('client_id', appData.client_id);
     formData.append('client_secret', appData.client_secret);
@@ -84,5 +115,18 @@ export class Masto extends Component {
     }).then(res => res.json())
 
     return tokenData.access_token;
+  }
+
+  async #fetchPublicTimeline() {
+    assert(this.state === STATE_MAIN, "Invalid state");
+    log("Fetching the public timeline");
+
+    const data = await fetch(`https://${this.#hostname}/api/v1/timelines/public`, {
+      headers: {
+        Authorization: `Bearer ${this.#accessToken}`
+      }
+    }).then(r => r.json());
+
+    // TODO: console.log(data);
   }
 }
