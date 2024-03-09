@@ -17,4 +17,10 @@ export class StateObserver extends Component {
     log(`Saving state: ${this.state}`);
     StorageUtils.setState(this.state);
   }
+
+  async handleEvent(type, data) {
+    if (type === "reset") {
+      this.setState(STATE_INITIALIZE);
+    }
+  }
 }

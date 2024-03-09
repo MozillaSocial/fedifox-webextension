@@ -129,4 +129,10 @@ export class Masto extends Component {
 
     // TODO: console.log(data);
   }
+
+  async handleEvent(type, data) {
+    if (type === 'connectToHost') {
+      await this.connectToHost(data);
+    }
+  }
 }

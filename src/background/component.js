@@ -17,6 +17,9 @@ export class Component {
   // To overwrite, if needed.
   stateChanged() {}
 
+  // To overwrite, if needed.
+  async handleEvent(type, data) {}
+
   get state() {
     return this.#receiver.state;
   }

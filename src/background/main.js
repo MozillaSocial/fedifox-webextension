@@ -107,37 +107,27 @@ class Main {
 
     this.#handlingEvent = true;
 
-    let returnValue;
-    try {
-      returnValue = await this.#handleEventInternal(type, data);
-    } catch (e) {}
+    const returnValues = [];
+
+    for (const observer of this.#observers) {
+      try {
+        const result = observer.handleEvent(type, data);
+        if (result !== undefined) {
+          returnValues.push(result);
+        }
+      } catch (e) {}
+    }
 
     this.#handlingEvent = false;
     this.#syncProcessPendingEvents();
 
-    return returnValue;
+    return returnValues;
   }
 
   #syncProcessPendingEvents() {
     if (this.#pendingEvents.length) {
       log(`Processing the first of ${this.#pendingEvents.length} events`);
       this.#pendingEvents.shift()();
-    }
-  }
-
-  async #handleEventInternal(type, data) {
-    switch (type) {
-      case 'connectToHost':
-        await this.#masto.connectToHost(data);
-        break;
-
-      case 'reset':
-        this.setState(STATE_INITIALIZE);
-        break;
-
-      default:
-        console.error("Invalid event: " + type);
-        throw new Error("Invalid event: " + type);
     }
   }
 };
