@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "cd src && web-ext run"
+  },
   "dependencies": {
     "web-ext": "^7.11.0"
   }
