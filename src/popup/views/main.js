@@ -8,6 +8,8 @@ import {
 
 class ViewInitialize extends View {
   show(data) {
+    this.sendMessage("fetchTimeline");
+
     return escapedTemplate`
     <h1>The main view!</h1>
     <button id="reset">Reset</button>
@@ -16,8 +18,12 @@ class ViewInitialize extends View {
 
   async handleClickEvent(e) {
     if (e.target.id === "reset") {
-      await View.sendMessage("reset");
+      await this.sendMessage("reset");
     }
+  }
+
+  async handleMessage(msg) {
+    console.log("MESAGE", msg.type);
   }
 }
 

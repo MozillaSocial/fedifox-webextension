@@ -74,8 +74,11 @@ export class View {
   // To be overwritten if needed.
   postShow(data) {}
 
+  // To be overwritten if needed.
+  handleMessage(msg) {}
+
   // Helper method to send messages to the background script.
-  static async sendMessage(type, data = {}) {
+  async sendMessage(type, data = {}) {
     if (!View.#currentPort) {
       throw new Error("Invalid port!");
     }
@@ -84,6 +87,10 @@ export class View {
       type,
       data,
     });
+  }
+
+  static propagateMessage(msg) {
+    this.#currentView.handleMessage(msg);
   }
 
   static setPort(port) {

@@ -52,7 +52,17 @@ export class UI extends Component {
     log("Update the panel: ", this.#currentPort);
     if (this.#currentPort) {
       return this.#currentPort.postMessage({
+        type: 'stateChanged',
         state: this.state,
+      });
+    }
+  }
+
+  async handleEvent(type, data) {
+    if (type === 'mastoTimeline' && this.#currentPort) {
+      return this.#currentPort.postMessage({
+        type: "timeline",
+        timeline: data,
       });
     }
   }

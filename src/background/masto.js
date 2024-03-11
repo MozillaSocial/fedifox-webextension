@@ -23,13 +23,9 @@ export class Masto extends Component {
 
     this.#hostname = await StorageUtils.getHostname();
     this.#accessToken = await StorageUtils.getAccessToken();
-
-    if (this.state === STATE_MAIN) {
-      this.#fetchPublicTimeline();
-    }
   }
 
-  async connectToHost(hostname) {
+  async #connectToHost(hostname) {
     assert(this.state === STATE_INITIALIZE, "Invalid state");
 
     log(`Connecting to server host ${hostname})`);
@@ -49,12 +45,6 @@ export class Masto extends Component {
       this.setState(STATE_MAIN);
     } catch (e) {
       this.setState(STATE_AUTH_FAILED);
-    }
-  }
-
-  stateChanged() {
-    if (this.state === STATE_MAIN) {
-      this.#fetchPublicTimeline();
     }
   }
 
@@ -127,12 +117,18 @@ export class Masto extends Component {
       }
     }).then(r => r.json());
 
-    // TODO: console.log(data);
+    this.sendMessage("mastoTimeline", data);
   }
 
   async handleEvent(type, data) {
-    if (type === 'connectToHost') {
-      await this.connectToHost(data);
+    switch (type) {
+      case 'connectToHost':
+        await this.#connectToHost(data);
+        break;
+
+      case 'fetchTimeline':
+        await this.#fetchPublicTimeline();
+        break;
     }
   }
 }
