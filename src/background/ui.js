@@ -10,6 +10,7 @@ const log = Logger.logger("UI");
 
 export class UI extends Component {
   #currentPort;
+  #messageQueue = [];
 
   constructor(receiver) {
     super(receiver);
@@ -46,10 +47,16 @@ export class UI extends Component {
     });
 
     await this.#sendDataToCurrentPort();
+
+    // Sending the pending messages.
+    while (this.#messageQueue.length && this.#currentPort) {
+      await this.#currentPort.postMessage(this.#messageQueue.splice(0, 1)[0]);
+    }
+    this.#messageQueue.splice(0);
   }
 
   async #sendDataToCurrentPort() {
-    log("Update the panel: ", this.#currentPort);
+    log("Update the panel");
     if (this.#currentPort) {
       return this.#currentPort.postMessage({
         type: 'stateChanged',
@@ -64,6 +71,22 @@ export class UI extends Component {
         type: "timeline",
         timeline: data,
       });
+    }
+
+    if (type === "shareURL") {
+      if (this.#currentPort) {
+        return this.#currentPort.postMessage({
+          type: "shareURL",
+          timeline: data,
+        });
+      }
+
+      this.#messageQueue.push({
+        type: "shareURL",
+        timeline: data,
+      });
+
+      await browser.browserAction.openPopup();
     }
   }
 }

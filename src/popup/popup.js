@@ -6,6 +6,8 @@ const LOADING_TIMEOUT = 5000;
 
 class Popup {
   #port;
+  #handlingMessage;
+  #pendingMessages = [];
 
   async init() {
     const {
@@ -31,33 +33,45 @@ class Popup {
         timeoutId = 0;
       }
 
+      if (this.#handlingMessage) {
+        await new Promise(resolve => this.#pendingMessages.push(resolve));
+      }
+
+      this.#handlingMessage = true;
+
       // stateChanged requires a view change.
       if (msg.type === 'stateChanged') {
         switch (msg.state) {
           case STATE_INITIALIZE:
             await View.setView("initialize");
-            return;
+            break;
 
           case STATE_AUTHENTICATING:
             await View.setView("authenticating");
-            return;
+            break;
 
           case STATE_AUTH_FAILED:
             await View.setView("authfailed");
-            return;
+            break;
 
           case STATE_MAIN:
             await View.setView("main");
-            return;
+            break;
 
           default:
             await View.setView("error", "internalError");
-            return;
+            break;
         }
+      } else {
+        // Any other message is sent to the view.
+        await View.propagateMessage(msg);
       }
 
-      // Any other message is sent to the view.
-      View.propagateMessage(msg);
+      this.#handlingMessage = false;
+
+      if (this.#pendingMessages.length) {
+        this.#pendingMessages.shift()();
+      }
     });
   }
 }

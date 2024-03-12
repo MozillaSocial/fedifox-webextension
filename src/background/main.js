@@ -9,6 +9,9 @@ import {
   Component
 } from './component.js';
 import {
+  ContextMenus
+} from './contextmenus.js';
+import {
   UI
 } from './ui.js';
 import {
@@ -29,7 +32,7 @@ class Main {
   // Setting handlingEvent to true, we simulate the processing of an event
   // and, because of this, any new incoming event will be stored in a queue
   // and processed only at the end of the initialization, when
-  // this.syncProcessPendingEvents() is called.
+  // this.processPendingEvents() is called.
   #handlingEvent = true;
   #pendingEvents = [];
 
@@ -38,6 +41,7 @@ class Main {
   constructor() {
     log('CTOR');
 
+    new ContextMenus(this);
     new Logger(this);
     new StateObserver(this);
     new UI(this);
@@ -59,7 +63,7 @@ class Main {
     // Inititialization completed. Let's process any pending event received in
     // the meantime.
     this.#handlingEvent = false;
-    this.#syncProcessPendingEvents();
+    this.#processPendingEvents();
   }
 
   // Not all the states are acceptable as the initial one.
@@ -101,7 +105,7 @@ class Main {
     // event, we wait until it is concluded.
     if (this.#handlingEvent) {
       log(`Queuing event ${type}`);
-      await new Promise(resolve => this.pendingEvents.push(resolve));
+      await new Promise(resolve => this.#pendingEvents.push(resolve));
       log(`Event ${type} resumed`);
     }
 
@@ -119,12 +123,12 @@ class Main {
     }
 
     this.#handlingEvent = false;
-    this.#syncProcessPendingEvents();
+    this.#processPendingEvents();
 
     return returnValues;
   }
 
-  #syncProcessPendingEvents() {
+  #processPendingEvents() {
     if (this.#pendingEvents.length) {
       log(`Processing the first of ${this.#pendingEvents.length} events`);
       this.#pendingEvents.shift()();

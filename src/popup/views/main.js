@@ -12,6 +12,7 @@ class ViewInitialize extends View {
 
     return escapedTemplate`
     <h1>The main view!</h1>
+    <button id="openInstance">Open Instance</button>
     <button id="reset">Reset</button>
     `;
   }
@@ -19,11 +20,18 @@ class ViewInitialize extends View {
   async handleClickEvent(e) {
     if (e.target.id === "reset") {
       await this.sendMessage("reset");
+      return;
+    }
+
+    if (e.target.id === "openInstance") {
+      await this.sendMessage("openInstance");
+      View.close();
+      return;
     }
   }
 
   async handleMessage(msg) {
-    console.log("MESAGE", msg.type);
+    console.log("MESSAGE", msg.type);
   }
 }
 

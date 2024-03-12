@@ -120,6 +120,15 @@ export class Masto extends Component {
     this.sendMessage("mastoTimeline", data);
   }
 
+  async #openInstance() {
+    assert(this.state === STATE_MAIN, "Invalid state");
+    log("Open instance");
+
+    await browser.tabs.create({
+      url: `https://${this.#hostname}`
+    });
+  }
+
   async handleEvent(type, data) {
     switch (type) {
       case 'connectToHost':
@@ -128,6 +137,10 @@ export class Masto extends Component {
 
       case 'fetchTimeline':
         await this.#fetchPublicTimeline();
+        break;
+
+      case 'openInstance':
+        await this.#openInstance();
         break;
     }
   }

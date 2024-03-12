@@ -32,6 +32,8 @@
 
   "permissions": [
       "identity",
-      "storage"
+      "menus",
+      "storage",
+      "tabs"
   ]
 }
