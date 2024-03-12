@@ -10,10 +10,25 @@ class ViewInitialize extends View {
   // TODO: retrieve a list of server to have an autocomplete input field.
   show(data) {
     return escapedTemplate`
-    <h1>Initialize!</h1>
-    <label for="server">Write here the server:</label>
-    <input type="text" id="connectToServer" />
-    <button id="connectToServerButton">Connect</button>
+    <main>
+      <header>
+        <img src="../icons/logo.svg">
+        <h1>Mozilla Social</h1>
+      </header>
+      <p>Sign in to Mozilla.social, or connect to any other Mastodon server.</p>
+      <p>No account? No sweat. Use the "Register" button to create a Mozilla account, and we'll set you up.</p>
+      <fieldset>
+        <legend>Connect to Mozilla.social</legend>
+        <button class="primary" name="moso-register">Register</button>
+        <button class="secondary" name="moso-login">Sign in</button>
+      </fieldset>
+      <hr>
+      <fieldset>
+        <legend>Connect to another Mastodon server</legend>
+        <input type="text" id="connectToServer" placeholder="https://example.url">
+        <button class="secondary" id="connectToServerButton">Connect</button>
+      </fieldset>
+    </main>
     `;
   }
 
