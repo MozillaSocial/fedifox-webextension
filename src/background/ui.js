@@ -74,19 +74,25 @@ export class UI extends Component {
     }
 
     if (type === "shareURL") {
-      if (this.#currentPort) {
-        return this.#currentPort.postMessage({
-          type: "shareURL",
-          timeline: data,
-        });
-      }
-
-      this.#messageQueue.push({
+      return this.#sendOrQueueAndPopup({
         type: "shareURL",
-        timeline: data,
+        url: data,
       });
-
-      await browser.browserAction.openPopup();
     }
+
+    if (type === 'postResult') {
+      return this.#sendOrQueueAndPopup({
+        type: "postResult",
+        url: data,
+      });
+    }
+  }
+
+  async #sendOrQueueAndPopup(msg) {
+    if (this.#currentPort) {
+      return this.#currentPort.postMessage(msg);
+    }
+    this.#messageQueue.push(msg);
+    await browser.browserAction.openPopup();
   }
 }

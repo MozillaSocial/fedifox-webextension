@@ -7,13 +7,10 @@ import {
 } from "../view.js";
 
 // This is the first view to be shown.
-class ViewAuthenticating extends View {
+export default class ViewAuthenticating extends View {
   show(data) {
     return escapedTemplate`
     <h1>Authenticating!</h1>
     `;
   }
 }
-
-const view = new ViewAuthenticating();
-export default view;

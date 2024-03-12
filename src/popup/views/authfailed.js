@@ -7,7 +7,7 @@ import {
 } from "../view.js";
 
 // This is the first view to be shown.
-class ViewAuthFailed extends View {
+export default class ViewAuthFailed extends View {
   show(data) {
     return escapedTemplate`
     <h1>Auth Failed!</h1>
@@ -17,10 +17,7 @@ class ViewAuthFailed extends View {
 
   async handleClickEvent(e) {
     if (e.target.id === "retry") {
-      await View.sendMessage("reset");
+      await this.sendMessage("reset");
     }
   }
 }
-
-const view = new ViewAuthFailed();
-export default view;

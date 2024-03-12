@@ -6,14 +6,25 @@ import {
   View
 } from "../view.js";
 
-class ViewInitialize extends View {
+// This main view is mainly a "bridge" for the real action.
+export default class ViewMain extends View {
+  showHeader() {
+    return escapedTemplate`
+    <div>
+    <button id="openInstance">Open Instance</button>
+    <button id="reset">Reset</button>
+    </div>
+    `;
+  }
+
   show(data) {
+    // In case the panel was opened by the user, let's fetch the timeline to
+    // trigger the `timeline` view.
     this.sendMessage("fetchTimeline");
 
     return escapedTemplate`
     <h1>The main view!</h1>
-    <button id="openInstance">Open Instance</button>
-    <button id="reset">Reset</button>
+    ${this.showHeader()}
     `;
   }
 
@@ -31,9 +42,14 @@ class ViewInitialize extends View {
   }
 
   async handleMessage(msg) {
-    console.log("MESSAGE", msg.type);
+    switch (msg.type) {
+      case 'timeline':
+        View.setView('timeline', msg.timeline);
+        break;
+
+      case 'shareURL':
+        View.setView('share', msg.url);
+        break;
+    }
   }
 }
-
-const view = new ViewInitialize();
-export default view;

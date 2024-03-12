@@ -11,8 +11,8 @@ export class View {
   // Static method to set the current view. The previous one will be dismissed.
   static async setView(name, data = null) {
     if (!View.#views.has(name)) {
-      const view = await import(`./views/${name}.js`);
-      this.#registerView(view.default, name);
+      const viewClass = await import(`./views/${name}.js`);
+      this.#registerView(new viewClass.default(), name);
     }
 
     const view = View.#views.get(name);
@@ -25,9 +25,9 @@ export class View {
     content.innerHTML = "";
 
     if (View.#currentView) {
-      content.removeEventListener("click", view);
-      content.removeEventListener("submit", view);
-      content.removeEventListener("dragstart", view);
+      content.removeEventListener("click", View.#currentView);
+      content.removeEventListener("submit", View.#currentView);
+      content.removeEventListener("dragstart", View.#currentView);
     }
 
     View.#currentView = view;

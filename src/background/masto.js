@@ -107,11 +107,11 @@ export class Masto extends Component {
     return tokenData.access_token;
   }
 
-  async #fetchPublicTimeline() {
+  async #fetchHomeTimeline() {
     assert(this.state === STATE_MAIN, "Invalid state");
-    log("Fetching the public timeline");
+    log("Fetching the home timeline");
 
-    const data = await fetch(`https://${this.#hostname}/api/v1/timelines/public`, {
+    const data = await fetch(`https://${this.#hostname}/api/v1/timelines/home`, {
       headers: {
         Authorization: `Bearer ${this.#accessToken}`
       }
@@ -129,6 +129,28 @@ export class Masto extends Component {
     });
   }
 
+  async #post(body) {
+    log(`Posting: ${body}`);
+
+    const formData = new FormData();
+    formData.append('status', body);
+
+    try {
+      const data = await fetch(`https://${this.#hostname}/api/v1/statuses`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${this.#accessToken}`
+        },
+        body: formData
+      }).then(r => r.json());
+      if (!("id" in data)) throw new Error("Failed!");
+      this.sendMessage("postResult", data.id);
+    } catch (e) {
+      this.sendMessage("postResult", null);
+      return;
+    }
+  }
+
   async handleEvent(type, data) {
     switch (type) {
       case 'connectToHost':
@@ -136,11 +158,15 @@ export class Masto extends Component {
         break;
 
       case 'fetchTimeline':
-        await this.#fetchPublicTimeline();
+        await this.#fetchHomeTimeline();
         break;
 
       case 'openInstance':
         await this.#openInstance();
+        break;
+
+      case 'post':
+        await this.#post(data.body);
         break;
     }
   }

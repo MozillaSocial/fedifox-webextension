@@ -7,13 +7,10 @@ import {
 } from "../view.js";
 
 // This is the first view to be shown.
-class ViewError extends View {
+export default class ViewError extends View {
   show(data) {
     return escapedTemplate`
     <h1>Error: ${data}</h1>
     `;
   }
 }
-
-const view = new ViewError();
-export default view;

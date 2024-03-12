@@ -6,7 +6,7 @@ import {
   View
 } from "../view.js";
 
-class ViewInitialize extends View {
+export default class ViewInitialize extends View {
   // TODO: retrieve a list of server to have an autocomplete input field.
   show(data) {
     return escapedTemplate`
@@ -47,6 +47,3 @@ class ViewInitialize extends View {
     }
   }
 }
-
-const view = new ViewInitialize();
-export default view;
