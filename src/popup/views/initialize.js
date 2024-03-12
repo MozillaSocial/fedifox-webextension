@@ -19,24 +19,31 @@ class ViewInitialize extends View {
       <p>No account? No sweat. Use the "Register" button to create a Mozilla account, and we'll set you up.</p>
       <fieldset>
         <legend>Connect to Mozilla.social</legend>
-        <button class="primary" name="moso-register">Register</button>
-        <button class="secondary" name="moso-login">Sign in</button>
+        <button class="primary" id="moso-register-btn">Register</button>
+        <button class="secondary" id="moso-login-btn">Sign in</button>
       </fieldset>
       <hr>
       <fieldset>
         <legend>Connect to another Mastodon server</legend>
-        <input type="text" id="connectToServer" placeholder="https://example.url">
-        <button class="secondary" id="connectToServerButton">Connect</button>
+        <input type="url" id="other-server-url" placeholder="https://example.url">
+        <button class="secondary" id="other-server-btn">Connect</button>
       </fieldset>
     </main>
-    `;
+    `
   }
 
   async handleClickEvent(e) {
-    if (e.target.id === "connectToServerButton") {
-      // TODO: the validation of the URL needs to happen here!!
-      await this.sendMessage("connectToHost", new URL(document.getElementById("connectToServer").value).hostname);
-      View.close();
+    switch (e.target.id) {
+      case 'moso-register-btn':
+      case 'moso-login-btn':
+        await this.sendMessage("connectToHost", 'mastodon.mozsoc.local') // TODO: make url dynamic
+        View.close()
+        break
+      case 'other-server-btn':
+        if (!document.getElementById("other-server-url").checkValidity()) return alert('Mastodon URL is not valid')
+        await this.sendMessage("connectToHost", new URL(document.getElementById("other-server-url").value).hostname)
+        View.close()
+        break
     }
   }
 }
