@@ -1,0 +1,159 @@
+:root{
+  /* colors from Mozilla brand guidelines https://mozilla.design/mozilla/#color */
+  --light-gray: #e7e5e2;
+  --dark-gray: #959595;
+  --dark-green: #005e5e;
+  --neon-blue: #00ffff;
+  --dark-blue: #00458b;
+  --dark-purple: #6e008b;
+  --warm-red: #ff4f5e;
+
+  --min-width: 320px;
+  --max-width: 1000px;
+  --padding-sm: 8px;
+  --padding-md: 16px;
+  --padding-lg: 24px;
+  --padding-xl: 48px;
+
+  --h1-font: 700 1.75rem/1.2 'Zilla Slab', Inter, sans-serif;
+  --h2-font: 700 1.5rem/1.2 'Zilla Slab', Inter, sans-serif;
+  --h3-font: 700 1.25rem/1.2 'Zilla Slab', Inter, sans-serif;
+  --h4-font: 700 1rem/1.2 Inter, Inter-fallback, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font: normal .875rem/1.2 Inter, Inter-fallback, sans-serif;
+  background-color: white;
+  padding: var(--padding-md);
+}
+
+h1 {
+  font: var(--h1-font);
+}
+
+h2 {
+  font: var(--h2-font);
+}
+
+h3 {
+  font: var(--h3-font);
+}
+
+h4 {
+  font: var(--h4-font);
+}
+
+small {
+  font-size: .75rem;
+  line-height: 1.2;
+}
+
+fieldset{
+  border: none;
+}
+
+legend{
+  font-weight: bolder;
+  font-size: .875rem;
+  margin-bottom: var(--padding-sm);
+}
+
+label > span:first-child {
+  display: block;
+  font-weight: bolder;
+  font-size: .875rem;
+  margin-bottom: var(--padding-sm);
+}
+
+label[data-error]::after{
+  content: attr(data-error);
+  color: var(--warm-red);
+  font-size: 12px;
+}
+
+textarea, input, select {
+  width: 100%;
+  padding: var(--padding-sm);
+  border: 2px solid var(--light-gray);
+  border-radius: 4px;
+  font: inherit;
+  line-height: normal;
+  background-color: white;
+}
+
+select{
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath fill='none' fill-rule='evenodd' stroke='%239595a3' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m5 9 7 7 7-7'/%3E%3C/svg%3E"),linear-gradient(180deg,#fff 0,#fff);
+  background-position: right 8px top 50%;
+  background-repeat: no-repeat,repeat;
+  background-size: 1.5em auto,100%;
+  display: block;
+  padding-right: 32px;
+  text-overflow: ellipsis;
+}
+
+label[data-error] input {
+  border-color: var(--warm-red);
+  outline: 1px solid var(--warm-red);
+}
+
+input::placeholder {
+  opacity: 1;
+  color: var(--dark-gray);
+}
+
+input[type='checkbox'], input[type='radio'] {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  accent-color: black;
+}
+
+a.button {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+}
+
+button.primary, .button.primary {
+  color: white;
+  background: black;
+  border: none;
+  border-radius: 4px;
+  padding: var(--padding-sm) var(--padding-md);
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button.secondary, .button.secondary {
+  color: black;
+  background: transparent;
+  border: 2px solid var(--dark-gray);
+  border-radius: 4px;
+  padding: var(--padding-sm) var(--padding-md);
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+form:invalid button[type='submit'] {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+hr{
+  border: 1px solid var(--dark-gray);
+}
