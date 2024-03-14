@@ -10,18 +10,19 @@ const log = Logger.logger("UI");
 
 export class UI extends Component {
   #currentPort;
+  #currentWindowId;
   #messageQueue = [];
 
   constructor(receiver) {
     super(receiver);
 
     browser.runtime.onConnect.addListener(async port => {
-      if (port.name !== "panel") {
-        return;
+      if (port.name === "panel") {
+        await this.#panelConnected(port);
       }
-
-      await this.#panelConnected(port);
     });
+
+    browser.windows.onFocusChanged.addListener(windowId => this.#currentWindowId = windowId);
   }
 
   stateChanged() {
@@ -84,6 +85,17 @@ export class UI extends Component {
       return this.#sendOrQueueAndPopup({
         type: "postResult",
         url: data,
+      });
+    }
+
+    if (type === 'shareCurrentPage') {
+      const tabs = await browser.tabs.query({
+        active: true,
+        windowId: this.#currentWindowId
+      });
+      return this.#sendOrQueueAndPopup({
+        type: "shareURL",
+        url: tabs.length && (tabs[0].url.startsWith('http://') || tabs[0].url.startsWith('https://')) ? tabs[0].url : '',
       });
     }
   }

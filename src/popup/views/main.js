@@ -15,7 +15,7 @@ export default class ViewMain extends ViewBase {
       <h1><img src="../icons/logo.svg">Mozilla Social</h1>
       <nav>
         <button id="showTimeline">Timeline</button>
-        <button>Share Current Page</button>
+        <button id="shareCurrentPage">Share Current Page</button>
         <button id="openInstance">Open Instance</button>
         <button class="primary" id="reset">Sign out</button>
       </nav>
@@ -47,6 +47,12 @@ export default class ViewMain extends ViewBase {
     }
 
     if (e.target.id === "showTimeline") {
+      View.setView('main');
+      return;
+    }
+
+    if (e.target.id === "shareCurrentPage") {
+      await this.sendMessage("shareCurrentPage");
       View.setView('main');
       return;
     }
