@@ -12,8 +12,9 @@ export default class ViewShare extends ViewMain {
 
   show(url) {
     return escapedTemplate`
-    <h1>SHARE</h1>
-    ${this.showHeader()}
+    ${this.showHeaderWithNav()}
+    <br><br>
+    <h1>Share</h1>
     <textarea id="shareBody">${url}\n</textarea>
     <button class="secondary" id="share">Share</button>
     `;

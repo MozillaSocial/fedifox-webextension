@@ -5,16 +5,40 @@ main{
   max-width: 360px;
 }
 
-header{
+header h1{
   display: flex;
   align-items: center;
   gap: var(--padding-sm);
-  padding: var(--padding-sm) 0;
-  border-bottom: 2px solid var(--dark-gray);
+  height: 36px;
 }
 
-header img{
-  height: 36px;
+header{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--padding-sm) var(--padding-lg);
+  padding: var(--padding-sm) 0 var(--padding-md);
+  border-bottom: 2px solid var(--light-gray);
+}
+
+nav{
+  display: flex;
+  gap: var(--padding-md);
+}
+
+nav button{
+  font-weight: bold;
+  border: none;
+  background-color: transparent;
+  transition: border .3s ease-out, color .3s;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+nav button:hover{
+  color: var(--dark-blue);
+  border-bottom: 2px solid var(--light-gray);
 }
 
 fieldset{

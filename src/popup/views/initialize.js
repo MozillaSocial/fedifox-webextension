@@ -2,20 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {
-  View
-} from "../view.js";
+import ViewMain from './main.js';
 
-export default class ViewInitialize extends View {
+export default class ViewInitialize extends ViewMain {
   // TODO: retrieve a list of server to have an autocomplete input field.
   show(data) {
     return escapedTemplate`
     <main>
-      <header>
-        <img src="../icons/logo.svg">
-        <h1>Mozilla Social</h1>
-      </header>
-      <p>Sign in to Mozilla.social, or connect to any other Mastodon server.</p>
+      ${this.showHeader()}
+      <p>Sign in to Mozilla.social, or connect with any other Mastodon server.</p>
       <p>No account? No sweat. Use the "Register" button to create a Mozilla account, and we'll set you up.</p>
       <fieldset>
         <legend>Connect to Mozilla.social</legend>
@@ -36,7 +31,7 @@ export default class ViewInitialize extends View {
     switch (e.target.id) {
       case 'moso-register-btn':
       case 'moso-login-btn':
-        await this.sendMessage("connectToHost", 'mastodon.mozsoc.local') // TODO: make url dynamic
+        await this.sendMessage("connectToHost", 'stage.moztodon.nonprod.webservices.mozgcp.net') // TODO: make url dynamic
         View.close()
         break
       case 'other-server-btn':

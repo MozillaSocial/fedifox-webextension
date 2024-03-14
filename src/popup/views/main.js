@@ -10,11 +10,24 @@ import {
 export default class ViewMain extends View {
   showHeader() {
     return escapedTemplate`
-    <div>
-    <button id="openInstance">Open Instance</button>
-    <button id="reset">Reset</button>
-    </div>
-    `;
+    <header>
+      <h1><img src="../icons/logo.svg">Mozilla Social</h1>
+    </header>
+    `
+  }
+
+  showHeaderWithNav() {
+    return escapedTemplate`
+    <header>
+      <h1><img src="../icons/logo.svg">Mozilla Social</h1>
+      <nav>
+        <button>Timeline</button>
+        <button>Share Current Page</button>
+        <button id="openInstance">Open Instance</button>
+        <button class="primary" id="reset">Sign out</button>
+      </nav>
+    </header>
+    `
   }
 
   show(data) {
