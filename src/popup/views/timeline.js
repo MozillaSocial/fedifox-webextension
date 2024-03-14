@@ -6,10 +6,6 @@ import ViewMain from './main.js';
 
 // This main view is mainly a "bridge" for the real action.
 export default class ViewTimeline extends ViewMain {
-  constructor() {
-    super();
-  }
-
   show(timeline) {
     return escapedTemplate`
     ${this.showHeaderWithNav()}

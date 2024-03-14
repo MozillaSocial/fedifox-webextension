@@ -6,17 +6,12 @@ import {
   View
 } from "../view.js";
 
-export default class ViewAuthFailed extends View {
-  show(data) {
+export default class ViewBase extends View {
+  showHeader() {
     return escapedTemplate`
-    <h1>Auth Failed!</h1>
-    <button id="retry">Retry</button>
-    `;
-  }
-
-  async handleClickEvent(e) {
-    if (e.target.id === "retry") {
-      await this.sendMessage("reset");
-    }
+    <header>
+      <h1><img src="../icons/logo.svg">Mozilla Social</h1>
+    </header>
+    `
   }
 }

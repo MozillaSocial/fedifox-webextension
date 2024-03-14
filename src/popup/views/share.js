@@ -2,14 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import {
+  View
+} from "../view.js";
 import ViewMain from './main.js';
 
 // This main view is mainly a "bridge" for the real action.
 export default class ViewShare extends ViewMain {
-  constructor() {
-    super();
-  }
-
   show(url) {
     return escapedTemplate`
     ${this.showHeaderWithNav()}
@@ -46,7 +45,7 @@ export default class ViewShare extends ViewMain {
   async handleMessage(msg) {
     if (msg.type === 'postResult') {
       // TODO: message send!
-      setTimeout(() => ViewMain.close(), 1000);
+      setTimeout(() => View.close(), 1000);
     }
   }
 }

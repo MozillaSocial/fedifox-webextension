@@ -6,7 +6,6 @@ import {
   View
 } from "../view.js";
 
-// This is the first view to be shown.
 export default class ViewLoading extends View {
   show(data) {
     return escapedTemplate`

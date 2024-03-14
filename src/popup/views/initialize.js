@@ -2,9 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import ViewMain from './main.js';
+import {
+  View
+} from "../view.js";
+import ViewBase from './base.js';
 
-export default class ViewInitialize extends ViewMain {
+export default class ViewInitialize extends ViewBase {
   // TODO: retrieve a list of server to have an autocomplete input field.
   show(data) {
     return escapedTemplate`

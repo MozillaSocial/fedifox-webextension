@@ -5,23 +5,16 @@
 import {
   View
 } from "../view.js";
+import ViewBase from './base.js';
 
 // This main view is mainly a "bridge" for the real action.
-export default class ViewMain extends View {
-  showHeader() {
-    return escapedTemplate`
-    <header>
-      <h1><img src="../icons/logo.svg">Mozilla Social</h1>
-    </header>
-    `
-  }
-
+export default class ViewMain extends ViewBase {
   showHeaderWithNav() {
     return escapedTemplate`
     <header>
       <h1><img src="../icons/logo.svg">Mozilla Social</h1>
       <nav>
-        <button>Timeline</button>
+        <button id="showTimeline">Timeline</button>
         <button>Share Current Page</button>
         <button id="openInstance">Open Instance</button>
         <button class="primary" id="reset">Sign out</button>
@@ -50,6 +43,11 @@ export default class ViewMain extends View {
     if (e.target.id === "openInstance") {
       await this.sendMessage("openInstance");
       View.close();
+      return;
+    }
+
+    if (e.target.id === "showTimeline") {
+      View.setView('main');
       return;
     }
   }
