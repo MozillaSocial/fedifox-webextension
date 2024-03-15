@@ -47,7 +47,7 @@ export default class ViewShare extends ViewMain {
 
     const body = [];
     for (const actor of actors) {
-      body.push(`<h3>URL: ${actor.url}</h3><button id="followActor" data-url="${actor.url}">Follow</button><br /><pre>`);
+      body.push(`<h3>URL: ${actor.actor.id}</h3><button id="followActor" data-url="${actor.actor.id}">Follow</button><br /><pre>`);
       if (actor.actor.image?.url) {
         body.push(`<img src="${actor.actor.image.url}" /><br />`);
       }

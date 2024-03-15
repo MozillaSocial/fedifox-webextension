@@ -64,6 +64,12 @@ export class HCard extends Component {
           Accept: 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"'
         }
       }).then(a => a.json());
+
+      if (actor.error) {
+        log("Unable to fetch the data");
+        return null;
+      }
+
       return {
         url,
         actor

@@ -177,6 +177,56 @@ export class Masto extends Component {
 
   async #followActor(url) {
     log("Follow user", url);
-    // TODO
+    const urlParts = url.split('/').filter(a => a != '');
+    const handle = urlParts[urlParts.length - 1];
+    const urlObj = new URL(url);
+
+    let subject;
+    try {
+      subject = (await fetch(`${urlObj.origin}/.well-known/webfinger?resource=${handle}@${urlObj.hostname}`).then(a => a.json())).subject;
+    } catch (e) {
+      log("Failed to fetch the webfinger data");
+      return;
+    }
+
+    if (!subject.startsWith('acct:')) {
+      log(`Invalid subject: ${subject}`);
+      return;
+    }
+
+    const searchURL = new URL(`https://${this.#hostname}/api/v2/search`);
+    searchURL.searchParams.set('q', subject.slice(5));
+    searchURL.searchParams.set('type', 'accounts');
+    searchURL.searchParams.set('resolve', 'true');
+
+    const accountIds = [];
+    try {
+      const data = await fetch(searchURL, {
+        headers: {
+          Authorization: `Bearer ${this.#accessToken}`
+        },
+      }).then(r => r.json());
+      data.accounts.forEach(account => accountIds.push(account.id));
+    } catch (e) {
+      log("Unable to fetch the search output", e);
+      return;
+    }
+
+    if (accountIds.length === 0) {
+      log(`Unable to fetch data for the subject ${subject}`);
+      return;
+    }
+
+    try {
+      const data = await fetch(`https://${this.#hostname}/api/v1/accounts/${accountIds[0]}/follow`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${this.#accessToken}`
+        },
+      }).then(r => r.json());
+    } catch (e) {
+      log("Unable to add the follower", e);
+      return;
+    }
   }
 }
