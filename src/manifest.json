@@ -25,6 +25,7 @@
   },
 
   "browser_action": {
+    "default_area": "navbar",
     "default_icon": "icons/logo.svg",
     "default_title": "MoSo",
     "default_popup": "popup/main.html"
