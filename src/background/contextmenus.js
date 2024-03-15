@@ -28,16 +28,24 @@ export class ContextMenus extends Component {
         if (info.menuItemId !== 'share') {
           return;
         }
-        this.sendMessage("shareURL", tab.url);
+        const url = this.contextClickHref ?? tab.url
+        this.sendMessage("shareURL", url);
       });
 
       browser.menus.onShown.addListener(async (info, tab) => {
-        const url = new URL(tab.url);
+        const url = new URL(this.contextClickHref ?? tab.url)
         browser.menus.update("share", {
           enabled: (this.state === STATE_MAIN && (url.protocol === 'http:' || url.protocol === 'https:'))
         });
         browser.menus.refresh();
       })
     });
+
+    browser.runtime.onMessage.addListener(message => {
+      if (message.hasOwnProperty('contextClickHref')) {
+        this.contextClickHref = message.contextClickHref
+      }
+    })
+
   }
 }
