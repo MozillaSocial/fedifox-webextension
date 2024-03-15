@@ -11,5 +11,7 @@ window.addEventListener("contextmenu", notifyExtension);
 function notifyExtension(e) {
   const href = e.target.closest('a')?.href // null or undefined is acceptable value
 
-  browser.runtime.sendMessage({ contextClickHref: href })
+  browser.runtime.sendMessage({
+    contextClickHref: href
+  })
 }
