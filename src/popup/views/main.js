@@ -14,10 +14,10 @@ export default class ViewMain extends ViewBase {
     <header>
       <h1><img src="../icons/logo.svg">Mozilla Social</h1>
       <nav>
-        <button id="showTimeline">Timeline</button>
+        <button id="showTimeline">Feed</button>
         <button id="shareCurrentPage">Share Current Page</button>
         <button id="openInstance">Open Instance</button>
-        <button class="primary" id="reset">Sign out</button>
+        <button class="secondary" id="reset">Sign out</button>
       </nav>
     </header>
     `

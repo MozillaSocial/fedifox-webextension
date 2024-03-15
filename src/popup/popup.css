@@ -1,15 +1,7 @@
 main{
   display: flex;
-  flex-direction: column;
+  flex-flow: column wrap;
   gap: var(--padding-md);
-  max-width: 360px;
-}
-
-header h1{
-  display: flex;
-  align-items: center;
-  gap: var(--padding-sm);
-  height: 36px;
 }
 
 header{
@@ -19,7 +11,15 @@ header{
   justify-content: space-between;
   gap: var(--padding-sm) var(--padding-lg);
   padding: var(--padding-sm) 0 var(--padding-md);
+  margin-bottom: var(--padding-md);
   border-bottom: 2px solid var(--light-gray);
+}
+
+header h1{
+  display: flex;
+  align-items: center;
+  gap: var(--padding-sm);
+  height: 36px;
 }
 
 nav{
@@ -27,7 +27,7 @@ nav{
   gap: var(--padding-md);
 }
 
-nav button:not(.primary){
+nav button:not(.primary, .secondary){
   font-weight: 700;
   border: none;
   color: var(--dark-gray);
@@ -36,11 +36,16 @@ nav button:not(.primary){
   transition: color .3s ease-out;
 }
 
-nav button:not(.primary):hover{
+nav button:not(.primary, .secondary):hover{
   color: var(--medium-blue);
 }
 
 fieldset{
   display: flex;
   gap: var(--padding-sm);
+}
+
+textarea{
+  resize: vertical;
+  min-height: 5rem;
 }

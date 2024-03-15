@@ -11,8 +11,13 @@ export default class ViewInitialize extends ViewBase {
   // TODO: retrieve a list of server to have an autocomplete input field.
   show(data) {
     return escapedTemplate`
+    <style>
+      main{
+        max-width: 480px;
+      }
+    </style>
+    ${this.showHeader()}
     <main>
-      ${this.showHeader()}
       <p>Sign in to Mozilla.social, or connect with any other Mastodon server.</p>
       <p>No account? No sweat. Use the "Register" button to create a Mozilla account, and we'll set you up.</p>
       <fieldset>

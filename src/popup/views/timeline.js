@@ -9,9 +9,10 @@ export default class ViewTimeline extends ViewMain {
   show(timeline) {
     return escapedTemplate`
     ${this.showHeaderWithNav()}
-    <br><br>
-    <h1>Timeline</h1>
-    <div id="timeline"></div>
+    <main>
+      <h2>Content Feed</h2>
+      <div id="timeline"></div>
+    </main>
     `;
   }
 

@@ -28,6 +28,10 @@
   box-sizing: border-box;
 }
 
+html{
+  overflow-x: hidden;
+}
+
 body {
   font: normal .875rem/1.2 Inter, Inter-fallback, sans-serif;
   background-color: white;
@@ -132,6 +136,11 @@ button.primary, .button.primary {
   font: inherit;
   font-weight: bold;
   cursor: pointer;
+  transition: background .3s ease-out;
+}
+
+button.primary:hover, .button.primary:hover {
+  background: #333;
 }
 
 button.secondary, .button.secondary {
@@ -143,6 +152,11 @@ button.secondary, .button.secondary {
   font: inherit;
   font-weight: bold;
   cursor: pointer;
+  transition: border .3s ease-out;
+}
+
+button.secondary:hover, .button.secondary:hover {
+  border-color: var(--dark-gray);
 }
 
 form:invalid button[type='submit'] {

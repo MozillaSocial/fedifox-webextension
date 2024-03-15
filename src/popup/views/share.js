@@ -11,18 +11,26 @@ import ViewMain from './main.js';
 export default class ViewShare extends ViewMain {
   show(url) {
     return escapedTemplate`
+    <style>
+      button.primary{
+        align-self: end;
+      }
+    </style>
     ${this.showHeaderWithNav()}
-    <br><br>
-    <h1>Share</h1>
-    <textarea id="shareBody">${url}\n</textarea>
-    <button class="secondary" id="share">Share</button>
+    <main>
+      <h2>Share a link with your status</h2>
+      <fieldset>
+        <textarea id="shareBody">\n\n\n${url}</textarea>
+        <button class="primary" id="share">Post</button>
+      </fieldset>
+    </main>
     `;
   }
 
   postShow() {
     const body = document.getElementById("shareBody");
     body.focus();
-    body.selectionStart = body.selectionEnd = body.value.length;
+    body.selectionStart = body.selectionEnd = 0;
   }
 
   async handleClickEvent(e) {
