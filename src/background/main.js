@@ -9,6 +9,9 @@ import {
   Component
 } from './component.js';
 import {
+  HCard
+} from './hcard.js';
+import {
   ContextMenus
 } from './contextmenus.js';
 import {
@@ -45,6 +48,7 @@ class Main {
     new Logger(this);
     new StateObserver(this);
     new UI(this);
+    new HCard(this);
     this.#masto = new Masto(this);
   }
 

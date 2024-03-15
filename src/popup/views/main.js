@@ -16,6 +16,7 @@ export default class ViewMain extends ViewBase {
       <nav>
         <button id="showTimeline">Feed</button>
         <button id="shareCurrentPage">Share Current Page</button>
+        <button id="showDetectedActors" disabled>Show detected actors</button>
         <button id="openInstance">Open Instance</button>
         <button class="secondary" id="reset">Sign out</button>
       </nav>
@@ -56,17 +57,37 @@ export default class ViewMain extends ViewBase {
       View.setView('main');
       return;
     }
+
+    if (e.target.id === 'showDetectedActors') {
+      View.setView('detectedactors');
+      return;
+    }
   }
 
   async handleMessage(msg) {
     switch (msg.type) {
       case 'timeline':
-        View.setView('timeline', msg.timeline);
+        this.showTimeline(msg.timeline);
         break;
 
       case 'shareURL':
         View.setView('share', msg.url);
         break;
+
+      case 'actorsDetected':
+        this.actorDetected(msg.actors);
+        break;
+    }
+  }
+
+  showTimeline(timeline) {
+    View.setView('timeline', timeline);
+  }
+
+  actorDetected(actors) {
+    const button = document.getElementById("showDetectedActors");
+    if (button) {
+      button.disabled = actors.length === 0;
     }
   }
 }

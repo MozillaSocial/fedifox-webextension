@@ -55,7 +55,7 @@ class Popup {
             break;
 
           case STATE_MAIN:
-            await View.setView("main");
+            await View.setView("main", msg);
             break;
 
           default:

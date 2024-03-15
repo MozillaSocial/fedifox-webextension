@@ -30,11 +30,25 @@
     "default_popup": "popup/main.html"
   },
 
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "contentscripts/microformat-shiv.min.js",
+        "contentscripts/main.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+
   "permissions": [
-      "identity",
-      "menus",
-      "storage",
-      "tabs"
+    "<all_urls>",
+    "identity",
+    "menus",
+    "storage",
+    "tabs"
   ],
   "content_scripts": [
     {

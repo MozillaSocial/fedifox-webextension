@@ -13,26 +13,11 @@ export default class ViewShare extends ViewMain {
     this.sendMessage("detectActors");
 
     return escapedTemplate`
-    <style>
-      button.primary{
-        align-self: end;
-      }
-    </style>
     ${this.showHeaderWithNav()}
-    <main>
-      <h2>Share a link with your status</h2>
-      <fieldset>
-        <textarea id="shareBody">\n\n\n${url}</textarea>
-        <button class="primary" id="share">Post</button>
-      </fieldset>
-    </main>
+    <br><br>
+    <h1>Detected Actors</h1>
+    <div id="actors"></div>
     `;
-  }
-
-  postShow() {
-    const body = document.getElementById("shareBody");
-    body.focus();
-    body.selectionStart = body.selectionEnd = 0;
   }
 
   async handleClickEvent(e) {
@@ -45,22 +30,32 @@ export default class ViewShare extends ViewMain {
         });
         // TODO: show a loading icon...
         break;
+
+      case 'followActor':
+        await this.sendMessage("followActor", e.target.dataset.url);
+        await this.sendMessage('detectActors');
+        break;
+
       default:
         super.handleClickEvent(e);
         break;
     }
   }
 
-  async handleMessage(msg) {
-    if (msg.type === 'postResult') {
-      // TODO: message send!
-      setTimeout(() => View.close(), 1000);
+  actorDetected(actors) {
+    super.actorDetected(actors);
+
+    const body = [];
+    for (const actor of actors) {
+      body.push(`<h3>URL: ${actor.url}</h3><button id="followActor" data-url="${actor.url}">Follow</button><br /><pre>`);
+      if (actor.actor.image?.url) {
+        body.push(`<img src="${actor.actor.image.url}" /><br />`);
+      }
+      body.push(`Name: ${actor.actor.name}<br />`);
+      body.push(`Summary: ${actor.actor.summary}<br />`);
+      body.push("</pre>");
     }
 
-    super.handleMessage(msg);
-  }
-
-  showTimeline(timeline) {
-    // We don't wnat to show the timeline while sharing a new post
+    document.getElementById("actors").innerHTML = body.join('');
   }
 }

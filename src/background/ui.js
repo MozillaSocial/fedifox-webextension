@@ -12,6 +12,7 @@ export class UI extends Component {
   #currentPort;
   #currentWindowId;
   #messageQueue = [];
+  #tabs = {};
 
   constructor(receiver) {
     super(receiver);
@@ -22,13 +23,40 @@ export class UI extends Component {
       }
     });
 
+    // To know the current tab to share, we need to track the focused window.
     browser.windows.onFocusChanged.addListener(windowId => this.#currentWindowId = windowId);
+
+    browser.tabs.onRemoved.addListener(tabId => this.#deleteTabData(tabId));
+    browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
+      if (changeInfo.status === 'loading') {
+        this.#deleteTabData(tabId);
+      }
+    }, {
+      properties: ['status']
+    });
+  }
+
+  #deleteTabData(tabId) {
+    delete this.#tabs[tabId];
+    browser.browserAction.setBadgeText({
+      text: '',
+      tabId
+    });
+  }
+
+  async #setTabData(tabId, actors) {
+    this.#tabs[tabId] = actors;
+    await browser.browserAction.setBadgeText({
+      text: "🛎️",
+      tabId
+    });
+
+    this.#sendActorsDetected();
   }
 
   stateChanged() {
     this.#sendDataToCurrentPort();
   }
-
 
   async #panelConnected(port) {
     log("Panel connected");
@@ -59,6 +87,11 @@ export class UI extends Component {
   async #sendDataToCurrentPort() {
     log("Update the panel");
     if (this.#currentPort) {
+      const tabs = await browser.tabs.query({
+        active: true,
+        windowId: this.#currentWindowId
+      });
+
       return this.#currentPort.postMessage({
         type: 'stateChanged',
         state: this.state,
@@ -96,6 +129,28 @@ export class UI extends Component {
       return this.#sendOrQueueAndPopup({
         type: "shareURL",
         url: tabs.length && (tabs[0].url.startsWith('http://') || tabs[0].url.startsWith('https://')) ? tabs[0].url : '',
+      });
+    }
+
+    if (type === 'apActorDetected') {
+      this.#setTabData(data.tabId, data.actors);
+    }
+
+    if (type === 'detectActors') {
+      this.#sendActorsDetected();
+    }
+  }
+
+  async #sendActorsDetected() {
+    if (this.#currentPort) {
+      const tabs = await browser.tabs.query({
+        active: true,
+        windowId: this.#currentWindowId
+      });
+
+      this.#currentPort.postMessage({
+        type: 'actorsDetected',
+        actors: this.#tabs[tabs[0].id] || []
       });
     }
   }

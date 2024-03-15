@@ -168,6 +168,15 @@ export class Masto extends Component {
       case 'post':
         await this.#post(data.body);
         break;
+
+      case 'followActor':
+        await this.#followActor(data);
+        break;
     }
+  }
+
+  async #followActor(url) {
+    log("Follow user", url);
+    // TODO
   }
 }

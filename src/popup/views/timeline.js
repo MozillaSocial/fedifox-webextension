@@ -7,6 +7,8 @@ import ViewMain from './main.js';
 // This main view is mainly a "bridge" for the real action.
 export default class ViewTimeline extends ViewMain {
   show(timeline) {
+    this.sendMessage("detectActors");
+
     return escapedTemplate`
     ${this.showHeaderWithNav()}
     <main>
