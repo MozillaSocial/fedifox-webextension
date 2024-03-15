@@ -1,9 +1,11 @@
 :root{
   /* colors from Mozilla brand guidelines https://mozilla.design/mozilla/#color */
   --light-gray: #e7e5e2;
-  --dark-gray: #959595;
+  --medium-gray: #959595;
+  --dark-gray: #484848;
   --dark-green: #005e5e;
   --neon-blue: #00ffff;
+  --medium-blue: #0060df;
   --dark-blue: #00458b;
   --dark-purple: #6e008b;
   --warm-red: #ff4f5e;
@@ -104,7 +106,7 @@ label[data-error] input {
 
 input::placeholder {
   opacity: 1;
-  color: var(--dark-gray);
+  color: var(--medium-gray);
 }
 
 input[type='checkbox'], input[type='radio'] {
@@ -135,7 +137,7 @@ button.primary, .button.primary {
 button.secondary, .button.secondary {
   color: black;
   background: transparent;
-  border: 2px solid var(--dark-gray);
+  border: 2px solid var(--medium-gray);
   border-radius: 4px;
   padding: var(--padding-sm) var(--padding-md);
   font: inherit;

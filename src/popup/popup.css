@@ -27,18 +27,17 @@ nav{
   gap: var(--padding-md);
 }
 
-nav button{
-  font-weight: bold;
+nav button:not(.primary){
+  font-weight: 700;
   border: none;
+  color: var(--dark-gray);
   background-color: transparent;
-  transition: border .3s ease-out, color .3s;
-  border-bottom: 2px solid transparent;
   cursor: pointer;
+  transition: color .3s ease-out;
 }
 
-nav button:hover{
-  color: var(--dark-blue);
-  border-bottom: 2px solid var(--light-gray);
+nav button:not(.primary):hover{
+  color: var(--medium-blue);
 }
 
 fieldset{
