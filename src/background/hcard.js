@@ -38,6 +38,9 @@ export class HCard extends Component {
       ].flat();
       log("AP Actors:", actors.length);
 
+      const followingURLs = (await this.sendMessage("fetchFollowingURLs")).flat();
+      const unknownActors = actors.filter(actor => !followingURLs.includes(actor.url));
+
       if (actors.length > 0 && this.#ports.includes(port)) {
         this.sendMessage('apActorDetected', {
           actors,

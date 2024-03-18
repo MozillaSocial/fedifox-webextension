@@ -18,11 +18,65 @@ export class Masto extends Component {
   #hostname;
   #accessToken;
 
+  #userData;
+  #following;
+
   async init() {
     log("init");
 
     this.#hostname = await StorageUtils.getHostname();
     this.#accessToken = await StorageUtils.getAccessToken();
+
+    this.#maybeUpdateData();
+  }
+
+  stateChanged() {
+    this.#maybeUpdateData();
+  }
+
+  async #maybeUpdateData() {
+    if (this.state !== STATE_MAIN) {
+      return;
+    }
+
+    try {
+      await this.#verifyCredentials();
+      await this.#updateFollowing();
+    } catch (e) {
+      this.setState(STATE_AUTH_FAILED);
+    }
+  }
+
+  async #verifyCredentials() {
+    const data = await fetch(`https://${this.#hostname}/api/v1/accounts/verify_credentials`, {
+      headers: {
+        Authorization: `Bearer ${this.#accessToken}`
+      }
+    }).then(r => r.json());
+
+    if (data.error) {
+      throw new Error();
+    }
+
+    this.#userData = data;
+  }
+
+  async #updateFollowing() {
+    if (!this.#userData) {
+      throw new Error();
+    }
+
+    const data = await fetch(`https://${this.#hostname}/api/v1/accounts/${this.#userData.id}/following`, {
+      headers: {
+        Authorization: `Bearer ${this.#accessToken}`
+      }
+    }).then(r => r.json());
+
+    if (data.error) {
+      throw new Error();
+    }
+
+    this.#following = data;
   }
 
   async #connectToHost(hostname) {
@@ -151,30 +205,6 @@ export class Masto extends Component {
     }
   }
 
-  async handleEvent(type, data) {
-    switch (type) {
-      case 'connectToHost':
-        await this.#connectToHost(data);
-        break;
-
-      case 'fetchTimeline':
-        await this.#fetchHomeTimeline();
-        break;
-
-      case 'openInstance':
-        await this.#openInstance();
-        break;
-
-      case 'post':
-        await this.#post(data.body);
-        break;
-
-      case 'followActor':
-        await this.#followActor(data);
-        break;
-    }
-  }
-
   async #followActor(url) {
     log("Follow user", url);
     const urlParts = url.split('/').filter(a => a != '');
@@ -206,7 +236,7 @@ export class Masto extends Component {
           Authorization: `Bearer ${this.#accessToken}`
         },
       }).then(r => r.json());
-      data.accounts.forEach(account => accountIds.push(account.id));
+      data.accounts.forEach(account => accountIds.push(account.moved?.id ? account.moved.id : account.id));
     } catch (e) {
       log("Unable to fetch the search output", e);
       return;
@@ -227,6 +257,33 @@ export class Masto extends Component {
     } catch (e) {
       log("Unable to add the follower", e);
       return;
+    }
+  }
+
+  async handleEvent(type, data) {
+    switch (type) {
+      case 'connectToHost':
+        await this.#connectToHost(data);
+        break;
+
+      case 'fetchTimeline':
+        await this.#fetchHomeTimeline();
+        break;
+
+      case 'openInstance':
+        await this.#openInstance();
+        break;
+
+      case 'post':
+        await this.#post(data.body);
+        break;
+
+      case 'followActor':
+        await this.#followActor(data);
+        break;
+
+      case 'fetchFollowingURLs':
+        return this.#following?.map(a => a.url);
     }
   }
 }
