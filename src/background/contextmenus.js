@@ -18,34 +18,47 @@ export class ContextMenus extends Component {
     // Menus need to be created at the on-installed event.
     browser.runtime.onInstalled.addListener(() => {
       browser.menus.create({
-        id: 'share',
-        title: 'Share this URL',
+        id: 'sharePage',
+        title: 'Share this website',
         contexts: ['all'],
         enabled: false,
       });
 
+      browser.menus.create({
+        id: 'shareLink',
+        title: 'Share this URL',
+        contexts: ['link'],
+        enabled: false,
+      });
+
       browser.menus.onClicked.addListener((info, tab) => {
-        if (info.menuItemId !== 'share') {
-          return;
+        switch (info.menuItemId) {
+          case 'sharePage':
+            const url = tab.url
+            this.sendMessage("shareURL", url);
+            break;
+
+          case 'shareLink':
+            this.sendMessage('shareURL', info.linkUrl);
+            break;
         }
-        const url = this.contextClickHref ?? tab.url
-        this.sendMessage("shareURL", url);
       });
 
       browser.menus.onShown.addListener(async (info, tab) => {
-        const url = new URL(this.contextClickHref ?? tab.url)
-        browser.menus.update("share", {
+        const url = new URL(tab.url)
+        browser.menus.update("sharePage", {
           enabled: (this.state === STATE_MAIN && (url.protocol === 'http:' || url.protocol === 'https:'))
         });
+
+        if (info.linkUrl) {
+          const linkUrl = new URL(info.linkUrl);
+          browser.menus.update("shareLink", {
+            enabled: (this.state === STATE_MAIN && (linkUrl.protocol === 'http:' || linkUrl.protocol === 'https:'))
+          });
+        }
+
         browser.menus.refresh();
       })
     });
-
-    browser.runtime.onMessage.addListener(message => {
-      if (message.hasOwnProperty('contextClickHref')) {
-        this.contextClickHref = message.contextClickHref
-      }
-    })
-
   }
 }

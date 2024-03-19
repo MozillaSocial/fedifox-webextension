@@ -87,11 +87,6 @@ export class UI extends Component {
   async #sendDataToCurrentPort() {
     log("Update the panel");
     if (this.#currentPort) {
-      const tabs = await browser.tabs.query({
-        active: true,
-        windowId: this.#currentWindowId
-      });
-
       return this.#currentPort.postMessage({
         type: 'stateChanged',
         state: this.state,
