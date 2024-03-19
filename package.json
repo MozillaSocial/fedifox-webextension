@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "cd src && web-ext run",
-    "dev": "cd src && web-ext run --devtools --browser-console",
+    "dev": "cd src && web-ext run --devtools",
     "lint": "cd src && web-ext lint"
   },
   "dependencies": {

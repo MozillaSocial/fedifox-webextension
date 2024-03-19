@@ -19,18 +19,13 @@ export default class ViewTimeline extends ViewMain {
   }
 
   postShow(timeline) {
-    const body = [];
-    for (const status of timeline) {
-      body.push(`<pre>Date: ${status.created_at}<br />`);
-      body.push(`Author: ${status.account.display_name || status.account.username}<br />`);
-      body.push(`Visibility: ${status.visibility}<br />`);
-      body.push(`Sensitive: ${status.sensitive}<br />`);
-      body.push(`Media Attachment: ${status.media_attachments?.map(a => a.url)}<br />`);
-      body.push(`Content: ${status.content}<br />`);
-      // TODO: other properties!
-      body.push("</pre>");
-    }
+    const frag = document.createDocumentFragment()
 
-    document.getElementById("timeline").innerHTML = body.join('');
+    for (const status of timeline) {
+      const card = document.createElement('status-card')
+      card.status = status
+      frag.append(card)
+    }
+    document.body.append(frag)
   }
 }
