@@ -4,7 +4,7 @@ main{
   gap: var(--padding-md);
 }
 
-header{
+body > header{
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -48,4 +48,27 @@ fieldset{
 textarea{
   resize: vertical;
   min-height: 5rem;
+}
+
+status-card{
+  display: block;
+  padding: var(--padding-md);
+  border: 2px solid var(--light-gray);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--padding-md);
+}
+
+status-card header{
+  display: grid;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: 48px auto;
+  align-items: end;
+  gap: 0 var(--padding-sm);
+  margin-bottom: var(--padding-md);
+  padding-bottom: var(--padding-sm);
+  border-bottom: 1px solid var(--light-gray);
+}
+
+status-card header img{
+  grid-row: span 2;
 }
