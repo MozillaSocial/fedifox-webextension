@@ -18,7 +18,7 @@ export default class ViewMain extends ViewBase {
         <button id="shareCurrentPage">Share Current Page</button>
         <button id="showDetectedActors" disabled>Show detected actors</button>
         <button id="openInstance">Open Instance</button>
-        <button class="secondary" id="reset">Sign out</button>
+        <button id="reset">Sign out</button>
       </nav>
     </header>
     `

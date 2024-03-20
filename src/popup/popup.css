@@ -7,11 +7,11 @@ main{
 body > header{
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: last baseline;
   justify-content: space-between;
   gap: var(--padding-sm) var(--padding-lg);
-  padding: var(--padding-sm) 0 var(--padding-md);
-  margin-bottom: var(--padding-md);
+  padding: var(--padding-sm) 0;
+  margin-bottom: var(--padding-lg);
   border-bottom: 2px solid var(--light-gray);
 }
 
@@ -67,7 +67,7 @@ status-card article{
 status-card header{
   display: grid;
   grid-template-rows: 1fr auto;
-  grid-template-columns: 48px auto;
+  grid-template-columns: 36px auto;
   align-items: end;
   gap: 0 var(--padding-sm);
   margin-bottom: var(--padding-sm);
@@ -77,6 +77,11 @@ status-card header{
 
 status-card header img{
   grid-row: span 2;
+}
+
+status-card header address{
+  font-weight: bold;
+  font-style: normal;
 }
 
 status-card .media{
