@@ -58,17 +58,44 @@ status-card{
   margin-bottom: var(--padding-md);
 }
 
+status-card article{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-sm);
+}
+
 status-card header{
   display: grid;
   grid-template-rows: 1fr auto;
   grid-template-columns: 48px auto;
   align-items: end;
   gap: 0 var(--padding-sm);
-  margin-bottom: var(--padding-md);
+  margin-bottom: var(--padding-sm);
   padding-bottom: var(--padding-sm);
   border-bottom: 1px solid var(--light-gray);
 }
 
 status-card header img{
   grid-row: span 2;
+}
+
+status-card .media{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: var(--padding-sm);
+}
+
+status-card .media figure{
+  max-width: 360px;
+  max-height: 360px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+status-card .media figure > *{
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
 }
