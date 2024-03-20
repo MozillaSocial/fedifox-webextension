@@ -65,14 +65,18 @@ status-card article{
 }
 
 status-card header{
-  display: grid;
-  grid-template-rows: 1fr auto;
-  grid-template-columns: 36px auto;
+  display: inline-grid;
+  grid-template-columns: 36px max-content;
   align-items: end;
   gap: 0 var(--padding-sm);
   margin-bottom: var(--padding-sm);
   padding-bottom: var(--padding-sm);
   border-bottom: 1px solid var(--light-gray);
+}
+
+status-card header a{
+  display: contents;
+  color: inherit;
 }
 
 status-card header img{

@@ -48,9 +48,11 @@ class StatusCard extends HTMLElement {
     this.innerHTML = `
     <article id=${data.id}>
       <header>
-        <img src="${data.account.avatar}">
-        <address>${data.account.display_name || data.account.username}</address>
-        <time datetime="${data.created_at}">${this.formatDate(data.created_at)}</time>
+        <a href="${data.url}">
+          <img src="${data.account.avatar}">
+          <address>${data.account.display_name || data.account.username}</address>
+          <time datetime="${data.created_at}">${this.formatDate(data.created_at)}</time>
+        </a>
       </header>
       ${data.content}
       <div class="media">${data.media_attachments?.map(obj => this.parseMedia(obj)).join('')}</div>

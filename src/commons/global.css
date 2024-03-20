@@ -121,6 +121,10 @@ input[type='checkbox'], input[type='radio'] {
   accent-color: black;
 }
 
+a{
+  color: var(--medium-blue);
+}
+
 a.button {
   display: block;
   text-align: center;
