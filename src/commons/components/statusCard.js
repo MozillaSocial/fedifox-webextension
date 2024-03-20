@@ -22,6 +22,9 @@ class StatusCard extends HTMLElement {
       case 'audio':
         figure.innerHTML = `<audio src="${obj.url}" id="${obj.id}" controls></audio>`
         break
+      case 'gifv':
+        figure.innerHTML = `<video src="${obj.url}" id="${obj.id}" muted autoplay loop></video>`
+        break
       case 'image':
         figure.innerHTML = `<img src="${obj.url}" id="${obj.id}">`
         break
@@ -30,7 +33,7 @@ class StatusCard extends HTMLElement {
         break
     }
 
-    return figure.outerHTML
+    return figure.hasChildNodes() ? figure.outerHTML : ''
   }
 
   render() {

@@ -61,7 +61,7 @@ status-card{
 status-card article{
   display: flex;
   flex-direction: column;
-  gap: var(--padding-sm);
+  gap: var(--padding-md);
 }
 
 status-card header{
@@ -95,6 +95,7 @@ status-card .media{
 status-card .media figure{
   max-width: 360px;
   max-height: 360px;
+  border: 1px solid var(--light-gray);
   border-radius: var(--border-radius);
   overflow: hidden;
 }
