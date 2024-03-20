@@ -82,6 +82,11 @@ status-card header img{
 status-card header address{
   font-weight: bold;
   font-style: normal;
+  color: var(--dark-gray);
+}
+
+status-card header time{
+  color: var(--medium-gray);
 }
 
 status-card .media{

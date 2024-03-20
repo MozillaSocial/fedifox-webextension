@@ -5,6 +5,7 @@
 
 class StatusCard extends HTMLElement {
   #status
+  dateTimeFormat = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 
   set status(value) {
     this.#status = value
@@ -36,6 +37,11 @@ class StatusCard extends HTMLElement {
     return figure.hasChildNodes() ? figure.outerHTML : ''
   }
 
+  formatDate(dateString) {
+    const date = new Date(dateString)
+    return this.dateTimeFormat.format(date)
+  }
+
   render() {
     const data = this.#status
 
@@ -44,7 +50,7 @@ class StatusCard extends HTMLElement {
       <header>
         <img src="${data.account.avatar}">
         <address>${data.account.display_name || data.account.username}</address>
-        <time datetime="${data.created_at}">${data.created_at}</time>
+        <time datetime="${data.created_at}">${this.formatDate(data.created_at)}</time>
       </header>
       ${data.content}
       <div class="media">${data.media_attachments?.map(obj => this.parseMedia(obj)).join('')}</div>
