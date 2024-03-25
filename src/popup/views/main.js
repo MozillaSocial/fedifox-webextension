@@ -10,6 +10,7 @@ import ViewBase from './base.js';
 // This main view is mainly a "bridge" for the real action.
 export default class ViewMain extends ViewBase {
   showHeaderWithNav() {
+    this.sendMessage("urlShareable");
     return escapedTemplate`
     <header>
       <h1><img src="../icons/logo.svg">Mozilla Social</h1>
@@ -78,9 +79,11 @@ export default class ViewMain extends ViewBase {
         this.actorDetected(msg.actors);
         break;
 
-      case 'urlShareable':
-        document.getElementById("shareCurrentPage").disabled = !msg.shareable;
+      case 'urlShareable': {
+        const menu = document.getElementById("shareCurrentPage");
+        if (menu) menu.disabled = !msg.shareable;
         break;
+      }
     }
   }
 

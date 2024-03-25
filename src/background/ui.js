@@ -37,12 +37,7 @@ export class UI extends Component {
     browser.tabs.onActivated.addListener(async tabInfo => {
       if (tabInfo.windowId === this.#currentWindowId) {
         const tab = await browser.tabs.get(tabInfo.tabId);
-        if (this.#currentPort) {
-          await this.#currentPort.postMessage({
-            type: "urlShareable",
-            shareable: (tab.url.startsWith('http://') || tab.url.startsWith('https://'))
-          });
-        }
+        this.#sendTabShareable(tab);
       }
     });
   }
@@ -149,6 +144,21 @@ export class UI extends Component {
     if (type === 'detectActors') {
       this.#sendActorsDetected();
     }
+
+    if (type === 'urlShareable') {
+      const tabs = await browser.tabs.query({
+        active: true,
+        windowId: this.#currentWindowId
+      });
+      return this.#sendTabShareable(tabs[0]);
+    }
+  }
+
+  async #sendTabShareable(tab) {
+    return this.#sendOrQueueAndPopup({
+      type: "urlShareable",
+      shareable: tab && (tab.url.startsWith('http://') || tab.url.startsWith('https://')),
+    });
   }
 
   async #sendActorsDetected() {
