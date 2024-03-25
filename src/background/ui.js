@@ -155,10 +155,12 @@ export class UI extends Component {
   }
 
   async #sendTabShareable(tab) {
-    return this.#sendOrQueueAndPopup({
-      type: "urlShareable",
-      shareable: tab && (tab.url.startsWith('http://') || tab.url.startsWith('https://')),
-    });
+    if (this.#currentPort) {
+      return this.#currentPort.postMessage({
+        type: "urlShareable",
+        shareable: tab && (tab.url.startsWith('http://') || tab.url.startsWith('https://')),
+      });
+    }
   }
 
   async #sendActorsDetected() {
