@@ -5,7 +5,7 @@
 
 class StatusCard extends HTMLElement {
   #status
-  dateTimeFormat = new Intl.DateTimeFormat(undefined, {
+  #dateTimeFormat = new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
     timeStyle: 'short'
   });
@@ -42,7 +42,7 @@ class StatusCard extends HTMLElement {
 
   formatDate(dateString) {
     const date = new Date(dateString)
-    return this.dateTimeFormat.format(date)
+    return this.#dateTimeFormat.format(date)
   }
 
   render() {

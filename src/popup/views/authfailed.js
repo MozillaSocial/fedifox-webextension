@@ -2,21 +2,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {
-  View
-} from "../view.js";
+import ViewBase from './base.js';
 
-export default class ViewAuthFailed extends View {
-  show(data) {
-    return escapedTemplate`
-    <h1>Auth Failed!</h1>
-    <button id="retry">Retry</button>
+customElements.define('view-authfailed', class ViewAuthFailed extends ViewBase {
+  connectedCallback() {
+    super.connectedCallback();
+
+    this.innerHTML = `
+    <moso-header></moso-header>
+    <main>
+      <h1>Auth Failed!</h1>
+      <button id="retry">Retry</button>
+    </main>
     `;
   }
 
-  async handleClickEvent(e) {
+  async handleEvent(e) {
     if (e.target.id === "retry") {
       await this.sendMessage("reset");
     }
   }
-}
+});

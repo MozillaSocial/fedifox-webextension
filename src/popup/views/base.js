@@ -2,16 +2,40 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {
-  View
-} from "../view.js";
+export default class ViewBase extends HTMLElement {
+  #port
+  #data;
 
-export default class ViewBase extends View {
-  showHeader() {
-    return escapedTemplate`
-    <header>
-      <h1><img src="../icons/logo.svg">Mozilla Social</h1>
-    </header>
-    `
+  connectedCallback() {
+    this.addEventListener('pointerdown', this)
+    window.addEventListener('message', this)
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('message', this)
+    this.removeEventListener('pointerdown', this)
+  }
+
+  initialize(port, data = {}) {
+    this.#port = port;
+    this.#data = data;
+  }
+
+  // Override this!
+  async handleEvent(e) {}
+
+  // Override this!
+  handleMessage(msg) {}
+
+  // Helper method to send messages to the background script.
+  async sendMessage(type, data = {}) {
+    if (!this.#port) {
+      throw new Error("Invalid port!");
+    }
+
+    return this.#port.postMessage({
+      type,
+      data,
+    });
   }
 }

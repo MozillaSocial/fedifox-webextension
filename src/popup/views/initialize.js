@@ -2,24 +2,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {
-  View
-} from "../view.js";
 import ViewBase from './base.js';
 
-export default class ViewInitialize extends ViewBase {
-  // TODO: retrieve a list of server to have an autocomplete input field.
-  show(data) {
-    return escapedTemplate`
-    <style>
-      main{
-        max-width: 480px;
-      }
-    </style>
-    ${this.showHeader()}
+customElements.define('view-initialize', class ViewInitialize extends ViewBase {
+  connectedCallback() {
+    super.connectedCallback();
+
+    this.innerHTML = `
+    <moso-header></moso-header>
     <main>
       <p>Sign in to Mozilla.social, or connect with any other Mastodon server.</p>
-      <p>No account? No sweat. Use the "Register" button to create a Mozilla account, and we'll set you up.</p>
+      <p>No account? No sweat. Register a new Mozilla account, and we'll set you up.</p>
       <fieldset>
         <legend>Connect to Mozilla.social</legend>
         <button class="primary" id="moso-register-btn">Register</button>
@@ -33,24 +26,22 @@ export default class ViewInitialize extends ViewBase {
       </fieldset>
     </main>
     `
-  }
 
-  postShow() {
     document.getElementById("other-server-url").onchange = () => document.getElementById("other-server-btn").click();
   }
 
-  async handleClickEvent(e) {
+  async handleEvent(e) {
     switch (e.target.id) {
       case 'moso-register-btn':
       case 'moso-login-btn':
-        await this.sendMessage("connectToHost", 'stage.moztodon.nonprod.webservices.mozgcp.net') // TODO: make url dynamic
-        View.close()
+        this.sendMessage('connectToHost', 'stage.moztodon.nonprod.webservices.mozgcp.net');
+        window.close()
         break
       case 'other-server-btn':
         if (!document.getElementById("other-server-url").checkValidity()) return alert('Mastodon URL is not valid')
-        await this.sendMessage("connectToHost", new URL(document.getElementById("other-server-url").value).hostname)
-        View.close()
+        this.sendMessage('connectToHost', new URL(document.getElementById("other-server-url").value).hostname);
+        window.close()
         break
     }
   }
-}
+});

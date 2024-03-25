@@ -2,16 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import ViewBase from './base.js';
-
-customElements.define('view-error', class ViewError extends ViewBase {
+customElements.define('moso-header', class ViewHeader extends HTMLElement {
   connectedCallback() {
-    super.connectedCallback();
-
     this.innerHTML = `
-    <moso-header></moso-header>
-    <main>
-      <h1>Error: ${data}</h1>
-    </main>`;
+      <header>
+        <h1><img src="../icons/logo.svg">Mozilla Social</h1>
+      </header>`;
   }
 });

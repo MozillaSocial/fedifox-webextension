@@ -1,21 +1,11 @@
-main{
-  display: flex;
-  flex-flow: column wrap;
-  gap: var(--padding-md);
-}
-
-body > header{
-  display: flex;
-  flex-wrap: wrap;
-  align-items: last baseline;
-  justify-content: space-between;
-  gap: var(--padding-sm) var(--padding-lg);
+moso-header{
+  display: block;
   padding: var(--padding-sm) 0;
   margin-bottom: var(--padding-lg);
   border-bottom: 2px solid var(--light-gray);
 }
 
-header h1{
+moso-header h1{
   display: flex;
   align-items: center;
   gap: var(--padding-sm);
@@ -24,11 +14,13 @@ header h1{
 
 nav{
   display: flex;
-  gap: var(--padding-md);
+  gap: 0 var(--padding-md);
+  flex-wrap: wrap;
 }
 
 nav button:not(.primary, .secondary){
   font-weight: 700;
+  padding-top: var(--padding-sm);
   border: none;
   color: var(--dark-gray);
   background-color: transparent;
@@ -42,6 +34,13 @@ nav button:disabled {
 
 nav button:not(.primary, .secondary):hover{
   color: var(--medium-blue);
+}
+
+main{
+  display: flex;
+  flex-flow: column wrap;
+  gap: var(--padding-md);
+  width: 100%;
 }
 
 fieldset{

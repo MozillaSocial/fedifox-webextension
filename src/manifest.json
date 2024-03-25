@@ -23,7 +23,7 @@
     "default_area": "navbar",
     "default_icon": "icons/logo.svg",
     "default_title": "MoSo",
-    "default_popup": "popup/main.html",
+    "default_popup": "popup/popup.html",
     "theme_icons": [{
       "light": "icons/logo-light.svg",
       "dark": "icons/logo.svg",

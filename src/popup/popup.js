@@ -2,36 +2,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import './components/components.js';
+import './views/views.js'
+
 const LOADING_TIMEOUT = 5000;
 
 class Popup {
   #port;
+  #view;
+
   #handlingMessage;
   #pendingMessages = [];
 
   async init() {
-    const {
-      View
-    } = await import("./view.js");
-
-    // Let's start showing something...
-    await View.setView("loading");
-
-    // Disable context menu.
     window.addEventListener("contextmenu", e => e.preventDefault());
-
     this.#port = browser.runtime.connect({
       name: "panel"
     });
-    View.setPort(this.#port);
 
-    let timeoutId = setTimeout(() => View.setView("error", "loadingError"), LOADING_TIMEOUT);
+    await this.#showView('loading');
+
+    let timeoutId = setTimeout(() => this.#showView("error", "loadingError"), LOADING_TIMEOUT);
 
     this.#port.onMessage.addListener(async msg => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-        timeoutId = 0;
-      }
+      clearTimeout(timeoutId);
 
       if (this.#handlingMessage) {
         await new Promise(resolve => this.#pendingMessages.push(resolve));
@@ -43,28 +37,28 @@ class Popup {
       if (msg.type === 'stateChanged') {
         switch (msg.state) {
           case STATE_INITIALIZE:
-            await View.setView("initialize");
+            await this.#showView("initialize");
             break;
 
           case STATE_AUTHENTICATING:
-            await View.setView("authenticating");
+            await this.#showView("authenticating");
             break;
 
           case STATE_AUTH_FAILED:
-            await View.setView("authfailed");
+            await this.#showView("authfailed");
             break;
 
           case STATE_MAIN:
-            await View.setView("main", msg);
+            await this.#showView("main");
             break;
 
           default:
-            await View.setView("error", "internalError");
+            await this.#showView("error", "internalError");
             break;
         }
       } else {
         // Any other message is sent to the view.
-        await View.propagateMessage(msg);
+        await this.#view.handleMessage(msg);
       }
 
       this.#handlingMessage = false;
@@ -74,16 +68,20 @@ class Popup {
       }
     });
   }
+
+  #showView(viewName, data = {}) {
+    // This custom element naming convention uses prefix "view-" added to filename
+    const tagName = `view-${viewName}`
+
+    if (!window.customElements.get(tagName)) {
+      return console.warn(`Element <${tagName}> not defined.`)
+    }
+
+    this.#view = document.createElement(tagName)
+    this.#view.initialize(this.#port, data);
+
+    document.body.replaceChildren(this.#view)
+  }
 }
 
-const i = new Popup();
-
-// Defer loading until the document has loaded
-if (document.readyState === "loading") {
-  // We don't care about waiting for init to finish in this code
-  document.addEventListener("DOMContentLoaded", () => {
-    i.init();
-  });
-} else {
-  i.init();
-}
+new Popup().init()
