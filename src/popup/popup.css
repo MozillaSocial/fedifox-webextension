@@ -36,6 +36,10 @@ nav button:not(.primary, .secondary){
   transition: color .3s ease-out;
 }
 
+nav button:disabled {
+  color: var(--light-gray);
+}
+
 nav button:not(.primary, .secondary):hover{
   color: var(--medium-blue);
 }
