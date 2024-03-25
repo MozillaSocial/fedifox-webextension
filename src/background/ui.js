@@ -65,8 +65,12 @@ export class UI extends Component {
     this.#sendActorsDetected();
   }
 
-  stateChanged() {
+  async stateChanged() {
     this.#sendDataToCurrentPort();
+
+    if (this.state === STATE_AUTH_FAILED) {
+      await browser.browserAction.openPopup();
+    }
   }
 
   async #panelConnected(port) {
