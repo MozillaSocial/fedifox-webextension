@@ -35,6 +35,10 @@ export default class ViewInitialize extends ViewBase {
     `
   }
 
+  postShow() {
+    document.getElementById("other-server-url").onchange = () => document.getElementById("other-server-btn").click();
+  }
+
   async handleClickEvent(e) {
     switch (e.target.id) {
       case 'moso-register-btn':
