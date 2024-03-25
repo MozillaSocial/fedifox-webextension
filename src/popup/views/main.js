@@ -77,6 +77,10 @@ export default class ViewMain extends ViewBase {
       case 'actorsDetected':
         this.actorDetected(msg.actors);
         break;
+
+      case 'urlShareable':
+        document.getElementById("shareCurrentPage").disabled = !msg.shareable;
+        break;
     }
   }
 

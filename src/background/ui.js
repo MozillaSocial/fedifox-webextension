@@ -34,6 +34,17 @@ export class UI extends Component {
     }, {
       properties: ['status']
     });
+    browser.tabs.onActivated.addListener(async tabInfo => {
+      if (tabInfo.windowId === this.#currentWindowId) {
+        const tab = await browser.tabs.get(tabInfo.tabId);
+        if (this.#currentPort) {
+          await this.#currentPort.postMessage({
+            type: "urlShareable",
+            shareable: (tab.url.startsWith('http://') || tab.url.startsWith('https://'))
+          });
+        }
+      }
+    });
   }
 
   #deleteTabData(tabId) {

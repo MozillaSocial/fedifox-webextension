@@ -5,7 +5,10 @@
 
 class StatusCard extends HTMLElement {
   #status
-  dateTimeFormat = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+  dateTimeFormat = new Intl.DateTimeFormat(undefined, {
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  });
 
   set status(value) {
     this.#status = value
