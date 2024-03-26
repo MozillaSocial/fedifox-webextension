@@ -12,7 +12,7 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
     <moso-header></moso-header>
     <main>
       <p>Sign in to Mozilla.social, or connect with any other Mastodon server.</p>
-      <p>No account? No sweat. Register a new Mozilla account, and we'll set you up.</p>
+      <p>No account? No sweat. Use the "Register" button to create a Mozilla account, and we'll set you up.</p>
       <fieldset>
         <legend>Connect to Mozilla.social</legend>
         <button class="primary" id="moso-register-btn">Register</button>
@@ -37,11 +37,13 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
         this.sendMessage('connectToHost', 'stage.moztodon.nonprod.webservices.mozgcp.net');
         window.close()
         break
-      case 'other-server-btn':
-        if (!document.getElementById("other-server-url").checkValidity()) return alert('Mastodon URL is not valid')
-        this.sendMessage('connectToHost', new URL(document.getElementById("other-server-url").value).hostname);
+      case 'other-server-btn': {
+        const input = document.getElementById("other-server-url");
+        if (input.value.trim() === '' || !input.checkValidity()) return alert('Mastodon URL is not valid')
+        this.sendMessage('connectToHost', new URL(input.value).hostname);
         window.close()
         break
+      }
     }
   }
 });

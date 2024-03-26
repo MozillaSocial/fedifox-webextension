@@ -7,13 +7,11 @@ export default class ViewBase extends HTMLElement {
   #data;
 
   connectedCallback() {
-    this.addEventListener('pointerdown', this)
-    window.addEventListener('message', this)
+    this.addEventListener('click', this)
   }
 
   disconnectedCallback() {
-    window.removeEventListener('message', this)
-    this.removeEventListener('pointerdown', this)
+    this.removeEventListener('click', this)
   }
 
   initialize(port, data = {}) {
