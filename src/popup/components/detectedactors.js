@@ -11,26 +11,23 @@ customElements.define('moso-detectedactors', class MosoDetectedActors extends Mo
     this.innerHTML = `<div id="actors"></div>`;
   }
 
-  setData(actors) {
-    const body = [];
-    for (const actor of actors) {
-      body.push(`<h3>URL: ${actor.actor.id}</h3><button id="followActor" data-url="${actor.actor.id}">Follow</button><br /><pre>`);
-      if (actor.actor.image?.url) {
-        body.push(`<img src="${actor.actor.image.url}" /><br />`);
-      }
-      body.push(`Name: ${actor.actor.name}<br />`);
-      body.push(`Summary: ${actor.actor.summary}<br />`);
-      body.push("</pre>");
-    }
+  setData(accounts) {
+    const actors = document.getElementById('actors');
+    while (actors.firstChild) actors.firstChild.remove();
 
-    document.getElementById("actors").innerHTML = body.join('');
+    for (const account of accounts) {
+      actors.innerHTML += `
+          <img src="${account.avatar}">
+          <address>${account.display_name || account.username}</address>
+          <button id="followActor" data-actorid="${account.id}">Follow</button>`;
+    }
   }
 
   async handleEvent(e) {
     switch (e.target.id) {
       case 'followActor':
-        await this.sendMessage("followActor", e.target.dataset.url);
-        await this.sendMessage('detectActors');
+        await this.sendMessage("followActor", e.target.dataset.actorid);
+        window.close();
         break;
     }
   }

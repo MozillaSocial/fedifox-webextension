@@ -209,50 +209,29 @@ export class Masto extends Component {
     }
   }
 
-  async #followActor(url) {
-    log("Follow user", url);
-    const urlParts = url.split('/').filter(a => a != '');
-    const handle = urlParts[urlParts.length - 1];
-    const urlObj = new URL(url);
-
-    let subject;
-    try {
-      subject = (await fetch(`${urlObj.origin}/.well-known/webfinger?resource=${handle}@${urlObj.hostname}`).then(a => a.json())).subject;
-    } catch (e) {
-      log("Failed to fetch the webfinger data");
-      return;
-    }
-
-    if (!subject.startsWith('acct:')) {
-      log(`Invalid subject: ${subject}`);
-      return;
-    }
+  async #search(subject) {
+    log("Search subject", subject);
 
     const searchURL = new URL(`https://${this.#hostname}/api/v2/search`);
-    searchURL.searchParams.set('q', subject.slice(5));
+    searchURL.searchParams.set('q', subject);
     searchURL.searchParams.set('type', 'accounts');
     searchURL.searchParams.set('resolve', 'true');
 
-    const accountIds = [];
     try {
-      const data = await fetch(searchURL, {
+      return (await fetch(searchURL, {
         headers: {
           Authorization: `Bearer ${this.#accessToken}`
         },
-      }).then(r => r.json());
-      data.accounts.forEach(account => accountIds.push(account.moved?.id ? account.moved.id : account.id));
+      }).then(r => r.json())).accounts;
     } catch (e) {
       log("Unable to fetch the search output", e);
-      return;
     }
+  }
 
-    if (accountIds.length === 0) {
-      log(`Unable to fetch data for the subject ${subject}`);
-      return;
-    }
-
+  async #followActor(id) {
+    log("Follow actor id", id);
     try {
-      const data = await fetch(`https://${this.#hostname}/api/v1/accounts/${accountIds[0]}/follow`, {
+      const data = await fetch(`https://${this.#hostname}/api/v1/accounts/${id}/follow`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${this.#accessToken}`
@@ -260,7 +239,6 @@ export class Masto extends Component {
       }).then(r => r.json());
     } catch (e) {
       log("Unable to add the follower", e);
-      return;
     }
   }
 
@@ -282,12 +260,16 @@ export class Masto extends Component {
         await this.#post(data);
         break;
 
+      case 'searchOnMasto':
+        return await this.#search(data);
+
       case 'followActor':
         await this.#followActor(data);
+        await this.#updateFollowing();
         break;
 
-      case 'fetchFollowingURLs':
-        return this.#following?.map(a => a.url);
+      case 'fetchFollowingIDs':
+        return this.#following?.map(a => a.id);
 
       case 'reblogStatus':
         return this.#genericAction("reblog", data);

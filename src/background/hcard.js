@@ -33,17 +33,35 @@ export class HCard extends Component {
       log("H-Card received:", message.hCards.length);
       log("Rels=me received:", message.relsme.length);
 
-      const actors = [(await Promise.all(message.hCards.map(card => this.#fetchHCardURLs(card)))).flat(),
-        (await Promise.all(message.relsme.map(url => this.#fetchActor(url)))).filter(actor => actor !== null)
-      ].flat();
+      const actors = [];
+
+      function flat(data) {
+        data.forEach(a => {
+          if (Array.isArray(a)) {
+            flat(a);
+          } else if (a) {
+            actors.push(a);
+          }
+        });
+      }
+
+      flat([await Promise.all(message.hCards.map(card => this.#fetchHCardURLs(card))),
+        await Promise.all(message.relsme.map(url => this.#fetchActor(url)))
+      ]);
+
       log("AP Actors:", actors.length);
 
-      const followingURLs = (await this.sendMessage("fetchFollowingURLs")).flat();
-      const unknownActors = actors.filter(actor => !followingURLs.includes(actor.url));
+      if (actors.length === 0) {
+        return;
+      }
 
-      if (actors.length > 0 && this.#ports.includes(port)) {
+      const followingIDs = (await this.sendMessage("fetchFollowingIDs")).flat();
+      const unknownActors = actors.filter(actor => !followingIDs.includes(actor.id));
+      log("Filtered AP Actors:", unknownActors.length);
+
+      if (unknownActors.length > 0 && this.#ports.includes(port)) {
         this.sendMessage('apActorDetected', {
-          actors,
+          actors: unknownActors,
           tabId: port.sender?.tab?.id
         });
       }
@@ -73,10 +91,35 @@ export class HCard extends Component {
         return null;
       }
 
-      return {
-        url,
-        actor
-      };
+      const urlParts = url.split('/').filter(a => a != '');
+      const urlObj = new URL(url);
+
+      let handle = urlParts[urlParts.length - 1];
+      if (handle.startsWith('@')) handle = handle.slice(1)
+
+      let subject;
+      try {
+        subject = (await fetch(`${urlObj.origin}/.well-known/webfinger?resource=${handle}@${urlObj.hostname}`).then(a => a.json())).subject;
+      } catch (e) {
+        log("Failed to fetch the webfinger data");
+        return null;
+      }
+
+      if (!subject.startsWith('acct:')) {
+        log(`Invalid subject: ${subject}`);
+        return null;
+      }
+
+      subject = subject.slice(5);
+
+      const data = (await this.sendMessage("searchOnMasto", subject)).flat();
+      const accounts = data.map(account => account.moved ? account.moved : account).filter(account => account.username === handle);
+
+      if (accounts.length === 0) {
+        log("Unable to retrieve data from masto");
+        return null;
+      }
+      return accounts;
     } catch (e) {
       return null;
     }

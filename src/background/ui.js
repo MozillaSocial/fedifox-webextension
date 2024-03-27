@@ -159,6 +159,10 @@ export class UI extends Component {
       });
       return this.#sendTabShareable(tabs[0]);
     }
+
+    if (type === 'followActor') {
+      Object.entries(this.#tabs).forEach(entry => this.#tabs[entry[0]] = entry[1].filter(account => account.id !== data));
+    }
   }
 
   async #sendTabShareable(tab) {
