@@ -27,7 +27,12 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
     </main>
     `
 
-    document.getElementById("other-server-url").onchange = () => document.getElementById("other-server-btn").click();
+    document.getElementById("other-server-url").onkeypress = e => {
+      if (e.keyCode === 13 /* Enter */ ) {
+        e.preventDefault();
+        document.getElementById("other-server-btn").click();
+      }
+    }
   }
 
   async handleEvent(e) {
