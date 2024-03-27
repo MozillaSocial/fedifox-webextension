@@ -3,23 +3,118 @@
  * Card to display a status/post from a user's status feed/timeline
  */
 
-class StatusCard extends HTMLElement {
+customElements.define("status-card", class StatusCard extends HTMLElement {
+  #shadow;
   #status
   #dateTimeFormat = new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
     timeStyle: 'short'
   });
 
-  set status(value) {
+  initialize(value) {
     this.#status = value
-    this.render()
   }
 
-  get status() {
-    return this.#status
+  connectedCallback() {
+    console.assert(this.#status, "No status yet?!?");
+
+    this.innerHTML = `
+    <article id=id${this.#status.id}>
+      <header>
+        <a href="${this.#status.url}">
+          <img src="${this.#status.account.avatar}">
+          <address>${this.#status.account.display_name || this.#status.account.username}</address>
+          <time datetime="${this.#status.created_at}">${this.#formatDate(this.#status.created_at)}</time>
+        </a>
+      </header>
+      <div class="content"></div>
+    </article>
+    `
+
+    const parentDiv = document.querySelector(`#id${this.#status.id} div.content`);
+
+    const content = document.createElement('status-content-wrapper');
+    content.initialize(this.#status);
+    parentDiv.append(content);
+
+    if (this.getAttribute("action")) {
+      const actions = document.createElement('status-action');
+      actions.initialize(this.#status);
+      parentDiv.insertAdjacentElement("afterend", actions);
+    }
   }
 
-  parseMedia(obj) {
+  #formatDate(dateString) {
+    const date = new Date(dateString)
+    return this.#dateTimeFormat.format(date)
+  }
+});
+
+customElements.define("status-content-wrapper", class StatusCard extends HTMLElement {
+  #status
+
+  initialize(value) {
+    this.#status = value
+  }
+
+  connectedCallback() {
+    console.assert(this.#status, "No status yet?!?");
+
+    const content = document.createElement('status-content');
+    content.initialize(this.#status);
+
+    if (this.#status.spoiler_text) {
+      this.innerHTML = this.#status.spoiler_text;
+
+      const moreButton = document.createElement('button');
+      moreButton.textContent = "SHOW MORE";
+      this.append(moreButton);
+
+      const lessButton = document.createElement('button');
+      lessButton.textContent = "SHOW LESS";
+      lessButton.hidden = true;
+      this.append(lessButton);
+
+      content.hidden = true;
+      this.append(content);
+
+      moreButton.onclick = () => {
+        moreButton.hidden = true;
+        lessButton.hidden = false;
+        content.hidden = false;
+      }
+
+      lessButton.onclick = () => {
+        moreButton.hidden = false;
+        lessButton.hidden = true;
+        content.hidden = true;
+      }
+      return;
+    }
+
+    this.append(content);
+  }
+});
+
+customElements.define("status-content", class StatusCard extends HTMLElement {
+  #status
+
+  initialize(value) {
+    this.#status = value
+  }
+
+  connectedCallback() {
+    console.assert(this.#status, "No status yet?!?");
+
+    // TODO: poll!
+
+    this.innerHTML = `
+      ${this.#status.content}
+      <div class="media">${this.#status.media_attachments?.map(obj => this.#parseMedia(obj)).join('')}</div>
+    `;
+  }
+
+  #parseMedia(obj) {
     const figure = document.createElement('figure')
 
     switch (obj.type) {
@@ -39,29 +134,67 @@ class StatusCard extends HTMLElement {
 
     return figure.hasChildNodes() ? figure.outerHTML : ''
   }
+});
 
-  formatDate(dateString) {
-    const date = new Date(dateString)
-    return this.#dateTimeFormat.format(date)
+customElements.define("status-action", class StatusCard extends HTMLElement {
+  #status
+
+  initialize(value) {
+    this.#status = value
   }
 
-  render() {
-    const data = this.#status
+  connectedCallback() {
+    console.assert(this.#status, "No status yet?!?");
 
-    this.innerHTML = `
-    <article id=${data.id}>
-      <header>
-        <a href="${data.url}">
-          <img src="${data.account.avatar}">
-          <address>${data.account.display_name || data.account.username}</address>
-          <time datetime="${data.created_at}">${this.formatDate(data.created_at)}</time>
-        </a>
-      </header>
-      ${data.content}
-      <div class="media">${data.media_attachments?.map(obj => this.parseMedia(obj)).join('')}</div>
-    </article>
-    `
+    const replyButton = document.createElement('a');
+    replyButton.textContent = `${this.#status.replies_count} replies`;
+    replyButton.href = "#";
+    replyButton.onclick = () => document.dispatchEvent(new CustomEvent("replyStatus", {
+      detail: this.#status,
+    }));
+    this.append(replyButton);
+
+    const boostButton = document.createElement('status-action-toggle');
+    boostButton.initialize(["boost", "unboost"], ["reblogStatus", "unreblogStatus"], this.#status.reblogged, this.#status.id);
+    this.append(boostButton);
+
+    const favouriteButton = document.createElement('status-action-toggle');
+    favouriteButton.initialize(["favourite", "unfavourite"], ["favouriteStatus", "unfavouriteStatus"], this.#status.favourited, this.#status.id);
+    this.append(favouriteButton);
+
+    const bookmarkButton = document.createElement('status-action-toggle');
+    bookmarkButton.initialize(["bookmark", "unbookmark"], ["bookmarkStatus", "unbookmarkStatus"], this.#status.bookmarked, this.#status.id);
+    this.append(bookmarkButton);
   }
-}
+});
 
-customElements.define("status-card", StatusCard);
+customElements.define("status-action-toggle", class StatusCard extends HTMLElement {
+  #texts;
+  #events;
+  #status = false;
+  #id;
+
+  initialize(texts, events, status, id) {
+    this.#texts = texts;
+    this.#events = events;
+    this.#status = status;
+    this.#id = id;
+  }
+
+  connectedCallback() {
+    const button = document.createElement('a');
+    button.href = "#";
+    button.onclick = () => {
+      document.dispatchEvent(new CustomEvent(this.#events[this.#status ? 1 : 0], {
+        detail: this.#id
+      }));
+      this.#status = !this.#status;
+      updateButton();
+    }
+    const updateButton = () => {
+      button.textContent = this.#texts[this.#status ? 1 : 0]; // TODO: an icon!
+    }
+    updateButton();
+    this.append(button);
+  }
+});

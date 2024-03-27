@@ -5,6 +5,8 @@
 import MosoMainBase from './mainbase.js';
 
 customElements.define('moso-share', class MosoShare extends MosoMainBase {
+  #in_reply_to_id = undefined;
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -14,21 +16,34 @@ customElements.define('moso-share', class MosoShare extends MosoMainBase {
         align-self: end;
       }
     </style>
-    <h2>Share a link with your status</h2>
+    <h2>Share something!</h2>
     <fieldset>
       <textarea id="shareBody"></textarea>
       <button class="primary" id="share">Post</button>
     </fieldset>
+    <div id="replyStatus"></div>
     `;
 
     document.getElementById("shareBody").focus();
   }
 
-  setData(url) {
+  setData(url, status) {
     const textarea = document.getElementById("shareBody");
-    textarea.value = `\n\n${url}`;
-    textarea.selectionEnd = 0;
+
+    if (url) {
+      textarea.value = `\n\n${url}`;
+      textarea.selectionEnd = 0;
+    }
+
     textarea.focus();
+
+    if (status) {
+      this.#in_reply_to_id = status.id;
+
+      const card = document.createElement('status-card');
+      card.initialize(status);
+      document.getElementById("replyStatus").append(card);
+    }
   }
 
   async handleEvent(e) {
@@ -36,7 +51,8 @@ customElements.define('moso-share', class MosoShare extends MosoMainBase {
       const body = document.getElementById("shareBody").value; // TODO: validation
       this.sendMessage("post", {
         /* TODO: other flags */
-        body
+        body,
+        in_reply_to_id: this.#in_reply_to_id,
       });
 
       // TODO: show a loading icon...

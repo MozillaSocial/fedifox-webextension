@@ -16,10 +16,12 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
 
   setData(data) {
     const ol = document.getElementById("ol");
+    while (ol.firstChild) ol.firstChild.remove();
     data.forEach(status => {
       const li = document.createElement('li')
       const card = document.createElement('status-card')
-      card.status = status
+      card.setAttribute("action", true);
+      card.initialize(status);
       li.append(card)
       ol.append(li)
     })

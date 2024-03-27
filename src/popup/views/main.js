@@ -36,6 +36,13 @@ customElements.define('view-main', class ViewMain extends ViewBase {
       main.append(elm);
       this.#views[name] = elm;
     }
+
+    for (const eventName of ["reblogStatus", "unreblogStatus", "favouriteStatus", "unfavouriteStatus", "bookmarkStatus", "unbookmarkStatus", "replyStatus"]) {
+      document.addEventListener(eventName, e => {
+        this.sendMessage(eventName, e.detail);
+        e.stopPropagation();
+      });
+    }
   }
 
   async handleEvent(e) {
@@ -75,8 +82,8 @@ customElements.define('view-main', class ViewMain extends ViewBase {
         this.#views['timeline'].setData(msg.timeline);
         break;
 
-      case 'shareURL':
-        this.#views['share'].setData(msg.url);
+      case 'share':
+        this.#views['share'].setData(msg.url, msg.status);
         this.#render('share');
         break;
 

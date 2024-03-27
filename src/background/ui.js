@@ -114,7 +114,7 @@ export class UI extends Component {
 
     if (type === "shareURL") {
       return this.#sendOrQueueAndPopup({
-        type: "shareURL",
+        type: "share",
         url: data,
       });
     }
@@ -132,8 +132,15 @@ export class UI extends Component {
         windowId: this.#currentWindowId
       });
       return this.#sendOrQueueAndPopup({
-        type: "shareURL",
+        type: "share",
         url: tabs.length && (tabs[0].url.startsWith('http://') || tabs[0].url.startsWith('https://')) ? tabs[0].url : '',
+      });
+    }
+
+    if (type === 'replyStatus') {
+      return this.#sendOrQueueAndPopup({
+        type: "share",
+        status: data
       });
     }
 

@@ -183,11 +183,15 @@ export class Masto extends Component {
     });
   }
 
-  async #post(body) {
-    log(`Posting: ${body}`);
+  async #post(data) {
+    log(`Posting!`);
 
     const formData = new FormData();
-    formData.append('status', body);
+    formData.append('status', data.body);
+
+    if (data.in_reply_to_id) {
+      formData.append('in_reply_to_id', data.in_reply_to_id);
+    }
 
     try {
       const data = await fetch(`https://${this.#hostname}/api/v1/statuses`, {
@@ -275,7 +279,7 @@ export class Masto extends Component {
         break;
 
       case 'post':
-        await this.#post(data.body);
+        await this.#post(data);
         break;
 
       case 'followActor':
@@ -284,6 +288,33 @@ export class Masto extends Component {
 
       case 'fetchFollowingURLs':
         return this.#following?.map(a => a.url);
+
+      case 'reblogStatus':
+        return this.#genericAction("reblog", data);
+
+      case 'unreblogStatus':
+        return this.#genericAction("unreblog", data);
+
+      case 'favouriteStatus':
+        return this.#genericAction("favourite", data);
+
+      case 'unfavouriteStatus':
+        return this.#genericAction("unfavourite", data);
+
+      case 'bookmarkStatus':
+        return this.#genericAction("bookmark", data);
+
+      case 'unbookmarkStatus':
+        return this.#genericAction("unbookmark", data);
     }
+  }
+
+  async #genericAction(action, id) {
+    const data = await fetch(`https://${this.#hostname}/api/v1/statuses/${id}/${action}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.#accessToken}`
+      }
+    }).then(r => r.json());
   }
 }
