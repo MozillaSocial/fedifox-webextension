@@ -20,6 +20,7 @@ customElements.define('view-main', class ViewMain extends ViewBase {
     <moso-header></moso-header>
       <nav>
         <button id="showTimeline">Feed</button>
+        <button id="share">Share</button>
         <button id="shareCurrentPage">Share Current Page</button>
         <button id="showDetectedActors" disabled>Show detected actors</button>
         <button id="openInstance">Open Instance</button>
@@ -63,9 +64,13 @@ customElements.define('view-main', class ViewMain extends ViewBase {
       return;
     }
 
+    if (e.target.id === "share") {
+      this.#render('share');
+      return;
+    }
+
     if (e.target.id === "shareCurrentPage" && !e.target.disabled) {
       await this.sendMessage("shareCurrentPage");
-      this.#render('share');
       return;
     }
 
@@ -83,8 +88,8 @@ customElements.define('view-main', class ViewMain extends ViewBase {
         break;
 
       case 'share':
-        this.#views['share'].setData(msg.url, msg.status);
         this.#render('share');
+        this.#views['share'].setData(msg.url, msg.status);
         break;
 
       case 'actorsDetected': {
@@ -109,5 +114,6 @@ customElements.define('view-main', class ViewMain extends ViewBase {
 
   #render(name) {
     Object.entries(this.#views).forEach(entry => entry[1].hidden = entry[0] !== name);
+    this.#views[name].shown();
   }
 });

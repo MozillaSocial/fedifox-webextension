@@ -58,4 +58,12 @@ customElements.define('moso-share', class MosoShare extends MosoMainBase {
       // TODO: show a loading icon...
     }
   }
+
+  shown() {
+    const textarea = document.getElementById("shareBody");
+    textarea.value = '';
+
+    const replyStatus = document.getElementById("replyStatus");
+    while (replyStatus.firstChild) replyStatus.firstChild.remove();
+  }
 });

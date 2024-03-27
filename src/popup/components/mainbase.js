@@ -22,4 +22,6 @@ export default class MosoMainBase extends HTMLElement {
   sendMessage(type, data) {
     this.#parent.sendMessage(type, data);
   }
+
+  shown() {}
 }
