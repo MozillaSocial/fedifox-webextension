@@ -11,7 +11,7 @@ customElements.define('view-error', class ViewError extends ViewBase {
     this.innerHTML = `
     <moso-header></moso-header>
     <main>
-      <h1>Error: ${data}</h1>
+      <h2>Error: ${data}</h2>
     </main>`;
   }
 });

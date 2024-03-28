@@ -1,26 +1,38 @@
-moso-header{
-  display: block;
-  padding: var(--padding-sm) 0;
-  margin-bottom: var(--padding-lg);
-  border-bottom: 2px solid var(--light-gray);
-}
-
-moso-header h1{
+header{
   display: flex;
   align-items: center;
   gap: var(--padding-sm);
-  height: 36px;
+  padding-bottom: var(--padding-sm);
+  border-bottom: 1px solid var(--light-gray);
+}
+
+header > img{
+  height: 42px;
 }
 
 nav{
+  position: relative;
   display: flex;
   gap: 0 var(--padding-md);
   flex-wrap: wrap;
+  justify-content: center;
+}
+
+nav::before{
+  content: '';
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+  left: calc((100% - 100vw)/2);
+  top: 0;
+  box-shadow: 0 0 0 2px var(--light-gray);
+  background-color: white;
+  z-index: -1;
 }
 
 nav button:not(.primary, .secondary){
   font-weight: 700;
-  padding-top: var(--padding-sm);
+  padding: var(--padding-sm) 0;
   border: none;
   color: var(--dark-gray);
   background-color: transparent;
@@ -30,9 +42,10 @@ nav button:not(.primary, .secondary){
 
 nav button:disabled {
   color: var(--light-gray);
+  cursor: default;
 }
 
-nav button:not(.primary, .secondary):hover{
+nav button:not(.primary, .secondary, :disabled):hover{
   color: var(--medium-blue);
 }
 
@@ -40,6 +53,7 @@ main{
   display: flex;
   flex-flow: column wrap;
   gap: var(--padding-md);
+  margin-top: var(--padding-lg);
   width: 100%;
 }
 
@@ -53,12 +67,23 @@ textarea{
   min-height: 5rem;
 }
 
+moso-timeline ol{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-md);
+  list-style: none;
+}
+
 status-card{
   display: block;
   padding: var(--padding-md);
   border: 2px solid var(--light-gray);
   border-radius: var(--border-radius);
-  margin-bottom: var(--padding-md);
+  background-color: white;
+}
+
+status-card header img{
+  height: 30px;
 }
 
 status-card article{
@@ -67,23 +92,9 @@ status-card article{
   gap: var(--padding-md);
 }
 
-status-card header{
-  display: inline-grid;
-  grid-template-columns: 36px max-content;
-  align-items: end;
-  gap: 0 var(--padding-sm);
-  margin-bottom: var(--padding-sm);
-  padding-bottom: var(--padding-sm);
-  border-bottom: 1px solid var(--light-gray);
-}
-
 status-card header a{
   display: contents;
   color: inherit;
-}
-
-status-card header img{
-  grid-row: span 2;
 }
 
 status-card header address{

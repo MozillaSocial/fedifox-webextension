@@ -38,14 +38,17 @@ body {
   background-color: white;
   max-width: var(--max-width);
   padding: var(--padding-md);
+  background-image: radial-gradient(ellipse at top, #fff, #f8f8f8);
 }
 
 h1 {
   font: var(--h1-font);
+  padding: var(--padding-sm) 0;
 }
 
 h2 {
   font: var(--h2-font);
+  padding: var(--padding-sm) 0;
 }
 
 h3 {
@@ -178,5 +181,5 @@ img {
 
 hr{
   border: none;
-  border-top: 2px solid var(--light-gray);
+  border-top: 1px solid var(--light-gray);
 }

@@ -18,14 +18,14 @@ customElements.define('view-main', class ViewMain extends ViewBase {
 
     this.innerHTML = `
     <moso-header></moso-header>
-      <nav>
-        <button id="showTimeline">Feed</button>
-        <button id="share">Share</button>
-        <button id="shareCurrentPage">Share Current Page</button>
-        <button id="showDetectedActors" disabled>Show detected actors</button>
-        <button id="openInstance">Open Instance</button>
-        <button id="reset">Sign out</button>
-      </nav>
+    <nav>
+      <button id="showTimeline">Feed</button>
+      <button id="share">Share</button>
+      <button id="shareCurrentPage">Share Current Page</button>
+      <button id="showDetectedActors" disabled>Show detected actors</button>
+      <button id="openInstance">Open Instance</button>
+      <button id="reset">Sign out</button>
+    </nav>
     <main id="main"></main>`;
 
     const main = document.getElementById('main');

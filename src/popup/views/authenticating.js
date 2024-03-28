@@ -10,7 +10,7 @@ customElements.define('view-authenticating', class ViewAuthenticating extends Vi
 
     this.innerHTML = `
     <moso-header></moso-header>
-    <h1>Authenticating!</h1>
+    <h2>Authenticating!</h2>
     `;
   }
 });

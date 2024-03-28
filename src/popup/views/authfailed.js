@@ -11,7 +11,7 @@ customElements.define('view-authfailed', class ViewAuthFailed extends ViewBase {
     this.innerHTML = `
     <moso-header></moso-header>
     <main>
-      <h1>Auth Failed!</h1>
+      <h2>Auth Failed!</h2>
       <button id="retry">Retry</button>
     </main>
     `;
