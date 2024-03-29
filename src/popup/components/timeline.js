@@ -10,13 +10,13 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
 
     this.innerHTML = `
       <h2>Content Feed</h2>
-      <ol id="ol"></ol>
+      <ol></ol>
     `;
   }
 
   setData(data) {
-    const ol = document.getElementById("ol");
-    while (ol.firstChild) ol.firstChild.remove();
+    const ol = this.querySelector("ol");
+    ol.replaceChildren()
     data.forEach(status => {
       const li = document.createElement('li')
       const card = document.createElement('status-card')

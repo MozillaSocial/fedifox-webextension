@@ -38,7 +38,7 @@ customElements.define("status-card", class StatusCard extends HTMLElement {
     parentDiv.append(content);
 
     if (this.getAttribute("action")) {
-      const actions = document.createElement('status-action');
+      const actions = document.createElement('status-actions');
       actions.initialize(this.#status);
       parentDiv.insertAdjacentElement("afterend", actions);
     }
@@ -136,7 +136,7 @@ customElements.define("status-content", class StatusCard extends HTMLElement {
   }
 });
 
-customElements.define("status-action", class StatusCard extends HTMLElement {
+customElements.define("status-actions", class StatusCard extends HTMLElement {
   #status
 
   initialize(value) {
@@ -147,8 +147,10 @@ customElements.define("status-action", class StatusCard extends HTMLElement {
     console.assert(this.#status, "No status yet?!?");
 
     const replyButton = document.createElement('a');
-    replyButton.textContent = `${this.#status.replies_count} replies`;
     replyButton.href = "#";
+    replyButton.className = `status-reply`
+    replyButton.title = 'Replies'
+    replyButton.innerHTML = `<img src="../commons/images/reply.svg">${this.#status.replies_count}`;
     replyButton.onclick = () => document.dispatchEvent(new CustomEvent("replyStatus", {
       detail: this.#status,
     }));
@@ -156,14 +158,20 @@ customElements.define("status-action", class StatusCard extends HTMLElement {
 
     const boostButton = document.createElement('status-action-toggle');
     boostButton.initialize(["boost", "unboost"], ["reblogStatus", "unreblogStatus"], this.#status.reblogged, this.#status.id);
+    boostButton.className = 'status-boost'
+    boostButton.title = 'Boost'
     this.append(boostButton);
 
     const favouriteButton = document.createElement('status-action-toggle');
     favouriteButton.initialize(["favourite", "unfavourite"], ["favouriteStatus", "unfavouriteStatus"], this.#status.favourited, this.#status.id);
+    favouriteButton.className = 'status-favourite'
+    favouriteButton.title = 'Favorite'
     this.append(favouriteButton);
 
     const bookmarkButton = document.createElement('status-action-toggle');
     bookmarkButton.initialize(["bookmark", "unbookmark"], ["bookmarkStatus", "unbookmarkStatus"], this.#status.bookmarked, this.#status.id);
+    bookmarkButton.className = 'status-bookmark'
+    bookmarkButton.title = 'Bookmark'
     this.append(bookmarkButton);
   }
 });
@@ -192,7 +200,7 @@ customElements.define("status-action-toggle", class StatusCard extends HTMLEleme
       updateButton();
     }
     const updateButton = () => {
-      button.textContent = this.#texts[this.#status ? 1 : 0]; // TODO: an icon!
+      button.innerHTML = `<img src="../commons/images/${this.#texts[0]}.svg">`
     }
     updateButton();
     this.append(button);
