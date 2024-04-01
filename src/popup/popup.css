@@ -67,6 +67,7 @@ textarea{
   min-height: 5rem;
 }
 
+/*** TIMELINE STYLES ***/
 moso-timeline ol{
   display: flex;
   flex-direction: column;
@@ -107,7 +108,13 @@ status-card header time{
   color: var(--medium-gray);
 }
 
-status-card .media{
+status-content{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-sm);
+}
+
+status-content .media{
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -115,7 +122,7 @@ status-card .media{
   gap: var(--padding-sm);
 }
 
-status-card .media figure{
+status-content .media figure{
   max-width: 360px;
   max-height: 360px;
   border: 1px solid var(--light-gray);
@@ -123,7 +130,7 @@ status-card .media figure{
   overflow: hidden;
 }
 
-status-card .media figure > *{
+status-content .media figure > *{
   display: block;
   max-width: 100%;
   max-height: 100%;
@@ -132,17 +139,30 @@ status-card .media figure > *{
 status-actions{
   display: flex;
   align-items: center;
-  gap: var(--padding-md);
+  gap: var(--padding-lg);
+  padding-top: var(--padding-md);
+  border-top: 1px solid var(--light-gray);
 }
 
-status-actions > *{
-  flex: 0 1 24px;
-  height: 24px;
+.status-action {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border: none;
+  background-color: var(--dark-gray);
+  -webkit-mask: var(--icon-url) no-repeat;
+  mask: var(--icon-url) no-repeat;
+  cursor: pointer;
 }
 
-status-actions .status-reply{
-  flex-basis: 48px;
+.status-action.on, .status-action:active {
+  background-color: var(--medium-green);
+}
+
+.status-replies{
   display: flex;
+  gap: var(--padding-xs);
   align-items: center;
-  gap: var(--padding-sm);
+  color: var(--dark-gray);
+  cursor: default;
 }

@@ -3,6 +3,7 @@
   --light-gray: #e7e5e2;
   --medium-gray: #959595;
   --dark-gray: #484848;
+  --medium-green: #2ac3a2;
   --dark-green: #005e5e;
   --neon-blue: #00ffff;
   --medium-blue: #0060df;
@@ -12,6 +13,7 @@
 
   --min-width: 320px;
   --max-width: 800px;
+  --padding-xs: 4px;
   --padding-sm: 8px;
   --padding-md: 16px;
   --padding-lg: 24px;

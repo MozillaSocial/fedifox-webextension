@@ -27,20 +27,19 @@ customElements.define("status-card", class StatusCard extends HTMLElement {
           <time datetime="${this.#status.created_at}">${this.#formatDate(this.#status.created_at)}</time>
         </a>
       </header>
-      <div class="content"></div>
     </article>
     `
 
-    const parentDiv = document.querySelector(`#id${this.#status.id} div.content`);
+    const article = document.getElementById(`id${this.#status.id}`);
 
     const content = document.createElement('status-content-wrapper');
     content.initialize(this.#status);
-    parentDiv.append(content);
+    article.append(content);
 
     if (this.getAttribute("action")) {
       const actions = document.createElement('status-actions');
       actions.initialize(this.#status);
-      parentDiv.insertAdjacentElement("afterend", actions);
+      article.append(actions);
     }
   }
 
@@ -146,32 +145,29 @@ customElements.define("status-actions", class StatusCard extends HTMLElement {
   connectedCallback() {
     console.assert(this.#status, "No status yet?!?");
 
-    const replyButton = document.createElement('a');
-    replyButton.href = "#";
-    replyButton.className = `status-reply`
+    const replyButton = document.createElement('button');
+    replyButton.className = `status-action`
     replyButton.title = 'Replies'
-    replyButton.innerHTML = `<img src="../commons/images/reply.svg">${this.#status.replies_count}`;
+    replyButton.style.setProperty('--icon-url', 'url(../commons/images/reply.svg)')
     replyButton.onclick = () => document.dispatchEvent(new CustomEvent("replyStatus", {
       detail: this.#status,
     }));
-    this.append(replyButton);
+    const replyDiv = document.createElement('div');
+    replyDiv.className = 'status-replies'
+    replyDiv.append(replyButton)
+    replyDiv.insertAdjacentHTML('beforeend', `<small>${this.#status.replies_count}<small>`)
+    this.append(replyDiv);
 
     const boostButton = document.createElement('status-action-toggle');
-    boostButton.initialize(["boost", "unboost"], ["reblogStatus", "unreblogStatus"], this.#status.reblogged, this.#status.id);
-    boostButton.className = 'status-boost'
-    boostButton.title = 'Boost'
+    boostButton.initialize(["Boost", "Boosted"], ["reblogStatus", "unreblogStatus"], this.#status.reblogged, this.#status.id);
     this.append(boostButton);
 
     const favouriteButton = document.createElement('status-action-toggle');
-    favouriteButton.initialize(["favourite", "unfavourite"], ["favouriteStatus", "unfavouriteStatus"], this.#status.favourited, this.#status.id);
-    favouriteButton.className = 'status-favourite'
-    favouriteButton.title = 'Favorite'
+    favouriteButton.initialize(["Favourite", "Favourited"], ["favouriteStatus", "unfavouriteStatus"], this.#status.favourited, this.#status.id);
     this.append(favouriteButton);
 
     const bookmarkButton = document.createElement('status-action-toggle');
-    bookmarkButton.initialize(["bookmark", "unbookmark"], ["bookmarkStatus", "unbookmarkStatus"], this.#status.bookmarked, this.#status.id);
-    bookmarkButton.className = 'status-bookmark'
-    bookmarkButton.title = 'Bookmark'
+    bookmarkButton.initialize(["Bookmark", "Bookmarked"], ["bookmarkStatus", "unbookmarkStatus"], this.#status.bookmarked, this.#status.id);
     this.append(bookmarkButton);
   }
 });
@@ -190,19 +186,28 @@ customElements.define("status-action-toggle", class StatusCard extends HTMLEleme
   }
 
   connectedCallback() {
-    const button = document.createElement('a');
-    button.href = "#";
-    button.onclick = () => {
-      document.dispatchEvent(new CustomEvent(this.#events[this.#status ? 1 : 0], {
-        detail: this.#id
-      }));
-      this.#status = !this.#status;
-      updateButton();
-    }
-    const updateButton = () => {
-      button.innerHTML = `<img src="../commons/images/${this.#texts[0]}.svg">`
-    }
-    updateButton();
-    this.append(button);
+    this.innerHTML = `
+    <button class="status-action" style="--icon-url:url(../commons/images/${this.#texts[0]}.svg)"></button>
+    `
+    this.button = this.querySelector('button')
+    this.button.addEventListener('click', this)
+    this.updateButton();
+  }
+
+  handleEvent() {
+    document.dispatchEvent(new CustomEvent(this.#events[this.#status ? 1 : 0], {
+      detail: this.#id
+    }));
+    this.#status = !this.#status;
+    this.updateButton();
+  }
+
+  updateButton() {
+    this.button.title = this.#texts[this.#status ? 1 : 0]
+    this.button.classList.toggle('on', this.#status)
+  }
+
+  disconnectedCallback() {
+    this.button.removeEventListener('click', this)
   }
 });
