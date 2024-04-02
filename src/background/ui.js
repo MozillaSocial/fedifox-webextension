@@ -74,6 +74,11 @@ export class UI extends Component {
     // Overwrite any existing port. We want to talk with 1 single popup.
     this.#currentPort = port;
 
+    // Let's reset the badge icon
+    await browser.browserAction.setBadgeText({
+      text: ''
+    });
+
     // Let's send the initial data.
     port.onMessage.addListener(async message => {
       log("Message received from the panel", message);
@@ -105,63 +110,74 @@ export class UI extends Component {
   }
 
   async handleEvent(type, data) {
-    if (type === 'mastoTimeline' && this.#currentPort) {
-      return this.#currentPort.postMessage({
-        type: "timeline",
-        timeline: data,
-      });
-    }
+    switch (type) {
+      case 'mastoTimeline': {
+        if (this.#currentPort) {
+          this.#currentPort.postMessage({
+            type: "timeline",
+            timeline: data,
+          });
+        }
 
-    if (type === "shareURL") {
-      return this.#sendOrQueueAndPopup({
-        type: "share",
-        url: data,
-      });
-    }
+        break;
+      }
 
-    if (type === 'postResult') {
-      return this.#sendOrQueueAndPopup({
-        type: "postResult",
-        url: data,
-      });
-    }
+      case "shareURL":
+        return this.#sendOrQueueAndPopup({
+          type: "share",
+          url: data,
+        });
 
-    if (type === 'shareCurrentPage') {
-      const tabs = await browser.tabs.query({
-        active: true,
-        windowId: this.#currentWindowId
-      });
-      return this.#sendOrQueueAndPopup({
-        type: "share",
-        url: tabs.length && (tabs[0].url.startsWith('http://') || tabs[0].url.startsWith('https://')) ? tabs[0].url : '',
-      });
-    }
+      case 'postResult':
+        return this.#sendOrQueueAndPopup({
+          type: "postResult",
+          url: data,
+        });
 
-    if (type === 'replyStatus') {
-      return this.#sendOrQueueAndPopup({
-        type: "share",
-        status: data
-      });
-    }
+      case 'shareCurrentPage': {
+        const tabs = await browser.tabs.query({
+          active: true,
+          windowId: this.#currentWindowId
+        });
+        return this.#sendOrQueueAndPopup({
+          type: "share",
+          url: tabs.length && (tabs[0].url.startsWith('http://') || tabs[0].url.startsWith('https://')) ? tabs[0].url : '',
+        });
+      }
 
-    if (type === 'apActorDetected') {
-      this.#setTabData(data.tabId, data.actors);
-    }
+      case 'replyStatus':
+        return this.#sendOrQueueAndPopup({
+          type: "share",
+          status: data
+        });
 
-    if (type === 'detectActors') {
-      this.#sendActorsDetected();
-    }
+      case 'apActorDetected':
+        return this.#setTabData(data.tabId, data.actors);
 
-    if (type === 'urlShareable') {
-      const tabs = await browser.tabs.query({
-        active: true,
-        windowId: this.#currentWindowId
-      });
-      return this.#sendTabShareable(tabs[0]);
-    }
+      case 'detectActors':
+        return this.#sendActorsDetected();
 
-    if (type === 'followActor') {
-      Object.entries(this.#tabs).forEach(entry => this.#tabs[entry[0]] = entry[1].filter(account => account.id !== data));
+      case 'urlShareable': {
+        const tabs = await browser.tabs.query({
+          active: true,
+          windowId: this.#currentWindowId
+        });
+        return this.#sendTabShareable(tabs[0]);
+      }
+
+      case 'followActor': {
+        return Object.entries(this.#tabs).forEach(entry => this.#tabs[entry[0]] = entry[1].filter(account => account.id !== data));
+      }
+
+      case 'timelineRefreshNeeded': {
+        if (this.#currentPort) {
+          return this.sendMessage("fetchTimeline");
+        }
+
+        await browser.browserAction.setBadgeText({
+          text: "🛎️"
+        });
+      }
     }
   }
 

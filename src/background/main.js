@@ -23,6 +23,9 @@ import {
 import {
   Masto
 } from './masto.js';
+import {
+  Streaming
+} from './streaming.js';
 import StorageUtils from "./storageUtils.js";
 
 const log = Logger.logger('Main');
@@ -49,6 +52,7 @@ class Main {
     new StateObserver(this);
     new UI(this);
     new HCard(this);
+    new Streaming(this);
     this.#masto = new Masto(this);
   }
 
