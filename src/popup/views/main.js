@@ -26,17 +26,10 @@ customElements.define('view-main', class ViewMain extends ViewBase {
       <button id="openInstance">Open Instance</button>
       <button id="reset">Sign out</button>
     </nav>
-    <main id="main"></main>`;
+    `
 
-    const main = document.getElementById('main');
-
-    for (const name of ['timeline', 'share', 'detectedactors']) {
-      const elm = document.createElement(`moso-${name}`);
-      elm.initialize(this);
-      elm.hidden = name !== 'timeline';
-      main.append(elm);
-      this.#views[name] = elm;
-    }
+    this.mainEl = document.createElement('main')
+    this.append(this.mainEl)
 
     for (const eventName of ["reblogStatus", "unreblogStatus", "favouriteStatus", "unfavouriteStatus", "bookmarkStatus", "unbookmarkStatus", "replyStatus"]) {
       document.addEventListener(eventName, e => {
@@ -60,7 +53,6 @@ customElements.define('view-main', class ViewMain extends ViewBase {
 
     if (e.target.id === "showTimeline") {
       this.sendMessage("fetchTimeline");
-      this.#render('timeline');
       return;
     }
 
@@ -81,39 +73,48 @@ customElements.define('view-main', class ViewMain extends ViewBase {
     }
   }
 
-  async handleMessage(msg) {
+  handleMessage(msg) {
+    let el
     switch (msg.type) {
       case 'timeline':
-        this.#views['timeline'].setData(msg.timeline);
+        el = this.#render('timeline')
+        el.setData(msg.timeline)
         break;
 
       case 'share':
-        this.#render('share');
-        this.#views['share'].setData(msg.url, msg.status);
+        el = this.#render('share');
+        el.setData(msg.url, msg.status)
         break;
 
       case 'actorsDetected': {
-        const menu = document.getElementById("showDetectedActors");
+        var menu = document.getElementById("showDetectedActors");
         menu.disabled = msg.actors.length === 0;
-        this.#views['detectedactors'].setData(msg.actors);
+        if (menu.disabled) break
+
+        el = this.mainEl.getElementsByTagName('moso-detectedactors')[0]
+        if (el) el.setData(msg.actors)
         break;
       }
 
       case 'urlShareable': {
-        const menu = document.getElementById("shareCurrentPage");
+        var menu = document.getElementById("shareCurrentPage");
         if (menu) menu.disabled = !msg.shareable;
         break;
       }
 
       case 'postResult':
-        if (!this.#views['share'].hidden) {
+        el = this.mainEl.getElementsByTagName('moso-share')[0]
+        if (el) {
           setTimeout(() => window.close(), 1000);
         }
     }
   }
 
   #render(name) {
-    Object.entries(this.#views).forEach(entry => entry[1].hidden = entry[0] !== name);
-    this.#views[name].shown();
+    const el = document.createElement(`moso-${name}`)
+    el.initialize(this)
+    this.mainEl.replaceChildren(el)
+    el.shown()
+    return el
   }
 });

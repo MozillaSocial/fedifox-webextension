@@ -49,7 +49,7 @@ customElements.define("status-card", class StatusCard extends HTMLElement {
   }
 });
 
-customElements.define("status-content-wrapper", class StatusCard extends HTMLElement {
+customElements.define("status-content-wrapper", class StatusContentWrapper extends HTMLElement {
   #status
 
   initialize(value) {
@@ -95,7 +95,7 @@ customElements.define("status-content-wrapper", class StatusCard extends HTMLEle
   }
 });
 
-customElements.define("status-content", class StatusCard extends HTMLElement {
+customElements.define("status-content", class StatusContent extends HTMLElement {
   #status
 
   initialize(value) {
@@ -135,7 +135,7 @@ customElements.define("status-content", class StatusCard extends HTMLElement {
   }
 });
 
-customElements.define("status-actions", class StatusCard extends HTMLElement {
+customElements.define("status-actions", class StatusActions extends HTMLElement {
   #status
 
   initialize(value) {
