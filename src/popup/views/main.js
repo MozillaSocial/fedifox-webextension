@@ -10,9 +10,7 @@ customElements.define('view-main', class ViewMain extends ViewBase {
   connectedCallback() {
     super.connectedCallback();
 
-    // In case the panel was opened by the user, let's fetch the timeline to
-    // trigger the `timeline` view.
-    this.sendMessage("fetchTimeline");
+    // trigger background services:
     this.sendMessage("urlShareable");
     this.sendMessage("detectActors");
 

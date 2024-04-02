@@ -92,7 +92,10 @@ export class UI extends Component {
 
     await this.#sendDataToCurrentPort();
 
-    // Sending the pending messages.
+    // Show timeline by default if no other event/action queued (user manually opens popup via browser button)
+    if (!this.#messageQueue.length) this.sendMessage("fetchTimeline")
+
+    // ...otherwise, send pending messages.
     while (this.#messageQueue.length && this.#currentPort) {
       await this.#currentPort.postMessage(this.#messageQueue.splice(0, 1)[0]);
     }
