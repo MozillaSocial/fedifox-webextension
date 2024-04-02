@@ -5,3 +5,4 @@ node_modules
 dist
 .env
 run.sh
+vendors/firefox
