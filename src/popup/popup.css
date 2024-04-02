@@ -57,6 +57,10 @@ main{
   width: 100%;
 }
 
+body{
+  width: 720px;
+}
+
 /*** TIMELINE STYLES ***/
 moso-timeline ol{
   display: flex;
@@ -114,8 +118,8 @@ status-content .media{
 }
 
 status-content .media figure{
-  max-width: 360px;
-  max-height: 360px;
+  max-width: 320px;
+  max-height: 320px;
   border: 1px solid var(--light-gray);
   border-radius: var(--border-radius);
   overflow: hidden;
