@@ -123,7 +123,7 @@ class Main {
 
     for (const observer of this.#observers) {
       try {
-        const result = await observer.handleEvent(type, data);
+        const result = observer.handleEvent(type, data);
         if (result !== undefined) {
           returnValues.push(result);
         }
