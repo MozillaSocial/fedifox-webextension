@@ -171,7 +171,8 @@ export class UI extends Component {
 
       case 'timelineRefreshNeeded': {
         if (this.#currentPort) {
-          return this.sendMessage("fetchTimeline");
+          this.sendMessage("fetchTimeline");
+          return;
         }
 
         await browser.browserAction.setBadgeText({

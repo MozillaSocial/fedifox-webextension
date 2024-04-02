@@ -159,26 +159,28 @@ customElements.define("status-actions", class StatusActions extends HTMLElement 
     this.append(replyDiv);
 
     const boostButton = document.createElement('status-action-toggle');
-    boostButton.initialize(["Boost", "Boosted"], ["reblogStatus", "unreblogStatus"], this.#status.reblogged, this.#status.id);
+    boostButton.initialize("boost", ["Boost", "Boosted"], ["reblogStatus", "unreblogStatus"], this.#status.reblogged, this.#status.id);
     this.append(boostButton);
 
     const favouriteButton = document.createElement('status-action-toggle');
-    favouriteButton.initialize(["Favourite", "Favourited"], ["favouriteStatus", "unfavouriteStatus"], this.#status.favourited, this.#status.id);
+    favouriteButton.initialize("favourite", ["Favourite", "Favourited"], ["favouriteStatus", "unfavouriteStatus"], this.#status.favourited, this.#status.id);
     this.append(favouriteButton);
 
     const bookmarkButton = document.createElement('status-action-toggle');
-    bookmarkButton.initialize(["Bookmark", "Bookmarked"], ["bookmarkStatus", "unbookmarkStatus"], this.#status.bookmarked, this.#status.id);
+    bookmarkButton.initialize("bookmark", ["Bookmark", "Bookmarked"], ["bookmarkStatus", "unbookmarkStatus"], this.#status.bookmarked, this.#status.id);
     this.append(bookmarkButton);
   }
 });
 
 customElements.define("status-action-toggle", class StatusCard extends HTMLElement {
+  #icon;
   #texts;
   #events;
   #status = false;
   #id;
 
-  initialize(texts, events, status, id) {
+  initialize(icon, texts, events, status, id) {
+    this.#icon = icon;
     this.#texts = texts;
     this.#events = events;
     this.#status = status;
@@ -187,7 +189,7 @@ customElements.define("status-action-toggle", class StatusCard extends HTMLEleme
 
   connectedCallback() {
     this.innerHTML = `
-    <button class="status-action" style="--icon-url:url(../commons/images/${this.#texts[0]}.svg)"></button>
+    <button class="status-action" style="--icon-url:url(../commons/images/${this.#icon}.svg)"></button>
     `
     this.button = this.querySelector('button')
     this.button.addEventListener('click', this)
