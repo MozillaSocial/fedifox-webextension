@@ -68,6 +68,8 @@ small {
 
 fieldset{
   border: none;
+  display: flex;
+  gap: var(--padding-sm);
 }
 
 legend{
@@ -97,6 +99,11 @@ textarea, input, select {
   font: inherit;
   line-height: normal;
   background-color: white;
+}
+
+textarea{
+  resize: vertical;
+  min-height: 5rem;
 }
 
 select{

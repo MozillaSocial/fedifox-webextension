@@ -57,16 +57,6 @@ main{
   width: 100%;
 }
 
-fieldset{
-  display: flex;
-  gap: var(--padding-sm);
-}
-
-textarea{
-  resize: vertical;
-  min-height: 5rem;
-}
-
 /*** TIMELINE STYLES ***/
 moso-timeline ol{
   display: flex;
@@ -77,6 +67,7 @@ moso-timeline ol{
 
 status-card{
   display: block;
+  width: 100%;
   padding: var(--padding-md);
   border: 2px solid var(--light-gray);
   border-radius: var(--border-radius);
@@ -165,4 +156,12 @@ status-actions{
   align-items: center;
   color: var(--dark-gray);
   cursor: default;
+}
+
+/*** SHARE STYLES ***/
+moso-share fieldset{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-sm);
+  align-items: end;
 }

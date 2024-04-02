@@ -11,17 +11,11 @@ customElements.define('moso-share', class MosoShare extends MosoMainBase {
     super.connectedCallback();
 
     this.innerHTML = `
-    <style>
-      button.primary{
-        align-self: end;
-      }
-    </style>
     <h2>Share something!</h2>
     <fieldset>
       <textarea id="shareBody"></textarea>
       <button class="primary" id="share">Post</button>
     </fieldset>
-    <div id="replyStatus"></div>
     `;
 
     document.getElementById("shareBody").focus();
@@ -42,7 +36,7 @@ customElements.define('moso-share', class MosoShare extends MosoMainBase {
 
       const card = document.createElement('status-card');
       card.initialize(status);
-      document.getElementById("replyStatus").append(card);
+      textarea.insertAdjacentElement('afterend', card)
     }
   }
 
@@ -57,13 +51,5 @@ customElements.define('moso-share', class MosoShare extends MosoMainBase {
 
       // TODO: show a loading icon...
     }
-  }
-
-  shown() {
-    const textarea = document.getElementById("shareBody");
-    textarea.value = '';
-
-    const replyStatus = document.getElementById("replyStatus");
-    while (replyStatus.firstChild) replyStatus.firstChild.remove();
   }
 });

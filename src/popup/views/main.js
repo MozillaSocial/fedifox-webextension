@@ -114,7 +114,6 @@ customElements.define('view-main', class ViewMain extends ViewBase {
     const el = document.createElement(`moso-${name}`)
     el.initialize(this)
     this.mainEl.replaceChildren(el)
-    el.shown()
     return el
   }
 });
