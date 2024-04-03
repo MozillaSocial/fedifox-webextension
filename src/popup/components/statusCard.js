@@ -4,7 +4,6 @@
  */
 
 customElements.define("status-card", class StatusCard extends HTMLElement {
-  #shadow;
   #status
   #dateTimeFormat = new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',

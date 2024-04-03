@@ -169,3 +169,44 @@ moso-share fieldset{
   gap: var(--padding-sm);
   align-items: end;
 }
+
+/*** DETECTED ACTORS STYLES ***/
+moso-detectedactors ul{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-md);
+  margin-top: var(--padding-md);
+  list-style: none;
+}
+
+actor-card{
+  display: block;
+  padding: var(--padding-md);
+  border: 2px solid var(--light-gray);
+  border-radius: var(--border-radius);
+  background-color: white;
+}
+
+actor-card article{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-md);
+}
+
+actor-card header img{
+  height: 30px;
+}
+
+actor-card address{
+  font-style: normal;
+}
+
+actor-card footer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--padding-md);
+  border-top: 1px solid var(--light-gray);
+  color: var(--medium-gray);
+}
+

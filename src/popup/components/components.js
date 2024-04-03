@@ -6,4 +6,5 @@ import './detectedactors.js';
 import './header.js';
 import './share.js';
 import './statusCard.js';
+import './actorCard.js';
 import './timeline.js';

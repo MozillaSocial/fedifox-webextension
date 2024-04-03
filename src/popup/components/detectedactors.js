@@ -8,25 +8,30 @@ customElements.define('moso-detectedactors', class MosoDetectedActors extends Mo
   connectedCallback() {
     super.connectedCallback();
 
-    this.innerHTML = `<div id="actors"></div>`;
+    this.innerHTML = `
+    <h2>Detected Actors</h2>
+    <p>An actor is any entity capable of performing an activity, such as a person, organization, or service. The following actors have been detected on this page:</p>
+    <ul></ul>
+    `
   }
 
-  setData(accounts) {
-    const actors = document.getElementById('actors');
-    while (actors.firstChild) actors.firstChild.remove();
+  setData(actors) {
+    const items = actors.map(actor => {
+      const card = document.createElement('actor-card')
+      card.initialize(actor)
 
-    for (const account of accounts) {
-      actors.innerHTML += `
-          <img src="${account.avatar}">
-          <address>${account.display_name || account.username}</address>
-          <button id="followActor" data-actorid="${account.id}">Follow</button>`;
-    }
+      const li = document.createElement('li')
+      li.append(card)
+      return li
+    })
+
+    this.querySelector('ul').replaceChildren(...items)
   }
 
   async handleEvent(e) {
     switch (e.target.id) {
       case 'followActor':
-        await this.sendMessage("followActor", e.target.dataset.actorid);
+        this.sendMessage("followActor", e.target.dataset.actorid);
         window.close();
         break;
     }

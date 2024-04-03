@@ -57,10 +57,6 @@ h3 {
   font: var(--h3-font);
 }
 
-h4 {
-  font: var(--h4-font);
-}
-
 small {
   font-size: .75rem;
   line-height: 1.2;
