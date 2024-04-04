@@ -179,6 +179,15 @@ export class UI extends Component {
           text: "🛎️"
         });
       }
+
+      case 'serverListFetched': {
+        if (this.#currentPort) {
+          this.#currentPort.postMessage({
+            type: "serverListFetched",
+            servers: data,
+          });
+        }
+      }
     }
   }
 

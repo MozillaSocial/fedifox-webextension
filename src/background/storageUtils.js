@@ -38,6 +38,16 @@ class StorageUtils {
     });
   }
 
+  async getServerList() {
+    return this.#getStorageKey("serverList");
+  }
+
+  async setServerList(serverList) {
+    await browser.storage.local.set({
+      serverList
+    });
+  }
+
   async #getStorageKey(key) {
     let data = await browser.storage.local.get([key]);
     return data[key];

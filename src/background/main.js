@@ -24,6 +24,9 @@ import {
   Masto
 } from './masto.js';
 import {
+  ServerList
+} from './serverlist.js';
+import {
   Streaming
 } from './streaming.js';
 import StorageUtils from "./storageUtils.js";
@@ -52,6 +55,7 @@ class Main {
     new StateObserver(this);
     new UI(this);
     new HCard(this);
+    new ServerList(this);
     new Streaming(this);
     this.#masto = new Masto(this);
   }

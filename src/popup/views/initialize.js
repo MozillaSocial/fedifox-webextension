@@ -8,6 +8,8 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
   connectedCallback() {
     super.connectedCallback();
 
+    this.sendMessage("fetchServerList");
+
     this.innerHTML = `
     <moso-header></moso-header>
     <main>
@@ -21,7 +23,8 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
       <hr>
       <fieldset>
         <legend>Connect to another Mastodon server</legend>
-        <input type="url" id="other-server-url" placeholder="https://example.url">
+        <input list="servers" id="other-server-url" placeholder="https://example.url">
+        <datalist id="servers"></datalist>
         <button class="secondary" id="other-server-btn">Connect</button>
       </fieldset>
     </main>
@@ -44,11 +47,41 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
         break
       case 'other-server-btn': {
         const input = document.getElementById("other-server-url");
-        if (input.value.trim() === '' || !input.checkValidity()) return alert('Mastodon URL is not valid')
-        this.sendMessage('connectToHost', new URL(input.value).hostname);
+        const hostname = this.#validateHost(input.value);
+        if (!hostname) {
+          return alert("Mastodon URL is not valid");
+        }
+        this.sendMessage('connectToHost', hostname);
         window.close()
         break
       }
+    }
+  }
+
+  handleMessage(msg) {
+    if (msg.type === "serverListFetched") {
+      const servers = document.getElementById("servers");
+      while (servers.firstChild) servers.firstChild.remove();
+      msg.servers.forEach(server => {
+        const opt = document.createElement("option");
+        opt.value = server;
+        servers.append(opt);
+      });
+    }
+  }
+
+  #validateHost(input) {
+    input = input.trim();
+
+    if (!input.startsWith('http://') && !input.startsWith('https://')) {
+      input = 'https://' + input;
+    }
+
+    try {
+      const u = new URL(input);
+      return u.hostname;
+    } catch (e) {
+      return null;
     }
   }
 });
