@@ -17,27 +17,42 @@ customElements.define("status-card", class StatusCard extends HTMLElement {
   connectedCallback() {
     console.assert(this.#status, "No status yet?!?");
 
-    this.innerHTML = `
-    <article id=id${this.#status.id}>
-      <header>
-        <a href="${this.#status.url}">
-          <img src="${this.#status.account.avatar}">
-          <address>${this.#status.account.display_name || this.#status.account.username}</address>
-          <time datetime="${this.#status.created_at}">${this.#formatDate(this.#status.created_at)}</time>
-        </a>
-      </header>
-    </article>
-    `
+    while (this.firstChild) this.firstChild.remove();
 
-    const article = document.getElementById(`id${this.#status.id}`);
+    const article = document.createElement('article');
+    article.id = `id${this.#status.id}`;
+    this.append(article);
+
+    if (this.#status.reblog) {
+      // TODO: double images + double actors!
+      article.innerHTML = `
+        <header>
+          <a href="${this.#status.url}">
+            <img src="${this.#status.reblog.account.avatar}">
+            <address>${this.#status.reblog.account.display_name || this.#status.reblog.account.username}</address>
+            <time datetime="${this.#status.created_at}">${this.#formatDate(this.#status.created_at)}</time>
+          </a>
+        </header>
+      `;
+    } else {
+      article.innerHTML = `
+        <header>
+          <a href="${this.#status.url}">
+            <img src="${this.#status.account.avatar}">
+            <address>${this.#status.account.display_name || this.#status.account.username}</address>
+            <time datetime="${this.#status.created_at}">${this.#formatDate(this.#status.created_at)}</time>
+          </a>
+        </header>
+      `;
+    }
 
     const content = document.createElement('status-content-wrapper');
-    content.initialize(this.#status);
+    content.initialize(this.#status.reblog || this.#status);
     article.append(content);
 
     if (this.getAttribute("action")) {
       const actions = document.createElement('status-actions');
-      actions.initialize(this.#status);
+      actions.initialize(this.#status.reblog || this.#status);
       article.append(actions);
     }
   }
@@ -104,12 +119,17 @@ customElements.define("status-content", class StatusContent extends HTMLElement 
   connectedCallback() {
     console.assert(this.#status, "No status yet?!?");
 
+    this.innerHTML = this.#status.content;
+
     // TODO: poll!
 
-    this.innerHTML = `
-      ${this.#status.content}
-      <div class="media">${this.#status.media_attachments?.map(obj => this.#parseMedia(obj)).join('')}</div>
-    `;
+    this.innerHTML += `<div class="media">${this.#status.media_attachments?.map(obj => this.#parseMedia(obj)).join('')}</div>`;
+
+    if (this.#status.card && ['link', 'photo', 'video', 'rich'].includes(this.#status.card.type)) {
+      const card = document.createElement(`status-content-card-${this.#status.card.type}`);
+      card.initialize(this.#status);
+      this.append(card);
+    }
   }
 
   #parseMedia(obj) {
@@ -210,5 +230,90 @@ customElements.define("status-action-toggle", class StatusCard extends HTMLEleme
 
   disconnectedCallback() {
     this.button.removeEventListener('click', this)
+  }
+});
+
+customElements.define("status-content-card-rich", class StatusContentCard extends HTMLElement {
+  #status
+
+  initialize(value) {
+    this.#status = value
+  }
+
+  connectedCallback() {
+    console.assert(this.#status, "No status yet?!?");
+
+    // NO IDEA WHAT TO SHOW HERE...
+    this.innerHTML = `
+      <div class="content-card">
+        URL: ${this.#status.card.url}<br />
+        TITLE: ${this.#status.card.title}<br />
+        DESCRIPTION: ${this.#status.card.description}<br />
+        <img src="${this.#status.card.image}" alt="${this.#status.card.image_description}" />
+      </div>
+    `;
+  }
+});
+
+customElements.define("status-content-card-video", class StatusContentCard extends HTMLElement {
+  #status
+
+  initialize(value) {
+    this.#status = value
+  }
+
+  connectedCallback() {
+    console.assert(this.#status, "No status yet?!?");
+
+    this.innerHTML = `
+      <div class="content-card">
+        URL: ${this.#status.card.url}<br />
+        TITLE: ${this.#status.card.title}<br />
+        DESCRIPTION: ${this.#status.card.description}<br />
+        AUTHOR: ${this.#status.card.author_name} - ${this.#status.card.author_url}<br />
+        ${this.#status.card.html}
+      </div>
+    `;
+  }
+});
+customElements.define("status-content-card-photo", class StatusContentCard extends HTMLElement {
+  #status
+
+  initialize(value) {
+    this.#status = value
+  }
+
+  connectedCallback() {
+    console.assert(this.#status, "No status yet?!?");
+
+    this.innerHTML = `
+      <div class="content-card">
+        URL: ${this.#status.card.url}<br />
+        TITLE: ${this.#status.card.title}<br />
+        DESCRIPTION: ${this.#status.card.description}<br />
+        AUTHOR: ${this.#status.card.author_name} - ${this.#status.card.author_url}<br />
+        <img src="${this.#status.card.image}" />
+      </div>
+    `;
+  }
+});
+customElements.define("status-content-card-link", class StatusContentCard extends HTMLElement {
+  #status
+
+  initialize(value) {
+    this.#status = value
+  }
+
+  connectedCallback() {
+    console.assert(this.#status, "No status yet?!?");
+
+    this.innerHTML = `
+      <div class="content-card">
+        URL: ${this.#status.card.url}<br />
+        TITLE: ${this.#status.card.title}<br />
+        DESCRIPTION: ${this.#status.card.description}<br />
+        <img src="${this.#status.card.image}" alt="${this.#status.card.image_description}" />
+      </div>
+    `;
   }
 });

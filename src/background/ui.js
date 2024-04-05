@@ -41,7 +41,9 @@ export class UI extends Component {
       }
     });
 
-    browser.browserAction.setBadgeBackgroundColor({ "color": [0, 0, 0, 0] })
+    browser.browserAction.setBadgeBackgroundColor({
+      "color": [0, 0, 0, 0]
+    })
   }
 
   #deleteTabData(tabId) {
