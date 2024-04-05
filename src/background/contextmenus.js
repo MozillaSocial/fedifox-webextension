@@ -42,6 +42,7 @@ export class ContextMenus extends Component {
             this.sendMessage('shareURL', info.linkUrl);
             break;
         }
+        browser.browserAction.openPopup();
       });
 
       browser.menus.onShown.addListener(async (info, tab) => {

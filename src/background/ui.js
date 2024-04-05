@@ -126,13 +126,13 @@ export class UI extends Component {
       }
 
       case "shareURL":
-        return this.#sendOrQueueAndPopup({
+        return this.#sendOrQueue({
           type: "share",
           url: data,
         });
 
       case 'postResult':
-        return this.#sendOrQueueAndPopup({
+        return this.#sendOrQueue({
           type: "postResult",
           url: data,
         });
@@ -142,14 +142,14 @@ export class UI extends Component {
           active: true,
           windowId: this.#currentWindowId
         });
-        return this.#sendOrQueueAndPopup({
+        return this.#sendOrQueue({
           type: "share",
           url: tabs.length && (tabs[0].url.startsWith('http://') || tabs[0].url.startsWith('https://')) ? tabs[0].url : '',
         });
       }
 
       case 'replyStatus':
-        return this.#sendOrQueueAndPopup({
+        return this.#sendOrQueue({
           type: "share",
           status: data
         });
@@ -208,11 +208,10 @@ export class UI extends Component {
     }
   }
 
-  async #sendOrQueueAndPopup(msg) {
+  async #sendOrQueue(msg) {
     if (this.#currentPort) {
       return this.#currentPort.postMessage(msg);
     }
     this.#messageQueue.push(msg);
-    await browser.browserAction.openPopup();
   }
 }
