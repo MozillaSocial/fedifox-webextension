@@ -40,6 +40,8 @@ export class UI extends Component {
         this.#sendTabShareable(tab);
       }
     });
+
+    browser.browserAction.setBadgeBackgroundColor({ "color": [0, 0, 0, 0] })
   }
 
   #deleteTabData(tabId) {
@@ -53,7 +55,7 @@ export class UI extends Component {
   async #setTabData(tabId, actors) {
     this.#tabs[tabId] = actors;
     await browser.browserAction.setBadgeText({
-      text: "🛎️",
+      text: "🟢",
       tabId
     });
 
@@ -176,7 +178,7 @@ export class UI extends Component {
         }
 
         await browser.browserAction.setBadgeText({
-          text: "🛎️"
+          text: "🟢"
         });
       }
 
