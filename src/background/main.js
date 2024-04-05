@@ -127,17 +127,14 @@ class Main {
 
     for (const observer of this.#observers) {
       try {
-        const result = await observer.handleEvent(type, data);
-        if (result !== undefined) {
-          returnValues.push(result);
-        }
+        returnValues.push(observer.handleEvent(type, data));
       } catch (e) {}
     }
 
     this.#handlingEvent = false;
     this.#processPendingEvents();
 
-    return returnValues;
+    return (await Promise.all(returnValues)).filter(a => a !== undefined);
   }
 
   #processPendingEvents() {
