@@ -46,7 +46,7 @@ export class Streaming extends Component {
       return;
     }
 
-    const hostname = await StorageUtils.getHostname();
+    const hostname = await StorageUtils.getServerHost();
     log(`Fetching the streaming endpoint for ${hostname}`);
 
     const accessToken = await StorageUtils.getAccessToken();

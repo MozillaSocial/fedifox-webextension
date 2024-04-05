@@ -5,7 +5,7 @@
 import ViewBase from './base.js';
 
 customElements.define('view-initialize', class ViewInitialize extends ViewBase {
-  connectedCallback() {
+  async connectedCallback() {
     super.connectedCallback();
 
     this.sendMessage("fetchServerList");
@@ -36,6 +36,12 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
         document.getElementById("other-server-btn").click();
       }
     }
+
+    let data = await browser.storage.local.get(["serverHost"]);
+    if (data && data.serverHost) {
+      document.getElementById("other-server-url").value = data.serverHost;
+    }
+
   }
 
   async handleEvent(e) {

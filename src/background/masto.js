@@ -24,7 +24,7 @@ export class Masto extends Component {
   async init() {
     log("init");
 
-    this.#hostname = await StorageUtils.getHostname();
+    this.#hostname = await StorageUtils.getServerHost();
     this.#accessToken = await StorageUtils.getAccessToken();
 
     this.#maybeUpdateData();
@@ -91,7 +91,7 @@ export class Masto extends Component {
       const appCode = await this.#oauth2Authentication(hostname, appData);
       const accessToken = await this.#fetchAccessToken(hostname, appData, appCode);
 
-      await StorageUtils.setHostnameAndAccessToken(hostname, accessToken);
+      await StorageUtils.setAccessToken(accessToken);
 
       this.#hostname = hostname;
       this.#accessToken = accessToken;
