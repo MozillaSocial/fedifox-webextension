@@ -5,6 +5,8 @@
 import MosoMainBase from './mainbase.js';
 
 customElements.define('moso-detectedactors', class MosoDetectedActors extends MosoMainBase {
+  static observedAttributes = ['hidden'];
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -34,6 +36,13 @@ customElements.define('moso-detectedactors', class MosoDetectedActors extends Mo
         this.sendMessage("followActor", e.target.dataset.actorid);
         window.close();
         break;
+    }
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    // We are now visible!
+    if (name === "hidden" && !this.hidden) {
+      this.sendMessage("detectActors");
     }
   }
 });

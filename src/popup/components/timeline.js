@@ -5,6 +5,8 @@
 import MosoMainBase from './mainbase.js';
 
 customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
+  static observedAttributes = ['hidden'];
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -25,5 +27,12 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
       li.append(card)
       ol.append(li)
     })
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    // We are now visible!
+    if (name === "hidden" && !this.hidden) {
+      this.sendMessage("fetchTimeline");
+    }
   }
 });

@@ -10,9 +10,6 @@ customElements.define('view-main', class ViewMain extends ViewBase {
   connectedCallback() {
     super.connectedCallback();
 
-    // In case the panel was opened by the user, let's fetch the timeline to
-    // trigger the `timeline` view.
-    this.sendMessage("fetchTimeline");
     this.sendMessage("urlShareable");
     this.sendMessage("detectActors");
 
@@ -28,8 +25,17 @@ customElements.define('view-main', class ViewMain extends ViewBase {
     </nav>
     `
 
-    this.mainEl = document.createElement('main')
-    this.append(this.mainEl)
+
+    for (const view of ["timeline", "share", "detectedactors"]) {
+      const el = document.createElement(`moso-${view}`)
+      el.initialize(this)
+      el.hidden = true;
+      this.append(el)
+
+      this.#views[view] = el;
+    }
+
+    this.#render('timeline');
 
     for (const eventName of ["reblogStatus", "unreblogStatus", "favouriteStatus", "unfavouriteStatus", "bookmarkStatus", "unbookmarkStatus", "replyStatus"]) {
       document.addEventListener(eventName, e => {
@@ -52,22 +58,22 @@ customElements.define('view-main', class ViewMain extends ViewBase {
     }
 
     if (e.target.id === "showTimeline") {
-      this.sendMessage("fetchTimeline");
+      this.#render("timeline");
       return;
     }
 
     if (e.target.id === "share") {
+      this.#views.share.setData("", null);
       this.#render('share');
       return;
     }
 
-    if (e.target.id === "shareCurrentPage" && !e.target.disabled) {
+    if (e.target.id === "shareCurrentPage") {
       await this.sendMessage("shareCurrentPage");
       return;
     }
 
-    if (e.target.id === 'showDetectedActors' && !e.target.disabled) {
-      this.sendMessage("detectActors");
+    if (e.target.id === 'showDetectedActors') {
       this.#render('detectedactors');
       return;
     }
@@ -77,13 +83,12 @@ customElements.define('view-main', class ViewMain extends ViewBase {
     let el
     switch (msg.type) {
       case 'timeline':
-        el = this.#render('timeline')
-        el.setData(msg.timeline)
+        this.#views.timeline.setData(msg.timeline);
         break;
 
       case 'share':
-        el = this.#render('share');
-        el.setData(msg.url, msg.status)
+        this.#views.share.setData(msg.url, msg.status)
+        this.#render('share');
         break;
 
       case 'actorsDetected': {
@@ -91,8 +96,7 @@ customElements.define('view-main', class ViewMain extends ViewBase {
         menu.disabled = msg.actors.length === 0;
         if (menu.disabled) break
 
-        el = this.mainEl.getElementsByTagName('moso-detectedactors')[0]
-        if (el) el.setData(msg.actors)
+        this.#views.detectedactors.setData(msg.actors);
         break;
       }
 
@@ -103,17 +107,13 @@ customElements.define('view-main', class ViewMain extends ViewBase {
       }
 
       case 'postResult':
-        el = this.mainEl.getElementsByTagName('moso-share')[0]
-        if (el) {
+        if (this.#views.share.hidden === false) {
           setTimeout(() => window.close(), 1000);
         }
     }
   }
 
   #render(name) {
-    const el = document.createElement(`moso-${name}`)
-    el.initialize(this)
-    this.mainEl.replaceChildren(el)
-    return el
+    Object.entries(this.#views).forEach(entry => entry[1].hidden = entry[0] !== name);
   }
 });

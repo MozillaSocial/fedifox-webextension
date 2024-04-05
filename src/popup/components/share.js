@@ -23,6 +23,7 @@ customElements.define('moso-share', class MosoShare extends MosoMainBase {
 
   setData(url, status) {
     const textarea = document.getElementById("shareBody");
+    textarea.value = '';
 
     if (url) {
       textarea.value = `\n\n${url}`;
