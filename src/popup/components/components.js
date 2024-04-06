@@ -7,4 +7,5 @@ import './header.js';
 import './share.js';
 import './statusCard.js';
 import './actorCard.js';
+import './sensitiveToggle.js';
 import './timeline.js';

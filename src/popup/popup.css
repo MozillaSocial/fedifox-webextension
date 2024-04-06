@@ -104,9 +104,14 @@ status-card header time{
 }
 
 status-content{
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--padding-sm);
+}
+
+status-content.sensitive{
+  min-height: 150px;
 }
 
 status-content .media{

@@ -46,7 +46,7 @@ customElements.define("status-card", class StatusCard extends HTMLElement {
       `;
     }
 
-    const content = document.createElement('status-content-wrapper');
+    const content = document.createElement('status-content');
     content.initialize(this.#status.reblog || this.#status);
     article.append(content);
 
@@ -60,52 +60,6 @@ customElements.define("status-card", class StatusCard extends HTMLElement {
   #formatDate(dateString) {
     const date = new Date(dateString)
     return this.#dateTimeFormat.format(date)
-  }
-});
-
-customElements.define("status-content-wrapper", class StatusContentWrapper extends HTMLElement {
-  #status
-
-  initialize(value) {
-    this.#status = value
-  }
-
-  connectedCallback() {
-    console.assert(this.#status, "No status yet?!?");
-
-    const content = document.createElement('status-content');
-    content.initialize(this.#status);
-
-    if (this.#status.spoiler_text) {
-      this.innerHTML = this.#status.spoiler_text;
-
-      const moreButton = document.createElement('button');
-      moreButton.textContent = "SHOW MORE";
-      this.append(moreButton);
-
-      const lessButton = document.createElement('button');
-      lessButton.textContent = "SHOW LESS";
-      lessButton.hidden = true;
-      this.append(lessButton);
-
-      content.hidden = true;
-      this.append(content);
-
-      moreButton.onclick = () => {
-        moreButton.hidden = true;
-        lessButton.hidden = false;
-        content.hidden = false;
-      }
-
-      lessButton.onclick = () => {
-        moreButton.hidden = false;
-        lessButton.hidden = true;
-        content.hidden = true;
-      }
-      return;
-    }
-
-    this.append(content);
   }
 });
 
@@ -129,6 +83,13 @@ customElements.define("status-content", class StatusContent extends HTMLElement 
       const card = document.createElement(`status-content-card-${this.#status.card.type}`);
       card.initialize(this.#status);
       this.append(card);
+    }
+
+    if (this.#status.sensitive) {
+      const sensitiveToggle = document.createElement('sensitive-toggle')
+      sensitiveToggle.spoiler = this.#status.spoiler_text
+      this.append(sensitiveToggle)
+      this.classList.add('sensitive')
     }
   }
 
