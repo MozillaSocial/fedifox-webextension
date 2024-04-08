@@ -13,6 +13,10 @@ export default class MosoMainBase extends HTMLElement {
     this.removeEventListener('pointerdown', this)
   }
 
+  handleEvent(e) {
+    // overwrite this function in child class, if needed
+  }
+
   initialize(parent) {
     this.#parent = parent;
   }
