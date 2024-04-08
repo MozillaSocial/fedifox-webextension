@@ -82,8 +82,8 @@ customElements.define('view-main', class ViewMain extends ViewBase {
   handleMessage(msg) {
     let el
     switch (msg.type) {
-      case 'timeline':
-        this.#views.timeline.setData(msg.timeline);
+      case 'mastoLists':
+        this.#views.timeline.setData(msg);
         break;
 
       case 'share':

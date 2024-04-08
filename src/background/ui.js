@@ -115,11 +115,11 @@ export class UI extends Component {
 
   async handleEvent(type, data) {
     switch (type) {
-      case 'mastoTimeline': {
+      case 'mastoLists': {
         if (this.#currentPort) {
           this.#currentPort.postMessage({
-            type: "timeline",
-            timeline: data,
+            type,
+            ...data,
           });
         }
 
@@ -175,14 +175,25 @@ export class UI extends Component {
 
       case 'timelineRefreshNeeded': {
         if (this.#currentPort) {
-          this.sendMessage("fetchTimeline");
+          this.sendMessage("fetchLists");
           return;
         }
 
-        await browser.browserAction.setBadgeText({
+        return browser.browserAction.setBadgeText({
           text: "🟢"
         });
       }
+
+      case 'reblogCompleted':
+      case 'unreblogCompleted':
+      case 'bookmarkCompleted':
+      case 'unbookmarkCompleted':
+      case 'favouriteCompleted':
+      case 'unfavouriteCompleted':
+        if (this.#currentPort) {
+          this.sendMessage("fetchLists");
+        }
+        return;
 
       case 'serverListFetched': {
         if (this.#currentPort) {
@@ -191,6 +202,7 @@ export class UI extends Component {
             servers: data,
           });
         }
+        break;
       }
     }
   }

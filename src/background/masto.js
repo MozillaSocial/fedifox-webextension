@@ -34,6 +34,24 @@ export class Masto extends Component {
     this.#maybeUpdateData();
   }
 
+  async #fetchGETJson(path) {
+    return await fetch(`https://${this.#hostname}${path}`, {
+      headers: {
+        Authorization: `Bearer ${this.#accessToken}`
+      }
+    }).then(r => r.json());
+  }
+
+  async #fetchPOSTJson(path, body = undefined) {
+    return await fetch(`https://${this.#hostname}${path}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.#accessToken}`
+      },
+      body,
+    }).then(r => r.json());
+  }
+
   async #maybeUpdateData() {
     if (this.state !== STATE_MAIN) {
       return;
@@ -48,11 +66,7 @@ export class Masto extends Component {
   }
 
   async #verifyCredentials() {
-    const data = await fetch(`https://${this.#hostname}/api/v1/accounts/verify_credentials`, {
-      headers: {
-        Authorization: `Bearer ${this.#accessToken}`
-      }
-    }).then(r => r.json());
+    const data = await this.#fetchGETJson('/api/v1/accounts/verify_credentials');
 
     if (data.error) {
       throw new Error();
@@ -66,11 +80,7 @@ export class Masto extends Component {
       throw new Error();
     }
 
-    const data = await fetch(`https://${this.#hostname}/api/v1/accounts/${this.#userData.id}/following`, {
-      headers: {
-        Authorization: `Bearer ${this.#accessToken}`
-      }
-    }).then(r => r.json());
+    const data = await this.#fetchGETJson(`/api/v1/accounts/${this.#userData.id}/following`);
 
     if (data.error) {
       throw new Error();
@@ -161,17 +171,15 @@ export class Masto extends Component {
     return tokenData.access_token;
   }
 
-  async #fetchHomeTimeline() {
+  async #fetchLists() {
     assert(this.state === STATE_MAIN, "Invalid state");
-    log("Fetching the home timeline");
+    log("Fetching the home timeline, favourites and bookmarks");
 
-    const data = await fetch(`https://${this.#hostname}/api/v1/timelines/home`, {
-      headers: {
-        Authorization: `Bearer ${this.#accessToken}`
-      }
-    }).then(r => r.json());
-
-    this.sendMessage("mastoTimeline", data);
+    this.sendMessage('mastoLists', {
+      timeline: await this.#fetchGETJson('/api/v1/timelines/home'),
+      favourites: await this.#fetchGETJson('/api/v1/favourites'),
+      bookmarks: await this.#fetchGETJson('/api/v1/bookmarks'),
+    });
   }
 
   async #openInstance() {
@@ -194,13 +202,7 @@ export class Masto extends Component {
     }
 
     try {
-      const data = await fetch(`https://${this.#hostname}/api/v1/statuses`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${this.#accessToken}`
-        },
-        body: formData
-      }).then(r => r.json());
+      const data = await this.#fetchPOSTJson('/api/v1/statuses', formData);
       if (!("id" in data)) throw new Error("Failed!");
       this.sendMessage("postResult", data.id);
     } catch (e) {
@@ -218,11 +220,7 @@ export class Masto extends Component {
     searchURL.searchParams.set('resolve', 'true');
 
     try {
-      return (await fetch(searchURL, {
-        headers: {
-          Authorization: `Bearer ${this.#accessToken}`
-        },
-      }).then(r => r.json())).accounts;
+      return (await this.#fetchGETJson(searchURL)).accounts;
     } catch (e) {
       log("Unable to fetch the search output", e);
     }
@@ -231,12 +229,7 @@ export class Masto extends Component {
   async #followActor(id) {
     log("Follow actor id", id);
     try {
-      const data = await fetch(`https://${this.#hostname}/api/v1/accounts/${id}/follow`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${this.#accessToken}`
-        },
-      }).then(r => r.json());
+      await this.#fetchPOSTJson(`/api/v1/accounts/${id}/follow`);
     } catch (e) {
       log("Unable to add the follower", e);
     }
@@ -248,8 +241,8 @@ export class Masto extends Component {
         await this.#connectToHost(data);
         break;
 
-      case 'fetchTimeline':
-        await this.#fetchHomeTimeline();
+      case 'fetchLists':
+        await this.#fetchLists();
         break;
 
       case 'openInstance':
@@ -292,11 +285,7 @@ export class Masto extends Component {
   }
 
   async #genericAction(action, id) {
-    const data = await fetch(`https://${this.#hostname}/api/v1/statuses/${id}/${action}`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${this.#accessToken}`
-      }
-    }).then(r => r.json());
+    await this.#fetchPOSTJson(`/api/v1/statuses/${id}/${action}`);
+    this.sendMessage(`${action}Completed`)
   }
 }
