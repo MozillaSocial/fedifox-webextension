@@ -33,6 +33,7 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
     <nav>
       ${this.#navItems.map(item => `<button data-list-type="${item.listType}">${item.name}</button>`).join('')}
     </nav>
+    <h2></h2>
     <ol></ol>
     `
 
@@ -50,6 +51,8 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
   #renderList() {
     const ol = this.querySelector("ol");
     ol.replaceChildren()
+
+    this.querySelector('h2').textContent = this.#navItems.find(item => item.listType === this.#currentList).name
 
     this.#lists[this.#currentList]?.forEach(status => {
       const li = document.createElement('li')
