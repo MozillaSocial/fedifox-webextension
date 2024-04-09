@@ -12,8 +12,11 @@ customElements.define("sensitive-toggle", class sensitiveToggle extends HTMLElem
     <dialog open>
       <h3>Sensitive Content</h3>
       <p>${this.spoiler || 'Some people may find this content offensive or disturbing'}</p>
-      <button class="secondary">Show</button>
+      <button class="secondary sensitive-show-btn" title="Show content">Show</button>
     </dialog>
+    <button class="sensitive-hide-btn" title="Hide content">
+      <img src="../../commons/images/eye-toggle.svg" width="24" height="24">
+    </button>
     `
     this.#dialog = this.querySelector('dialog')
     this.addEventListener('pointerdown', this)
@@ -24,6 +27,13 @@ customElements.define("sensitive-toggle", class sensitiveToggle extends HTMLElem
   }
 
   handleEvent(e) {
-    if (this.#dialog.open) this.#dialog.close()
+    switch (true) {
+      case e.target.matches('.sensitive-show-btn'):
+        this.#dialog.close()
+        break
+      case e.target.matches('.sensitive-hide-btn'):
+        this.#dialog.show()
+        break
+    }
   }
 })

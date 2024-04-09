@@ -152,6 +152,20 @@ sensitive-toggle dialog[open]{
   border-radius: var(--border-radius);
   -webkit-backdrop-filter: blur(24px);
   backdrop-filter: blur(24px);
+  z-index: 1;
+}
+
+sensitive-toggle dialog[open] + .sensitive-hide-btn{
+  display: none;
+}
+
+sensitive-toggle .sensitive-hide-btn{
+  position: absolute;
+  top: -6px;
+  right: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 status-actions{
