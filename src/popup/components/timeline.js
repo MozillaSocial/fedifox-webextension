@@ -9,39 +9,42 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
 
   #currentList = "timeline";
 
+  #navItems = [
+    {
+      listType: "timeline",
+      name: "Content Feed"
+    },
+    {
+      listType: "favourites",
+      name: "Favourites"
+    },
+    {
+      listType: "bookmarks",
+      name: "Bookmarks"
+    }
+  ]
+
   static observedAttributes = ['hidden'];
 
   connectedCallback() {
     super.connectedCallback();
 
-    for (const data of [{
-          id: "timeline",
-          name: "Content Feed"
-        },
-        {
-          id: "favourites",
-          name: "Favourites"
-        },
-        {
-          id: "bookmarks",
-          name: "Bookmarks"
-        }
-      ]) {
-      const a = document.createElement('a');
-      a.href = "#";
-      a.id = data.id;
-      a.textContent = data.name;
-      this.append(a);
+    this.innerHTML = `
+    <nav>
+      ${this.#navItems.map(item => `<button data-list-type="${item.listType}">${item.name}</button>`).join('')}
+    </nav>
+    <ol></ol>
+    `
 
-      a.onclick = () => {
-        this.sendMessage("fetchLists");
-        this.#currentList = data.id;
-        this.#renderList();
-      }
+    this.querySelector('[data-list-type="timeline"]').click();
+  }
+
+  handleEvent(e) {
+    if (e.target.hasAttribute('data-list-type')) {
+      this.sendMessage("fetchLists");
+      this.#currentList = e.target.dataset.listType
+      this.#renderList();
     }
-
-    this.append(document.createElement('ol'));
-    this.querySelector("#timeline").click();
   }
 
   #renderList() {
