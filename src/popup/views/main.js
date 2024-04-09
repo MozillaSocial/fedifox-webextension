@@ -25,7 +25,6 @@ customElements.define('view-main', class ViewMain extends ViewBase {
     </nav>
     `
 
-
     for (const view of ["timeline", "share", "detectedactors"]) {
       const el = document.createElement(`moso-${view}`)
       el.initialize(this)

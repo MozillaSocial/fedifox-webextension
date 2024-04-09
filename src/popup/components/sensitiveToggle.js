@@ -7,7 +7,7 @@
 customElements.define("sensitive-toggle", class sensitiveToggle extends HTMLElement {
   #dialog
 
-  connectedCallback() { 
+  connectedCallback() {
     this.innerHTML = `
     <dialog open>
       <h3>Sensitive Content</h3>

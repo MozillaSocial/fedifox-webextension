@@ -9,8 +9,7 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
 
   #currentList = "timeline";
 
-  #navItems = [
-    {
+  #navItems = [{
       listType: "timeline",
       name: "Content Feed"
     },
@@ -36,8 +35,6 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
     <h2></h2>
     <ol></ol>
     `
-
-    this.querySelector('[data-list-type="timeline"]').click();
   }
 
   handleEvent(e) {
