@@ -48,7 +48,7 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
     const ol = this.querySelector("ol");
     ol.replaceChildren()
 
-    this.#lists[this.#currentList].forEach(status => {
+    this.#lists[this.#currentList]?.forEach(status => {
       const li = document.createElement('li')
       const card = document.createElement('status-card')
       card.setAttribute("action", true);
