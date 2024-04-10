@@ -6,11 +6,11 @@ import ViewBase from './base.js';
 
 customElements.define('view-authenticating', class ViewAuthenticating extends ViewBase {
   connectedCallback() {
-    super.connectedCallback();
-
     this.innerHTML = `
     <moso-header></moso-header>
-    <h2>Authenticating!</h2>
+    <h2 data-i18n="viewAuthenticatingTitle"></h2>
     `;
+
+    super.connectedCallback();
   }
 });

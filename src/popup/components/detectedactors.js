@@ -11,8 +11,8 @@ customElements.define('moso-detectedactors', class MosoDetectedActors extends Mo
     super.connectedCallback();
 
     this.innerHTML = `
-    <h2>Detected Actors</h2>
-    <p>An actor is any entity capable of performing an activity, such as a person, organization, or service. The following actors have been detected on this page:</p>
+    <h2 data-i18n="componentDetectedActorsTitle"></h2>
+    <p data-i18n="componentDetectedActorsMsg"></p>
     <ul></ul>
     `
   }

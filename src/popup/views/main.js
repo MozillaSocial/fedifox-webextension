@@ -8,20 +8,18 @@ customElements.define('view-main', class ViewMain extends ViewBase {
   #views = {};
 
   connectedCallback() {
-    super.connectedCallback();
-
     this.sendMessage("urlShareable");
     this.sendMessage("detectActors");
 
     this.innerHTML = `
     <moso-header></moso-header>
     <nav>
-      <button id="showTimeline">Feed</button>
-      <button id="share">Share</button>
-      <button id="shareCurrentPage">Share Current Page</button>
-      <button id="showDetectedActors" disabled>Show detected actors</button>
-      <button id="openInstance">Open Instance</button>
-      <button id="reset">Sign out</button>
+      <button id="showTimeline" data-i18n="viewMainButtonFeed"></button>
+      <button id="share" data-i18n="viewMainButtonShare"></button>
+      <button id="shareCurrentPage" data-i18n="viewMainButtonShareCurrentPage"></button>
+      <button id="showDetectedActors" disabled data-i18n="viewMainButtonShowDetectedActors"></button>
+      <button id="openInstance" data-i18n="viewMainButtonOpenInstance"></button>
+      <button id="reset" data-i18n="viewMainButtonSignOut"></button>
     </nav>
     `
 
@@ -42,6 +40,8 @@ customElements.define('view-main', class ViewMain extends ViewBase {
         e.stopPropagation();
       });
     }
+
+    super.connectedCallback();
   }
 
   async handleEvent(e) {
@@ -83,6 +83,7 @@ customElements.define('view-main', class ViewMain extends ViewBase {
     switch (msg.type) {
       case 'mastoLists':
         this.#views.timeline.setData(msg);
+        this.localize();
         break;
 
       case 'share':
@@ -96,6 +97,7 @@ customElements.define('view-main', class ViewMain extends ViewBase {
         if (menu.disabled) break
 
         this.#views.detectedactors.setData(msg.actors);
+        this.localize();
         break;
       }
 

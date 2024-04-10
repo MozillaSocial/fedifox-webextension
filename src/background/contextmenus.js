@@ -19,14 +19,14 @@ export class ContextMenus extends Component {
     browser.runtime.onInstalled.addListener(() => {
       browser.menus.create({
         id: 'sharePage',
-        title: 'Share this website',
+        title: browser.i18n.getMessage("contextMenuShareWebsite"),
         contexts: ['all'],
         enabled: false,
       });
 
       browser.menus.create({
         id: 'shareLink',
-        title: 'Share this URL',
+        title: browser.i18n.getMessage("contextMenuShareURL"),
         contexts: ['link'],
         enabled: false,
       });

@@ -6,8 +6,6 @@ import ViewBase from './base.js';
 
 customElements.define('view-loading', class ViewLoading extends ViewBase {
   connectedCallback() {
-    super.connectedCallback();
-
     this.innerHTML = `
     <style>
       main{
@@ -15,8 +13,10 @@ customElements.define('view-loading', class ViewLoading extends ViewBase {
       }
     </style>
     <main>
-      <h2>LOADING</h2>
+      <h2 data-i18n="viewLoadingTitle"></h2>
     </main>
     `
+
+    super.connectedCallback();
   }
 });

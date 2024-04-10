@@ -28,9 +28,9 @@ customElements.define("actor-card", class ActorCard extends HTMLElement {
       </address>
       <footer>
         ${this.#data.followers_count ? `<span>
-          <button id="followActor" class="secondary" data-actorid="${this.#data.id}">Follow</button> &nbsp;${this.#data.followers_count} followers
+          <button id="followActor" class="secondary" data-actorid="${this.#data.id}" data-i18n="componentActorCardButtonFollow"></button> &nbsp;${browser.i18n.getMessage("componentActorCardFollowerCount", this.#data.followers_count)}
           </span>` : ''}
-        ${this.#data.last_status_at ? `<time datetime="${this.#data.last_status_at}">Last active ${this.#formatDate(this.#data.last_status_at)}</time>` : ''}
+        ${this.#data.last_status_at ? `<time datetime="${this.#data.last_status_at}">${browser.i18n.getMessage("componentActorCardLastActive", this.#formatDate(this.#data.last_status_at))}</time>` : ''}
       </footer>
     </article>
     `

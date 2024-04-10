@@ -6,15 +6,15 @@ import ViewBase from './base.js';
 
 customElements.define('view-authfailed', class ViewAuthFailed extends ViewBase {
   connectedCallback() {
-    super.connectedCallback();
-
     this.innerHTML = `
     <moso-header></moso-header>
     <main>
-      <h2>Auth Failed!</h2>
-      <button id="retry">Retry</button>
+      <h2 data-i18n="viewAuthFailedTitle"></h2>
+      <button id="retry" data-i18n="viewAuthFailedButtonRetry"></button>
     </main>
     `;
+
+    super.connectedCallback();
   }
 
   async handleEvent(e) {

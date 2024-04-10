@@ -3,6 +3,8 @@
   "name": "MoSo-in-Firefox",
   "version": "1.0",
 
+  "default_locale": "en",
+
   "applications": {
     "gecko": {
       "id": "moso@mozilla.com",
@@ -11,7 +13,7 @@
     }
   },
 
-  "description": "A proof of concept to run MoSo into the browser",
+  "description": "__MSG_extensionDescription__",
 
   "incognito": "spanning",
 

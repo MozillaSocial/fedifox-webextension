@@ -1,0 +1,174 @@
+{
+  "extensionDescription": {
+    "message": "A proof of concept to run MoSo into the browser",
+    "description": "Description of the extension."
+  },
+  "contextMenuShareWebsite": {
+    "message": "Share this website",
+    "descritption": ""
+  },
+  "contextMenuShareURL": {
+    "message": "Share this URL",
+    "description": ""
+  },
+  "viewAuthenticatingTitle": {
+    "message": "Authenticating. Please wait.",
+    "description": ""
+  },
+  "viewAuthFailedTitle": {
+    "message": "Authentication failed.",
+    "description": ""
+  },
+  "viewAuthFailedButtonRetry": {
+    "message": "Retry",
+    "description": ""
+  },
+  "viewInitializeMsg1": {
+    "message": "Sign in to Mozilla.social, or connect with any other Mastodon server.",
+    "description": ""
+  },
+  "viewInitializeMsg2": {
+    "message": "No account? No sweat. Use the \"Register\" button to create a Mozilla account, and we'll set you up.",
+    "description": ""
+  },
+  "viewInitializeConnectToMoSo": {
+    "message": "Connect to Mozilla.social",
+    "description": ""
+  },
+  "viewInitializeConnectToOther": {
+    "message": "Connect to another Mastodon server",
+    "description": ""
+  },
+  "viewInitializeButtonRegister": {
+    "message": "Register",
+    "description": ""
+  },
+  "viewInitializeButtonSignIn": {
+    "message": "Sign in",
+    "description": ""
+  },
+  "viewInitializeButtonConnect": {
+    "message": "Connect",
+    "description": ""
+  },
+  "viewLoadingTitle": {
+    "message": "Loading...",
+    "description": ""
+  },
+  "viewMainButtonFeed": {
+    "message": "Feed",
+    "description": ""
+  },
+  "viewMainButtonShare": {
+    "message": "Share",
+    "description": ""
+  },
+  "viewMainButtonShareCurrentPage": {
+    "message": "Share Current Page",
+    "description": ""
+  },
+  "viewMainButtonShowDetectedActors": {
+    "message": "Show detected actors",
+    "description": ""
+  },
+  "viewMainButtonOpenInstance": {
+    "message": "Open Instance",
+    "description": ""
+  },
+  "viewMainButtonSignOut": {
+    "message": "Sign out",
+    "description": ""
+  },
+  "componentActorCardButtonFollow": {
+    "message": "Follow",
+    "description": ""
+  },
+  "componentActorCardFollowerCount": {
+    "message": "$1 followers",
+    "description": "$1 is the number of followers"
+  },
+  "componentActorCardLastActive": {
+    "message": "Last active $1",
+    "description": "$1 is the date, already localized"
+  },
+  "componentDetectedActorsTitle": {
+    "message": "Detected Actors",
+    "description": ""
+  },
+  "componentDetectedActorsMsg": {
+    "message": "An actor is any entity capable of performing an activity, such as a person, organization, or service. The following actors have been detected on this page:",
+    "description": ""
+  },
+  "componentHeader": {
+    "message": "Mozilla.Social",
+    "description": "Do not translate Mozilla.Social"
+  },
+  "componentSensitiveToggleTitle": {
+    "message": "Sensitive Content",
+    "description": ""
+  },
+  "componentSensitiveToggleSpoiler": {
+    "message": "Some people may find this content offensive or disturbing",
+    "description": ""
+  },
+  "componentSensitiveToggleButtonShow": {
+    "message": "Show",
+    "description": ""
+  },
+  "componentSensitiveToggleButtonShowTitle": {
+    "message": "Show content",
+    "description": ""
+  },
+  "componentSensitiveToggleButtonHideTitle": {
+    "message": "Hide content",
+    "description": ""
+  },
+  "componentShareButtonPost": {
+    "message": "Post",
+    "description": ""
+  },
+  "componentShareTitle": {
+    "message": "Share something!",
+    "description": ""
+  },
+  "componentStatusActionsButtonReply": {
+    "message": "Replies",
+    "description": ""
+  },
+  "componentStatusActionsButtonBoost": {
+    "message": "Boost",
+    "description": ""
+  },
+  "componentStatusActionsButtonBoosted": {
+    "message": "Boosted",
+    "description": ""
+  },
+  "componentStatusActionsButtonFavourite": {
+    "message": "Favourite",
+    "description": ""
+  },
+  "componentStatusActionsButtonFavourited": {
+    "message": "Favourited",
+    "description": ""
+  },
+  "componentStatusActionsButtonBookmark": {
+    "message": "Bookmark",
+    "description": ""
+  },
+  "componentStatusActionsButtonBookmarked": {
+    "message": "Bookmarked",
+    "description": ""
+  },
+  "componentTimelineContentFeed": {
+    "message": "Content Feed",
+    "description": ""
+  },
+  "componentTimelineFavourites": {
+    "message": "Favourites",
+    "description": ""
+  },
+  "componentTimelineBookmarks": {
+    "message": "Bookmarks",
+    "description": ""
+  }
+}

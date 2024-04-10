@@ -10,11 +10,11 @@ customElements.define("sensitive-toggle", class sensitiveToggle extends HTMLElem
   connectedCallback() {
     this.innerHTML = `
     <dialog open>
-      <h3>Sensitive Content</h3>
-      <p>${this.spoiler || 'Some people may find this content offensive or disturbing'}</p>
-      <button class="secondary sensitive-show-btn" title="Show content">Show</button>
+      <h3 data-i18n="componentSensitiveToggleTitle"></h3>
+      <p>${this.spoiler || browser.i18n.getMessage("componentSensitiveToggleSpoiler")}</p>
+      <button class="secondary sensitive-show-btn" title="${browser.i18n.getMessage("componentSensitiveToggleButtonShowTitle")}" data-i18n="componentSensitiveToggleButtonShow"></button>
     </dialog>
-    <button class="sensitive-hide-btn" title="Hide content">
+    <button class="sensitive-hide-btn" title="${browser.i18n.getMessage("componentSensitiveToggleButtonHideTitle")}">
       <img src="../../commons/images/eye-toggle.svg" width="24" height="24">
     </button>
     `

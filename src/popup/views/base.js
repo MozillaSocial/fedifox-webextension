@@ -8,6 +8,7 @@ export default class ViewBase extends HTMLElement {
 
   connectedCallback() {
     this.addEventListener('click', this)
+    this.localize();
   }
 
   disconnectedCallback() {
@@ -35,5 +36,18 @@ export default class ViewBase extends HTMLElement {
       type,
       data,
     });
+  }
+
+  localize() {
+    for (const elm of [...document.querySelectorAll("[data-i18n]")]) {
+      elm.textContent = this.#getTranslation(elm.getAttribute("data-i18n"));
+    }
+  }
+
+  #getTranslation(stringName, ...args) {
+    if (args.length !== 0) {
+      return browser.i18n.getMessage(stringName, ...args);
+    }
+    return browser.i18n.getMessage(stringName);
   }
 }

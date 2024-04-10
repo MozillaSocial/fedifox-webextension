@@ -11,15 +11,15 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
 
   #navItems = [{
       listType: "timeline",
-      name: "Content Feed"
+      name: "componentTimelineContentFeed"
     },
     {
       listType: "favourites",
-      name: "Favourites"
+      name: "componentTimelineFavourites"
     },
     {
       listType: "bookmarks",
-      name: "Bookmarks"
+      name: "componentTimelineBookmarks"
     }
   ]
 
@@ -30,7 +30,7 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
 
     this.innerHTML = `
     <nav>
-      ${this.#navItems.map(item => `<button data-list-type="${item.listType}">${item.name}</button>`).join('')}
+      ${this.#navItems.map(item => `<button data-list-type="${item.listType}">${browser.i18n.getMessage(item.name)}</button>`).join('')}
     </nav>
     <h2></h2>
     <ol></ol>

@@ -11,10 +11,10 @@ customElements.define('moso-share', class MosoShare extends MosoMainBase {
     super.connectedCallback();
 
     this.innerHTML = `
-    <h2>Share something!</h2>
+    <h2 data-i18n="componentShareTitle"></h2>
     <fieldset>
       <textarea id="shareBody"></textarea>
-      <button class="primary" id="share">Post</button>
+      <button class="primary" id="share" data-i18n="componentShareButtonPost"></button>
     </fieldset>
     `;
 

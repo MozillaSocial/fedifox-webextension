@@ -7,7 +7,7 @@ customElements.define('moso-header', class ViewHeader extends HTMLElement {
     this.innerHTML = `
       <header>
         <img src="../icons/logo.svg">
-        <h1>Mozilla Social</h1>
+        <h1 data-i18n="componentHeader"></h1>
       </header>`;
   }
 });

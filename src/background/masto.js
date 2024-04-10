@@ -34,8 +34,8 @@ export class Masto extends Component {
     this.#maybeUpdateData();
   }
 
-  async #fetchGETJson(path) {
-    return await fetch(`https://${this.#hostname}${path}`, {
+  async #fetchGETJson(path, fullURL = false) {
+    return await fetch(fullURL ? path : `https://${this.#hostname}${path}`, {
       headers: {
         Authorization: `Bearer ${this.#accessToken}`
       }
@@ -220,7 +220,7 @@ export class Masto extends Component {
     searchURL.searchParams.set('resolve', 'true');
 
     try {
-      return (await this.#fetchGETJson(searchURL)).accounts;
+      return (await this.#fetchGETJson(searchURL.href, true)).accounts;
     } catch (e) {
       log("Unable to fetch the search output", e);
     }
@@ -254,7 +254,7 @@ export class Masto extends Component {
         break;
 
       case 'searchOnMasto':
-        return await this.#search(data);
+        return this.#search(data);
 
       case 'followActor':
         await this.#followActor(data);

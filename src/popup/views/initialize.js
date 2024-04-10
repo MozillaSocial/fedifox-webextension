@@ -6,26 +6,24 @@ import ViewBase from './base.js';
 
 customElements.define('view-initialize', class ViewInitialize extends ViewBase {
   async connectedCallback() {
-    super.connectedCallback();
-
     this.sendMessage("fetchServerList");
 
     this.innerHTML = `
     <moso-header></moso-header>
     <main>
-      <p>Sign in to Mozilla.social, or connect with any other Mastodon server.</p>
-      <p>No account? No sweat. Use the "Register" button to create a Mozilla account, and we'll set you up.</p>
+      <p data-i18n="viewInitializeMsg1"></p>
+      <p data-i18n="viewInitializeMsg2"></p>
       <fieldset>
-        <legend>Connect to Mozilla.social</legend>
-        <button class="primary" id="moso-register-btn">Register</button>
-        <button class="secondary" id="moso-login-btn">Sign in</button>
+        <legend data-i18n="viewInitializeConnectToMoSo"></legend>
+        <button class="primary" id="moso-register-btn" data-i18n="viewInitializeButtonRegister"></button>
+        <button class="secondary" id="moso-login-btn" data-i18n="viewInitializeButtonSignIn"></button>
       </fieldset>
       <hr>
       <fieldset>
-        <legend>Connect to another Mastodon server</legend>
+        <legend data-i18n="viewInitializeConnectToOther"></legend>
         <input list="servers" id="other-server-url" placeholder="https://example.url">
         <datalist id="servers"></datalist>
-        <button class="secondary" id="other-server-btn">Connect</button>
+        <button class="secondary" id="other-server-btn" data-i18n="viewInitializeButtonConnect"></button>
       </fieldset>
     </main>
     `
@@ -42,6 +40,7 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
       document.getElementById("other-server-url").value = data.serverHost;
     }
 
+    super.connectedCallback();
   }
 
   async handleEvent(e) {

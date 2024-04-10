@@ -137,7 +137,7 @@ customElements.define("status-actions", class StatusActions extends HTMLElement 
 
     const replyButton = document.createElement('button');
     replyButton.className = `status-action`
-    replyButton.title = 'Replies'
+    replyButton.title = browser.i18n.getMessage("componentStatusActionsButtonReply");
     replyButton.style.setProperty('--icon-url', 'url(../commons/images/reply.svg)')
     replyButton.onclick = () => document.dispatchEvent(new CustomEvent("replyStatus", {
       detail: this.#status,
@@ -149,15 +149,15 @@ customElements.define("status-actions", class StatusActions extends HTMLElement 
     this.append(replyDiv);
 
     const boostButton = document.createElement('status-action-toggle');
-    boostButton.initialize("boost", ["Boost", "Boosted"], ["reblogStatus", "unreblogStatus"], this.#status.reblogged, this.#status.id);
+    boostButton.initialize("boost", ["componentStatusActionsButtonBoost", "componentStatusActionsButtonBoosted"], ["reblogStatus", "unreblogStatus"], this.#status.reblogged, this.#status.id);
     this.append(boostButton);
 
     const favouriteButton = document.createElement('status-action-toggle');
-    favouriteButton.initialize("favourite", ["Favourite", "Favourited"], ["favouriteStatus", "unfavouriteStatus"], this.#status.favourited, this.#status.id);
+    favouriteButton.initialize("favourite", ["componentStatusActionsButtonFavourite", "componentStatusActionsButtonFavourited"], ["favouriteStatus", "unfavouriteStatus"], this.#status.favourited, this.#status.id);
     this.append(favouriteButton);
 
     const bookmarkButton = document.createElement('status-action-toggle');
-    bookmarkButton.initialize("bookmark", ["Bookmark", "Bookmarked"], ["bookmarkStatus", "unbookmarkStatus"], this.#status.bookmarked, this.#status.id);
+    bookmarkButton.initialize("bookmark", ["componentStatusActionsButtonBookmark", "componentStatusActionsButtonBookmarked"], ["bookmarkStatus", "unbookmarkStatus"], this.#status.bookmarked, this.#status.id);
     this.append(bookmarkButton);
   }
 });
@@ -195,7 +195,7 @@ customElements.define("status-action-toggle", class StatusCard extends HTMLEleme
   }
 
   updateButton() {
-    this.button.title = this.#texts[this.#status ? 1 : 0]
+    this.button.title = browser.i18n.getMessage(this.#texts[this.#status ? 1 : 0])
     this.button.classList.toggle('on', this.#status)
   }
 
