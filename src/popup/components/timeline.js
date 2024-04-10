@@ -26,8 +26,6 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
   static observedAttributes = ['hidden'];
 
   connectedCallback() {
-    super.connectedCallback();
-
     this.innerHTML = `
     <nav>
       ${this.#navItems.map(item => `<button data-list-type="${item.listType}">${browser.i18n.getMessage(item.name)}</button>`).join('')}
@@ -35,6 +33,8 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
     <h2></h2>
     <ol></ol>
     `
+
+    super.connectedCallback();
   }
 
   handleEvent(e) {
