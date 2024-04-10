@@ -147,7 +147,7 @@ sensitive-toggle dialog[open]{
   justify-content: center;
   align-items: center;
   gap: var(--padding-sm);
-  background: rgba(255 255 255 / .5);
+  background: rgba(246 246 246 / .5);
   border: 1px solid var(--light-gray);
   border-radius: var(--border-radius);
   -webkit-backdrop-filter: blur(24px);
@@ -225,6 +225,40 @@ article.boosted{
   color: inherit;
   text-decoration: none;
   font-weight: bold;
+}
+
+preview-card{
+  border: 1px solid var(--light-gray);
+  border-radius: var(--border-radius);
+  background-image: radial-gradient(ellipse at top, #fff, #f8f8f8);
+}
+
+preview-card figcaption{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-sm);
+  padding: var(--padding-sm);
+}
+
+preview-card iframe{
+  width: 100%;
+  height: 100%;
+  display: block;
+  aspect-ratio: 16/9;
+}
+
+preview-card figure.default-img{
+  display: flex;
+}
+
+preview-card figure.default-img img{
+  height: 48px;
+  margin: var(--padding-sm) 0 0 var(--padding-sm);
+  opacity: .5;
+}
+
+preview-card p:empty{
+  display: none;
 }
 
 /*** SHARE STYLES ***/

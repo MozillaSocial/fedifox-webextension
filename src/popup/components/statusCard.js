@@ -90,8 +90,8 @@ customElements.define("status-content", class StatusContent extends HTMLElement 
     this.innerHTML += `<div class="media">${this.#status.media_attachments?.map(obj => this.#parseMedia(obj)).join('')}</div>`;
 
     if (this.#status.card && ['link', 'photo', 'video', 'rich'].includes(this.#status.card.type)) {
-      const card = document.createElement(`status-content-card-${this.#status.card.type}`);
-      card.initialize(this.#status);
+      const card = document.createElement('preview-card');
+      card.initialize(this.#status.card);
       this.append(card);
     }
 
@@ -201,90 +201,5 @@ customElements.define("status-action-toggle", class StatusCard extends HTMLEleme
 
   disconnectedCallback() {
     this.button.removeEventListener('click', this)
-  }
-});
-
-customElements.define("status-content-card-rich", class StatusContentCard extends HTMLElement {
-  #status
-
-  initialize(value) {
-    this.#status = value
-  }
-
-  connectedCallback() {
-    console.assert(this.#status, "No status yet?!?");
-
-    // NO IDEA WHAT TO SHOW HERE...
-    this.innerHTML = `
-      <div class="content-card">
-        URL: ${this.#status.card.url}<br />
-        TITLE: ${this.#status.card.title}<br />
-        DESCRIPTION: ${this.#status.card.description}<br />
-        <img src="${this.#status.card.image}" alt="${this.#status.card.image_description}" />
-      </div>
-    `;
-  }
-});
-
-customElements.define("status-content-card-video", class StatusContentCard extends HTMLElement {
-  #status
-
-  initialize(value) {
-    this.#status = value
-  }
-
-  connectedCallback() {
-    console.assert(this.#status, "No status yet?!?");
-
-    this.innerHTML = `
-      <div class="content-card">
-        URL: ${this.#status.card.url}<br />
-        TITLE: ${this.#status.card.title}<br />
-        DESCRIPTION: ${this.#status.card.description}<br />
-        AUTHOR: ${this.#status.card.author_name} - ${this.#status.card.author_url}<br />
-        ${this.#status.card.html}
-      </div>
-    `;
-  }
-});
-customElements.define("status-content-card-photo", class StatusContentCard extends HTMLElement {
-  #status
-
-  initialize(value) {
-    this.#status = value
-  }
-
-  connectedCallback() {
-    console.assert(this.#status, "No status yet?!?");
-
-    this.innerHTML = `
-      <div class="content-card">
-        URL: ${this.#status.card.url}<br />
-        TITLE: ${this.#status.card.title}<br />
-        DESCRIPTION: ${this.#status.card.description}<br />
-        AUTHOR: ${this.#status.card.author_name} - ${this.#status.card.author_url}<br />
-        <img src="${this.#status.card.image}" />
-      </div>
-    `;
-  }
-});
-customElements.define("status-content-card-link", class StatusContentCard extends HTMLElement {
-  #status
-
-  initialize(value) {
-    this.#status = value
-  }
-
-  connectedCallback() {
-    console.assert(this.#status, "No status yet?!?");
-
-    this.innerHTML = `
-      <div class="content-card">
-        URL: ${this.#status.card.url}<br />
-        TITLE: ${this.#status.card.title}<br />
-        DESCRIPTION: ${this.#status.card.description}<br />
-        <img src="${this.#status.card.image}" alt="${this.#status.card.image_description}" />
-      </div>
-    `;
   }
 });

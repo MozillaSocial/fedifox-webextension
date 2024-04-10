@@ -7,5 +7,6 @@ import './header.js';
 import './share.js';
 import './statusCard.js';
 import './actorCard.js';
+import './previewCard.js';
 import './sensitiveToggle.js';
 import './timeline.js';
