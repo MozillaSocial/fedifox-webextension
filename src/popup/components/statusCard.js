@@ -17,23 +17,33 @@ customElements.define("status-card", class StatusCard extends HTMLElement {
   connectedCallback() {
     console.assert(this.#status, "No status yet?!?");
 
-    while (this.firstChild) this.firstChild.remove();
+    this.replaceChildren()
 
     const article = document.createElement('article');
     article.id = `id${this.#status.id}`;
     this.append(article);
 
     if (this.#status.reblog) {
-      // TODO: double images + double actors!
+      article.className = 'boosted'
+      article.insertAdjacentHTML('beforebegin', `
+      <div class="boost-credit">
+        <a href="${this.#status.account.url}">
+          <img src="${this.#status.account.avatar}">
+          <span>${this.#status.account.display_name || this.#status.account.username}</span>
+        </a>
+        <span>boosted</span>
+      </div>
+      `)
+
       article.innerHTML = `
         <header>
-          <a href="${this.#status.url}">
+          <a href="${this.#status.reblog.url}">
             <img src="${this.#status.reblog.account.avatar}">
             <address>${this.#status.reblog.account.display_name || this.#status.reblog.account.username}</address>
             <time datetime="${this.#status.created_at}">${this.#formatDate(this.#status.created_at)}</time>
           </a>
         </header>
-      `;
+      `
     } else {
       article.innerHTML = `
         <header>

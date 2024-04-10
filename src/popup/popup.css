@@ -199,6 +199,34 @@ status-actions{
   cursor: default;
 }
 
+article.boosted{
+  border-left: var(--padding-sm) solid var(--light-gray);
+  padding-left: var(--padding-sm);
+}
+
+.boost-credit{
+  display: flex;
+  height: 16px;
+  gap: var(--padding-xs);
+  margin-bottom: var(--padding-md);
+  color: var(--medium-gray);
+  font-style: italic;
+}
+
+.boost-credit::before{
+  content: url(../commons/images/boost.svg);
+  display: inline-block;
+  width: 16px;
+  opacity: .5;
+}
+
+.boost-credit a{
+  display: contents;
+  color: inherit;
+  text-decoration: none;
+  font-weight: bold;
+}
+
 /*** SHARE STYLES ***/
 moso-share fieldset{
   display: flex;
