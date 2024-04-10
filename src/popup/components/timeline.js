@@ -9,32 +9,33 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
 
   #currentList = "timeline";
 
-  #navItems = [{
+  #navItems = [
+    {
       listType: "timeline",
-      name: "componentTimelineContentFeed"
+      name: browser.i18n.getMessage("componentTimelineContentFeed")
     },
     {
       listType: "favourites",
-      name: "componentTimelineFavourites"
+      name: browser.i18n.getMessage("componentTimelineFavourites")
     },
     {
       listType: "bookmarks",
-      name: "componentTimelineBookmarks"
+      name: browser.i18n.getMessage("componentTimelineBookmarks")
     }
   ]
 
   static observedAttributes = ['hidden'];
 
   connectedCallback() {
+    super.connectedCallback();
+
     this.innerHTML = `
     <nav>
-      ${this.#navItems.map(item => `<button data-list-type="${item.listType}">${browser.i18n.getMessage(item.name)}</button>`).join('')}
+      ${this.#navItems.map(item => `<button data-list-type="${item.listType}">${item.name}</button>`).join('')}
     </nav>
     <h2></h2>
     <ol></ol>
     `
-
-    super.connectedCallback();
   }
 
   handleEvent(e) {
