@@ -3,11 +3,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 customElements.define('moso-header', class ViewHeader extends HTMLElement {
-  connectedCallback() {
+  async connectedCallback() {
+    const data = await browser.storage.local.get(['instanceData']);
+
     this.innerHTML = `
       <header>
-        <img src="../icons/logo.svg">
-        <h1 data-i18n="componentHeader"></h1>
+        <img src="${data?.instanceData?.icon || '.../icons/logo.svg' }">
+        <h1>${data?.instanceData?.title || 'Mozilla.Social'}</h1>
       </header>`;
   }
 });

@@ -43,8 +43,18 @@ class StorageUtils {
     });
   }
 
+  async getInstanceData() {
+    return this.#getStorageKey("instanceData");
+  }
+
+  async setInstanceData(instanceData) {
+    await browser.storage.local.set({
+      instanceData
+    });
+  }
+
   async #getStorageKey(key) {
-    let data = await browser.storage.local.get([key]);
+    const data = await browser.storage.local.get([key]);
     return data[key];
   }
 }

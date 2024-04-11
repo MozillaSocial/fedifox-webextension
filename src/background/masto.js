@@ -60,6 +60,7 @@ export class Masto extends Component {
     try {
       await this.#verifyCredentials();
       await this.#updateFollowing();
+      await this.#updateInstance();
     } catch (e) {
       this.setState(STATE_AUTH_FAILED);
     }
@@ -87,6 +88,19 @@ export class Masto extends Component {
     }
 
     this.#following = data;
+  }
+
+  async #updateInstance() {
+    const data = await this.#fetchGETJson('/api/v2/instance');
+
+    if (data.error) {
+      throw new Error();
+    }
+
+    await StorageUtils.setInstanceData({
+      icon: data.thumbnail?.url,
+      title: data.title,
+    });
   }
 
   async #connectToHost(hostname) {

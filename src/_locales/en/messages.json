@@ -99,10 +99,6 @@
     "message": "An actor is any entity capable of performing an activity, such as a person, organization, or service. The following actors have been detected on this page:",
     "description": ""
   },
-  "componentHeader": {
-    "message": "Mozilla.Social",
-    "description": "Do not translate Mozilla.Social"
-  },
   "componentSensitiveToggleTitle": {
     "message": "Sensitive Content",
     "description": ""
