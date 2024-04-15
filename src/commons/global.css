@@ -1,15 +1,19 @@
 :root{
+  color-scheme: light dark;
+
   /* colors from Mozilla brand guidelines https://mozilla.design/mozilla/#color */
   --light-gray: #e7e5e2;
   --medium-gray: #959595;
   --dark-gray: #484848;
+  --black: #222;
   --medium-green: #2ac3a2;
   --dark-green: #005e5e;
   --neon-blue: #00ffff;
   --medium-blue: #0060df;
-  --dark-blue: #00458b;
   --dark-purple: #6e008b;
   --warm-red: #ff4f5e;
+
+  --subtle-gradient: radial-gradient(ellipse at top left, transparent, hsl(0 10% 80% / .2));
 
   --min-width: 320px;
   --max-width: 800px;
@@ -18,6 +22,9 @@
   --padding-md: 16px;
   --padding-lg: 24px;
   --padding-xl: 48px;
+
+  --border-1px: 1px solid light-dark(var(--light-gray), var(--dark-gray));
+  --border-2px: 2px solid light-dark(var(--light-gray), var(--dark-gray));
   --border-radius: 4px;
 
   --h1-font: 700 1.5rem/1.2 'Zilla Slab', Inter, sans-serif;
@@ -37,10 +44,11 @@ html{
 
 body {
   font: normal .875rem/1.2 Inter, Inter-fallback, sans-serif;
-  background-color: white;
+  color: light-dark(var(--black), var(--light-gray));
+  background-color: light-dark(white, var(--black));
   max-width: var(--max-width);
   padding: var(--padding-md);
-  background-image: radial-gradient(ellipse at top, #fff, #f8f8f8);
+  background-image: var(--subtle-gradient);
 }
 
 h1 {
@@ -91,11 +99,11 @@ label[data-error]::after{
 textarea, input, select {
   width: 100%;
   padding: var(--padding-sm);
-  border: 2px solid var(--light-gray);
+  border: var(--border-2px);
   border-radius: var(--border-radius);
   font: inherit;
   line-height: normal;
-  background-color: white;
+  background-color: light-dark(white, var(--black));
 }
 
 textarea{
@@ -143,23 +151,22 @@ a.button {
 }
 
 button.primary, .button.primary {
-  color: white;
-  background: black;
+  color: light-dark(white, var(--black));
+  background: light-dark(var(--black), white);
   border: none;
   border-radius: var(--border-radius);
   padding: var(--padding-sm) var(--padding-md);
   font: inherit;
   font-weight: bold;
   cursor: pointer;
-  transition: background .3s ease-out;
+  transition: opacity .3s ease-out;
 }
 
 button.primary:hover, .button.primary:hover {
-  background: #333;
+  opacity: .8;
 }
 
 button.secondary, .button.secondary {
-  color: black;
   background: transparent;
   border: 2px solid var(--medium-gray);
   border-radius: var(--border-radius);
@@ -167,11 +174,11 @@ button.secondary, .button.secondary {
   font: inherit;
   font-weight: bold;
   cursor: pointer;
-  transition: border .3s ease-out;
+  transition: border .2s ease-out;
 }
 
 button.secondary:hover, .button.secondary:hover {
-  border-color: var(--dark-gray);
+  border-color: light-dark(var(--dark-gray), var(--light-gray));
 }
 
 form:invalid button[type='submit'] {
@@ -188,5 +195,5 @@ img {
 
 hr{
   border: none;
-  border-top: 1px solid var(--light-gray);
+  border-top: var(--border-1px);
 }

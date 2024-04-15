@@ -3,7 +3,7 @@ header{
   align-items: center;
   gap: var(--padding-sm);
   padding-bottom: var(--padding-sm);
-  border-bottom: 1px solid var(--light-gray);
+  border-bottom: var(--border-1px);
 }
 
 header > img{
@@ -25,8 +25,8 @@ nav::before{
   height: 100%;
   left: calc((100% - 100vw)/2);
   top: 0;
-  box-shadow: 0 0 0 2px var(--light-gray);
-  background-color: white;
+  box-shadow: 0 0 0 2px light-dark(var(--light-gray), var(--dark-gray));
+  background-color: light-dark(white, var(--black));
   z-index: -1;
 }
 
@@ -34,14 +34,14 @@ nav button:not(.primary, .secondary){
   font-weight: 700;
   padding: var(--padding-sm) 0;
   border: none;
-  color: var(--dark-gray);
+  color: light-dark(var(--dark-gray), white);
   background-color: transparent;
   cursor: pointer;
-  transition: color .3s ease-out;
+  transition: color .2s ease-out;
 }
 
 nav button:disabled {
-  color: var(--light-gray);
+  color: light-dark(var(--light-gray), var(--medium-gray));
   cursor: default;
 }
 
@@ -73,9 +73,9 @@ status-card{
   display: block;
   width: 100%;
   padding: var(--padding-md);
-  border: 2px solid var(--light-gray);
+  border: var(--border-2px);
   border-radius: var(--border-radius);
-  background-color: white;
+  background-color: light-dark(white, var(--black));
 }
 
 status-card header img{
@@ -96,7 +96,7 @@ status-card header a{
 status-card header address{
   font-weight: bold;
   font-style: normal;
-  color: var(--dark-gray);
+  color: light-dark(var(--dark-gray), var(--light-gray));
 }
 
 status-card header time{
@@ -125,7 +125,7 @@ status-content .media{
 status-content .media figure{
   max-width: 320px;
   max-height: 320px;
-  border: 1px solid var(--light-gray);
+  border: var(--border-1px);
   border-radius: var(--border-radius);
   overflow: hidden;
 }
@@ -147,8 +147,8 @@ sensitive-toggle dialog[open]{
   justify-content: center;
   align-items: center;
   gap: var(--padding-sm);
-  background: rgba(246 246 246 / .5);
-  border: 1px solid var(--light-gray);
+  background: light-dark(hsl(0 0 95% / .5), hsl(0 0 20% / .5));
+  border: var(--border-1px);
   border-radius: var(--border-radius);
   -webkit-backdrop-filter: blur(24px);
   backdrop-filter: blur(24px);
@@ -173,7 +173,7 @@ status-actions{
   align-items: center;
   gap: var(--padding-lg);
   padding-top: var(--padding-md);
-  border-top: 1px solid var(--light-gray);
+  border-top: var(--border-1px);
 }
 
 .status-action {
@@ -181,7 +181,7 @@ status-actions{
   width: 18px;
   height: 18px;
   border: none;
-  background-color: var(--dark-gray);
+  background-color: var(--medium-gray);
   -webkit-mask: var(--icon-url) no-repeat;
   mask: var(--icon-url) no-repeat;
   cursor: pointer;
@@ -195,7 +195,7 @@ status-actions{
   display: flex;
   gap: var(--padding-xs);
   align-items: center;
-  color: var(--dark-gray);
+  color: var(--medium-gray);
   cursor: default;
 }
 
@@ -228,9 +228,9 @@ article.boosted{
 }
 
 preview-card{
-  border: 1px solid var(--light-gray);
+  border: var(--border-1px);
   border-radius: var(--border-radius);
-  background-image: radial-gradient(ellipse at top, #fff, #f8f8f8);
+  background-image: var(--subtle-gradient);
 }
 
 preview-card figcaption{
@@ -281,9 +281,9 @@ moso-detectedactors ul{
 actor-card{
   display: block;
   padding: var(--padding-md);
-  border: 2px solid var(--light-gray);
+  border: var(--border-2px);
   border-radius: var(--border-radius);
-  background-color: white;
+  background-color: light-dark(white, black);
 }
 
 actor-card article{
@@ -305,6 +305,6 @@ actor-card footer{
   align-items: center;
   justify-content: space-between;
   padding-top: var(--padding-md);
-  border-top: 1px solid var(--light-gray);
+  border-top: var(--border-1px);
   color: var(--medium-gray);
 }
