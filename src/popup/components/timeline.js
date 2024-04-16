@@ -49,7 +49,7 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
     const ol = this.querySelector("ol");
     ol.replaceChildren()
 
-    this.querySelector('h2').textContent = this.#navItems.find(item => item.listType === this.#currentList).name
+    this.querySelector('h2').textContent = browser.i18n.getMessage(this.#navItems.find(item => item.listType === this.#currentList).name);
 
     this.#lists[this.#currentList]?.forEach(status => {
       const li = document.createElement('li')

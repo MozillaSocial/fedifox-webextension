@@ -4,12 +4,20 @@
 
 customElements.define('moso-header', class ViewHeader extends HTMLElement {
   async connectedCallback() {
-    const data = await browser.storage.local.get(['instanceData']);
+    const data = await this.#getInstanceData();
 
     this.innerHTML = `
       <header>
-        <img src="${data?.instanceData?.icon || '.../icons/logo.svg' }">
+        <img src="${data?.instanceData?.icon || '../icons/logo.svg' }">
         <h1>${data?.instanceData?.title || 'Mozilla.Social'}</h1>
       </header>`;
+  }
+
+  async #getInstanceData() {
+    if (isChrome) {
+      return new Promise(r => browser.storage.local.get(['instanceData'], data => r(data)));
+    }
+
+    return browser.storage.local.get(['instanceData']);
   }
 });

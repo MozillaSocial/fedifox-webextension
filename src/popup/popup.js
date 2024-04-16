@@ -15,7 +15,7 @@ class Popup {
   #pendingMessages = [];
 
   async init() {
-    window.addEventListener("contextmenu", e => e.preventDefault());
+    // window.addEventListener("contextmenu", e => e.preventDefault());
     this.#port = browser.runtime.connect({
       name: "panel"
     });

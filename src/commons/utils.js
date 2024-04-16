@@ -19,3 +19,11 @@ function assert(a, msg) {
     throw new Error(msg);
   }
 }
+
+const isChrome = !window.browser;
+
+window.browser = (function() {
+  return window.msBrowser ||
+    window.browser ||
+    window.chrome;
+})();

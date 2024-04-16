@@ -31,12 +31,10 @@ export class UI extends Component {
       if (changeInfo.status === 'loading') {
         this.#deleteTabData(tabId);
       }
-    }, {
-      properties: ['status']
     });
     browser.tabs.onActivated.addListener(async tabInfo => {
       if (tabInfo.windowId === this.#currentWindowId) {
-        const tab = await browser.tabs.get(tabInfo.tabId);
+        const tab = await this.#getTab(tabInfo.tabId);
         this.#sendTabShareable(tab);
       }
     });
@@ -68,7 +66,13 @@ export class UI extends Component {
     this.#sendDataToCurrentPort();
 
     if (this.state === STATE_AUTH_FAILED) {
-      await browser.browserAction.openPopup();
+      browser.browserAction.setBadgeText({
+        text: "🟢"
+      });
+
+      if (!isChrome) {
+        await browser.browserAction.openPopup();
+      }
     }
   }
 
@@ -139,10 +143,7 @@ export class UI extends Component {
         });
 
       case 'shareCurrentPage': {
-        const tabs = await browser.tabs.query({
-          active: true,
-          windowId: this.#currentWindowId
-        });
+        const tabs = await this.#activeTabs();
         return this.#sendOrQueueAndPopup({
           type: "share",
           url: tabs.length && (tabs[0].url.startsWith('http://') || tabs[0].url.startsWith('https://')) ? tabs[0].url : '',
@@ -162,10 +163,7 @@ export class UI extends Component {
         return this.#sendActorsDetected();
 
       case 'urlShareable': {
-        const tabs = await browser.tabs.query({
-          active: true,
-          windowId: this.#currentWindowId
-        });
+        const tabs = await this.#activeTabs();
         return this.#sendTabShareable(tabs[0]);
       }
 
@@ -218,10 +216,7 @@ export class UI extends Component {
 
   async #sendActorsDetected() {
     if (this.#currentPort) {
-      const tabs = await browser.tabs.query({
-        active: true,
-        windowId: this.#currentWindowId
-      });
+      const tabs = await this.#activeTabs();
 
       this.#currentPort.postMessage({
         type: 'actorsDetected',
@@ -237,4 +232,27 @@ export class UI extends Component {
     this.#messageQueue.push(msg);
     await browser.browserAction.openPopup();
   }
+
+  async #activeTabs() {
+    if (isChrome) {
+      return new Promise(r => browser.tabs.query({
+        active: true,
+        windowId: this.#currentWindowId
+      }, tabs => r(tabs)));
+    }
+
+    return browser.tabs.query({
+      active: true,
+      windowId: this.#currentWindowId
+    });
+  }
+
+  async #getTab(tabId) {
+    if (isChrome) {
+      return new Promise(r => browser.tabs.get(tabId, data => r(data)));
+    }
+
+    return browser.tabs.get(tabId);
+  }
+
 }

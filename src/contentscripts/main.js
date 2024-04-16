@@ -1,3 +1,9 @@
+window.browser = (function() {
+  return window.msBrowser ||
+    window.browser ||
+    window.chrome;
+})();
+
 const port = browser.runtime.connect({
   name: "cs"
 });

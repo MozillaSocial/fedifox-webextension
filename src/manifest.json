@@ -49,7 +49,7 @@
   "permissions": [
     "<all_urls>",
     "identity",
-    "menus",
+    "contextMenus",
     "storage",
     "tabs"
   ]

@@ -54,7 +54,11 @@ class StorageUtils {
   }
 
   async #getStorageKey(key) {
-    const data = await browser.storage.local.get([key]);
+    if (isChrome) {
+      return new Promise(r => browser.storage.local.get([key], data => r(data[key])));
+    }
+
+    const data = await browser.storage.local.get(key);
     return data[key];
   }
 }

@@ -146,6 +146,20 @@ export class Masto extends Component {
     return await request.json();
   }
 
+  async #startAuthFlow(url) {
+    if (!isChrome) {
+      return browser.identity.launchWebAuthFlow({
+        interactive: true,
+        url,
+      });
+    }
+
+    return new Promise(r => browser.identity.launchWebAuthFlow({
+      interactive: true,
+      url,
+    }, redirectURL => r(redirectURL)));
+  }
+
   async #oauth2Authentication(hostname, appData) {
     assert(this.state === STATE_AUTHENTICATING, "Invalid state");
     log("Triggering the oauth2 authentication flow");
@@ -156,10 +170,7 @@ export class Masto extends Component {
     authorizeURL.searchParams.set('redirect_uri', appData.redirect_uri);
     authorizeURL.searchParams.set('response_type', 'code');
 
-    const redirectURL = await browser.identity.launchWebAuthFlow({
-      interactive: true,
-      url: authorizeURL.href,
-    });
+    const redirectURL = await this.#startAuthFlow(authorizeURL.href);
 
     const url = new URL(redirectURL);
     return url.searchParams.get("code");
