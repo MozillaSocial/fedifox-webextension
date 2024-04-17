@@ -1,6 +1,6 @@
 {
   "extensionDescription": {
-    "message": "A proof of concept to run MoSo into the browser",
+    "message": "A proof of concept to run Mozilla.social into the browser",
     "description": "Description of the extension."
   },
   "contextMenuShareWebsite": {
@@ -68,7 +68,7 @@
     "description": ""
   },
   "viewMainButtonShowDetectedActors": {
-    "message": "Show detected actors",
+    "message": "Page Insights",
     "description": ""
   },
   "viewMainButtonOpenInstance": {
@@ -92,11 +92,11 @@
     "description": "$1 is the date, already localized"
   },
   "componentDetectedActorsTitle": {
-    "message": "Detected Actors",
+    "message": "Page Insights",
     "description": ""
   },
   "componentDetectedActorsMsg": {
-    "message": "An actor is any entity capable of performing an activity, such as a person, organization, or service. The following actors have been detected on this page:",
+    "message": "Social accounts detected on the current web page will be listed here. This could include any entity capable of performing an activity, such as a person, organization, or service. A green notification dot on the extension icon will appear when accounts are detected",
     "description": ""
   },
   "componentSensitiveToggleTitle": {
