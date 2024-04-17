@@ -9,10 +9,17 @@ import {
   Logger
 } from './logger.js';
 import StorageUtils from "./storageUtils.js";
+import * as utils from './utils.js';
 
 const log = Logger.logger('Masto');
 
 const SCOPES = 'read write push';
+
+function assert(a, msg) {
+  if (!a) {
+    throw new Error(msg);
+  }
+}
 
 export class Masto extends Component {
   #hostname;
@@ -53,7 +60,7 @@ export class Masto extends Component {
   }
 
   async #maybeUpdateData() {
-    if (this.state !== STATE_MAIN) {
+    if (this.state !== utils.STATE_MAIN) {
       return;
     }
 
@@ -62,7 +69,7 @@ export class Masto extends Component {
       await this.#updateFollowing();
       await this.#updateInstance();
     } catch (e) {
-      this.setState(STATE_AUTH_FAILED);
+      this.setState(utils.STATE_AUTH_FAILED);
     }
   }
 
@@ -104,11 +111,11 @@ export class Masto extends Component {
   }
 
   async #connectToHost(hostname) {
-    assert(this.state === STATE_INITIALIZE, "Invalid state");
+    assert(this.state === utils.STATE_INITIALIZE, "Invalid state");
 
     log(`Connecting to server host ${hostname})`);
     await StorageUtils.setServerHost(hostname);
-    this.setState(STATE_AUTHENTICATING);
+    this.setState(utils.STATE_AUTHENTICATING);
 
     try {
       const appData = await this.#createApplication(hostname);
@@ -120,22 +127,22 @@ export class Masto extends Component {
       this.#hostname = hostname;
       this.#accessToken = accessToken;
 
-      this.setState(STATE_MAIN);
+      this.setState(utils.STATE_MAIN);
     } catch (e) {
-      this.setState(STATE_AUTH_FAILED);
+      this.setState(utils.STATE_AUTH_FAILED);
     }
   }
 
   async #createApplication(hostname) {
-    assert(this.state === STATE_AUTHENTICATING, "Invalid state");
+    assert(this.state === utils.STATE_AUTHENTICATING, "Invalid state");
     log("Registering the application");
 
-    const manifest = await browser.runtime.getManifest();
+    const manifest = await chrome.runtime.getManifest();
 
     const formData = new FormData();
     formData.set('client_name', manifest.name);
     formData.set('website', manifest.homepage_url || "https://mozilla.social");
-    formData.set('redirect_uris', browser.identity.getRedirectURL());
+    formData.set('redirect_uris', chrome.identity.getRedirectURL());
     formData.set('scopes', SCOPES);
 
     const request = await fetch(`https://${hostname}/api/v1/apps`, {
@@ -146,22 +153,8 @@ export class Masto extends Component {
     return await request.json();
   }
 
-  async #startAuthFlow(url) {
-    if (!isChrome) {
-      return browser.identity.launchWebAuthFlow({
-        interactive: true,
-        url,
-      });
-    }
-
-    return new Promise(r => browser.identity.launchWebAuthFlow({
-      interactive: true,
-      url,
-    }, redirectURL => r(redirectURL)));
-  }
-
   async #oauth2Authentication(hostname, appData) {
-    assert(this.state === STATE_AUTHENTICATING, "Invalid state");
+    assert(this.state === utils.STATE_AUTHENTICATING, "Invalid state");
     log("Triggering the oauth2 authentication flow");
 
     const authorizeURL = new URL(`https://${hostname}/oauth/authorize`);
@@ -170,14 +163,17 @@ export class Masto extends Component {
     authorizeURL.searchParams.set('redirect_uri', appData.redirect_uri);
     authorizeURL.searchParams.set('response_type', 'code');
 
-    const redirectURL = await this.#startAuthFlow(authorizeURL.href);
+    const redirectURL = await chrome.identity.launchWebAuthFlow({
+      interactive: true,
+      url: authorizeURL.href,
+    });
 
     const url = new URL(redirectURL);
     return url.searchParams.get("code");
   }
 
   async #fetchAccessToken(hostname, appData, code) {
-    assert(this.state === STATE_AUTHENTICATING, "Invalid state");
+    assert(this.state === utils.STATE_AUTHENTICATING, "Invalid state");
     log("Requesting the access token");
 
     const formData = new FormData();
@@ -197,7 +193,7 @@ export class Masto extends Component {
   }
 
   async #fetchLists() {
-    assert(this.state === STATE_MAIN, "Invalid state");
+    assert(this.state === utils.STATE_MAIN, "Invalid state");
     log("Fetching the home timeline, favourites and bookmarks");
 
     this.sendMessage('mastoLists', {
@@ -208,10 +204,10 @@ export class Masto extends Component {
   }
 
   async #openInstance() {
-    assert(this.state === STATE_MAIN, "Invalid state");
+    assert(this.state === utils.STATE_MAIN, "Invalid state");
     log("Open instance");
 
-    await browser.tabs.create({
+    await chrome.tabs.create({
       url: `https://${this.#hostname}`
     });
   }

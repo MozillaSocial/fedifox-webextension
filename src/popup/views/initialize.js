@@ -35,12 +35,7 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
       }
     }
 
-    let data;
-    if (isChrome) {
-      data = await new Promise(r => browser.storage.local.get(["serverHost"], data => r(data)));
-    } else {
-      data = await browser.storage.local.get(["serverHost"]);
-    }
+    const data = await chrome.storage.local.get(["serverHost"]);
 
     if (data && data.serverHost) {
       document.getElementById("other-server-url").value = data.serverHost;

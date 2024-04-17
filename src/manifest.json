@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "MoSo-in-Firefox",
   "version": "1.0",
 
@@ -17,10 +17,12 @@
   "incognito": "spanning",
 
   "background": {
-    "page": "background/page.html"
+    "service_worker": "background/main.js",
+    "scripts": ["background/main.js"],
+    "type": "module"
   },
 
-  "browser_action": {
+  "action": {
     "default_area": "navbar",
     "default_icon": "icons/logo.svg",
     "default_title": "MoSo",
@@ -45,8 +47,11 @@
     }
   ],
 
+  "host_permissions": [
+    "<all_urls>"
+  ],
+
   "permissions": [
-    "<all_urls>",
     "identity",
     "contextMenus",
     "storage",

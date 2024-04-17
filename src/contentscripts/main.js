@@ -4,7 +4,7 @@ window.browser = (function() {
     window.chrome;
 })();
 
-const port = browser.runtime.connect({
+const port = chrome.runtime.connect({
   name: "cs"
 });
 

@@ -46,8 +46,8 @@ export default class ViewBase extends HTMLElement {
 
   #getTranslation(stringName, ...args) {
     if (args.length !== 0) {
-      return browser.i18n.getMessage(stringName, ...args);
+      return chrome.i18n.getMessage(stringName, ...args);
     }
-    return browser.i18n.getMessage(stringName);
+    return chrome.i18n.getMessage(stringName);
   }
 }

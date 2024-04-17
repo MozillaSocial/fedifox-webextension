@@ -5,6 +5,9 @@ import {
   Logger
 } from "./logger.js";
 import StorageUtils from "./storageUtils.js";
+import {
+  STATE_AUTH_FAILED
+} from './utils.js';
 
 const log = Logger.logger("UI");
 
@@ -17,36 +20,36 @@ export class UI extends Component {
   constructor(receiver) {
     super(receiver);
 
-    browser.runtime.onConnect.addListener(async port => {
+    chrome.runtime.onConnect.addListener(async port => {
       if (port.name === "panel") {
         await this.#panelConnected(port);
       }
     });
 
     // To know the current tab to share, we need to track the focused window.
-    browser.windows.onFocusChanged.addListener(windowId => this.#currentWindowId = windowId);
+    chrome.windows.onFocusChanged.addListener(windowId => this.#currentWindowId = windowId);
 
-    browser.tabs.onRemoved.addListener(tabId => this.#deleteTabData(tabId));
-    browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
+    chrome.tabs.onRemoved.addListener(tabId => this.#deleteTabData(tabId));
+    chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
       if (changeInfo.status === 'loading') {
         this.#deleteTabData(tabId);
       }
     });
-    browser.tabs.onActivated.addListener(async tabInfo => {
+    chrome.tabs.onActivated.addListener(async tabInfo => {
       if (tabInfo.windowId === this.#currentWindowId) {
-        const tab = await this.#getTab(tabInfo.tabId);
+        const tab = await chrome.tabs.get(tabInfo.tabId);
         this.#sendTabShareable(tab);
       }
     });
 
-    browser.browserAction.setBadgeBackgroundColor({
+    chrome.action.setBadgeBackgroundColor({
       "color": [0, 0, 0, 0]
     })
   }
 
   #deleteTabData(tabId) {
     delete this.#tabs[tabId];
-    browser.browserAction.setBadgeText({
+    chrome.action.setBadgeText({
       text: '',
       tabId
     });
@@ -54,7 +57,7 @@ export class UI extends Component {
 
   async #setTabData(tabId, actors) {
     this.#tabs[tabId] = actors;
-    await browser.browserAction.setBadgeText({
+    await chrome.action.setBadgeText({
       text: "🟢",
       tabId
     });
@@ -66,12 +69,12 @@ export class UI extends Component {
     this.#sendDataToCurrentPort();
 
     if (this.state === STATE_AUTH_FAILED) {
-      browser.browserAction.setBadgeText({
+      chrome.action.setBadgeText({
         text: "🟢"
       });
 
-      if (!isChrome) {
-        await browser.browserAction.openPopup();
+      if (chrome.action.openPopup) {
+        await chrome.action.openPopup();
       }
     }
   }
@@ -83,7 +86,7 @@ export class UI extends Component {
     this.#currentPort = port;
 
     // Let's reset the badge icon
-    await browser.browserAction.setBadgeText({
+    await chrome.action.setBadgeText({
       text: ''
     });
 
@@ -177,7 +180,7 @@ export class UI extends Component {
           return;
         }
 
-        return browser.browserAction.setBadgeText({
+        return chrome.action.setBadgeText({
           text: "🟢"
         });
       }
@@ -230,29 +233,13 @@ export class UI extends Component {
       return this.#currentPort.postMessage(msg);
     }
     this.#messageQueue.push(msg);
-    await browser.browserAction.openPopup();
+    await chrome.action.openPopup();
   }
 
   async #activeTabs() {
-    if (isChrome) {
-      return new Promise(r => browser.tabs.query({
-        active: true,
-        windowId: this.#currentWindowId
-      }, tabs => r(tabs)));
-    }
-
-    return browser.tabs.query({
+    return chrome.tabs.query({
       active: true,
       windowId: this.#currentWindowId
     });
   }
-
-  async #getTab(tabId) {
-    if (isChrome) {
-      return new Promise(r => browser.tabs.get(tabId, data => r(data)));
-    }
-
-    return browser.tabs.get(tabId);
-  }
-
 }

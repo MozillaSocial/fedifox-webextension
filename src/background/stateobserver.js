@@ -9,6 +9,9 @@ import {
   Logger
 } from './logger.js';
 import StorageUtils from "./storageUtils.js";
+import {
+  STATE_INITIALIZE
+} from './utils.js';
 
 const log = Logger.logger('StateObserver');
 

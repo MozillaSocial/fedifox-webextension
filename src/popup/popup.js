@@ -4,6 +4,7 @@
 
 import './components/components.js';
 import './views/views.js'
+import * as states from '../background/utils.js';
 
 const LOADING_TIMEOUT = 5000;
 
@@ -16,7 +17,7 @@ class Popup {
 
   async init() {
     // window.addEventListener("contextmenu", e => e.preventDefault());
-    this.#port = browser.runtime.connect({
+    this.#port = chrome.runtime.connect({
       name: "panel"
     });
 
@@ -36,19 +37,19 @@ class Popup {
       // stateChanged requires a view change.
       if (msg.type === 'stateChanged') {
         switch (msg.state) {
-          case STATE_INITIALIZE:
+          case states.STATE_INITIALIZE:
             this.#showView("initialize");
             break;
 
-          case STATE_AUTHENTICATING:
+          case states.STATE_AUTHENTICATING:
             this.#showView("authenticating");
             break;
 
-          case STATE_AUTH_FAILED:
+          case states.STATE_AUTH_FAILED:
             this.#showView("authfailed");
             break;
 
-          case STATE_MAIN:
+          case states.STATE_MAIN:
             this.#showView("main");
             break;
 

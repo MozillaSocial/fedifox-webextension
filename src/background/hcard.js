@@ -8,6 +8,9 @@ import {
 import {
   Logger
 } from './logger.js';
+import {
+  STATE_MAIN
+} from './utils.js';
 
 const log = Logger.logger('HCard');
 
@@ -15,7 +18,7 @@ export class HCard extends Component {
   #ports = [];
 
   async init() {
-    browser.runtime.onConnect.addListener(port => {
+    chrome.runtime.onConnect.addListener(port => {
       if (port.name === 'cs') {
         this.#csConnected(port);
       }

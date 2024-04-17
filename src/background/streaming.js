@@ -9,6 +9,9 @@ import {
   Logger
 } from './logger.js';
 import StorageUtils from "./storageUtils.js";
+import {
+  STATE_MAIN
+} from './utils.js';
 
 const log = Logger.logger('Streaming');
 
@@ -75,7 +78,7 @@ export class Streaming extends Component {
 
       if (!this.#connected) {
         log("We have been disconnected in the meantime!");
-        reader.close();
+        reader.cancel();
         return;
       }
 

@@ -8,6 +8,9 @@ import {
 import {
   Logger
 } from './logger.js';
+import {
+  STATE_MAIN
+} from './utils.js';
 
 const log = Logger.logger('ContextMenus');
 
@@ -15,29 +18,29 @@ export class ContextMenus extends Component {
   constructor(register) {
     super(register);
 
-    if (isChrome) {
+    if (!("browser" in self)) {
       // We don't want to expose the context menu items in Chrome because
-      // chrome.browserAction.openPopup() is not implemented.
+      // chrome.action.openPopup() is not implemented.
       return;
     }
 
     // Menus need to be created at the on-installed event.
-    browser.runtime.onInstalled.addListener(() => {
-      browser.contextMenus.create({
+    chrome.runtime.onInstalled.addListener(() => {
+      chrome.contextMenus.create({
         id: 'sharePage',
-        title: browser.i18n.getMessage("contextMenuShareWebsite"),
+        title: chrome.i18n.getMessage("contextMenuShareWebsite"),
         contexts: ['all'],
         enabled: false,
       });
 
-      browser.contextMenus.create({
+      chrome.contextMenus.create({
         id: 'shareLink',
-        title: browser.i18n.getMessage("contextMenuShareURL"),
+        title: chrome.i18n.getMessage("contextMenuShareURL"),
         contexts: ['link'],
         enabled: false,
       });
 
-      browser.contextMenus.onClicked.addListener((info, tab) => {
+      chrome.contextMenus.onClicked.addListener((info, tab) => {
         switch (info.menuItemId) {
           case 'sharePage':
             const url = tab.url
@@ -50,20 +53,20 @@ export class ContextMenus extends Component {
         }
       });
 
-      browser.contextMenus.onShown.addListener(async (info, tab) => {
+      chrome.contextMenus.onShown.addListener(async (info, tab) => {
         const url = new URL(tab.url)
-        browser.contextMenus.update("sharePage", {
+        chrome.contextMenus.update("sharePage", {
           enabled: (this.state === STATE_MAIN && (url.protocol === 'http:' || url.protocol === 'https:'))
         });
 
         if (info.linkUrl) {
           const linkUrl = new URL(info.linkUrl);
-          browser.contextMenus.update("shareLink", {
+          chrome.contextMenus.update("shareLink", {
             enabled: (this.state === STATE_MAIN && (linkUrl.protocol === 'http:' || linkUrl.protocol === 'https:'))
           });
         }
 
-        browser.contextMenus.refresh();
+        chrome.contextMenus.refresh();
       })
     });
   }

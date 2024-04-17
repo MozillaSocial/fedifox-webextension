@@ -14,10 +14,6 @@ customElements.define('moso-header', class ViewHeader extends HTMLElement {
   }
 
   async #getInstanceData() {
-    if (isChrome) {
-      return new Promise(r => browser.storage.local.get(['instanceData'], data => r(data)));
-    }
-
-    return browser.storage.local.get(['instanceData']);
+    return chrome.storage.local.get(['instanceData']);
   }
 });

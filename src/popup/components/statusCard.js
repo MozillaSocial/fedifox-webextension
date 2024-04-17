@@ -137,7 +137,7 @@ customElements.define("status-actions", class StatusActions extends HTMLElement 
 
     const replyButton = document.createElement('button');
     replyButton.className = `status-action`
-    replyButton.title = browser.i18n.getMessage("componentStatusActionsButtonReply");
+    replyButton.title = chrome.i18n.getMessage("componentStatusActionsButtonReply");
     replyButton.style.setProperty('--icon-url', 'url(../commons/images/reply.svg)')
     replyButton.onclick = () => document.dispatchEvent(new CustomEvent("replyStatus", {
       detail: this.#status,
@@ -195,7 +195,7 @@ customElements.define("status-action-toggle", class StatusCard extends HTMLEleme
   }
 
   updateButton() {
-    this.button.title = browser.i18n.getMessage(this.#texts[this.#status ? 1 : 0])
+    this.button.title = chrome.i18n.getMessage(this.#texts[this.#status ? 1 : 0])
     this.button.classList.toggle('on', this.#status)
   }
 

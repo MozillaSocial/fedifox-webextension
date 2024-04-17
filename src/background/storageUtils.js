@@ -8,7 +8,7 @@ class StorageUtils {
   }
 
   async setState(state) {
-    await browser.storage.local.set({
+    await chrome.storage.local.set({
       state
     });
   }
@@ -18,7 +18,7 @@ class StorageUtils {
   }
 
   async setServerHost(serverHost) {
-    await browser.storage.local.set({
+    await chrome.storage.local.set({
       serverHost
     });
   }
@@ -28,7 +28,7 @@ class StorageUtils {
   }
 
   async setAccessToken(accessToken) {
-    await browser.storage.local.set({
+    await chrome.storage.local.set({
       accessToken
     });
   }
@@ -38,7 +38,7 @@ class StorageUtils {
   }
 
   async setServerList(serverList) {
-    await browser.storage.local.set({
+    await chrome.storage.local.set({
       serverList
     });
   }
@@ -48,17 +48,13 @@ class StorageUtils {
   }
 
   async setInstanceData(instanceData) {
-    await browser.storage.local.set({
+    await chrome.storage.local.set({
       instanceData
     });
   }
 
   async #getStorageKey(key) {
-    if (isChrome) {
-      return new Promise(r => browser.storage.local.get([key], data => r(data[key])));
-    }
-
-    const data = await browser.storage.local.get(key);
+    const data = await chrome.storage.local.get(key);
     return data[key];
   }
 }

@@ -30,11 +30,12 @@ import {
   Streaming
 } from './streaming.js';
 import StorageUtils from "./storageUtils.js";
+import * as states from './utils.js';
 
 const log = Logger.logger('Main');
 
 class Main {
-  #state = STATE_INITIALIZE;
+  #state = states.STATE_INITIALIZE;
   #observers = new Set();
 
   // We want to avoid the processing of events during the initialization.
@@ -80,9 +81,9 @@ class Main {
 
   // Not all the states are acceptable as the initial one.
   async #computeInitialState() {
-    const state = await StorageUtils.getState() || STATE_INITIALIZE;
-    if (![STATE_INITIALIZE, STATE_MAIN].includes(state)) {
-      return STATE_INITIALIZE;
+    const state = await StorageUtils.getState() || states.STATE_INITIALIZE;
+    if (![states.STATE_INITIALIZE, states.STATE_MAIN].includes(state)) {
+      return states.STATE_INITIALIZE;
     }
 
     // TODO: validate the access-token?
@@ -104,7 +105,10 @@ class Main {
   }
 
   registerObserver(observer) {
-    assert(observer instanceof Component, 'Observers must be Components');
+    if (!(observer instanceof Component)) {
+      throw new Error('Observers must be Components');
+    }
+
     this.#observers.add(observer);
   }
 
