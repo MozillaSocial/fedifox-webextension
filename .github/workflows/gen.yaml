@@ -1,0 +1,48 @@
+name: Gen
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  gen:
+    name: Gen Server List
+    runs-on: ubuntu-22.04
+    env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - name: Use Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Copy the script
+        shell: bash
+        run: |
+          cp scripts/gen_server_list.js .
+
+      - name: Change branch
+        shell: bash
+        run: |
+          git config --global user.name "Andrea Marchesini"
+          git config --global user.email "baku@mozilla.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git checkout "${GITHUB_REF:11}"
+          git fetch -a
+          git checkout origin/pages -b pages
+
+      - name: Run the script
+        run: |
+          node gen_server_list.js
+
+      - name: Commit
+        run: |
+          git add servers.json
+          git commit -m "Server list updated"
+          git push 
