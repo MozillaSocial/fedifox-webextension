@@ -27,6 +27,13 @@ jobs:
         run: |
           cp scripts/gen_server_list.js .
 
+      - name: Create the dist
+        shell: bash
+        run: |
+          npm i
+          ./node_modules/.bin/web-ext build
+          cp dist/fedifox-*.zip fedifox.zip
+
       - name: Change branch
         shell: bash
         run: |
@@ -35,7 +42,7 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
           git checkout "${GITHUB_REF:11}"
           git fetch -a
-          git checkout origin/pages -b pages
+          git checkout origin/pages -b pages -f
 
       - name: Run the script
         run: |
@@ -46,3 +53,9 @@ jobs:
           git add servers.json
           git commit -m "Server list updated"
           git push 
+
+      - name: Storing addon as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: addon
+          path: fedifox.zip
