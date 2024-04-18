@@ -1,1 +1,0 @@
-const STATE_LOADING = "loading";
