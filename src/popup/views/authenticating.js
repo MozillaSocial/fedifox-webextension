@@ -7,7 +7,7 @@ import ViewBase from './base.js';
 customElements.define('view-authenticating', class ViewAuthenticating extends ViewBase {
   connectedCallback() {
     this.innerHTML = `
-    <moso-header></moso-header>
+    <fedifox-header></fedifox-header>
     <h2 data-i18n="viewAuthenticatingTitle"></h2>
     `;
 

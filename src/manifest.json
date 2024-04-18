@@ -7,7 +7,7 @@
 
   "browser_specific_settings": {
     "gecko": {
-      "id": "moso@mozilla.com",
+      "id": "fedifox@mozilla.com",
       "strict_min_version": "79.0"
     }
   },

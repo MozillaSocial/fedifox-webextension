@@ -12,7 +12,7 @@ customElements.define('view-main', class ViewMain extends ViewBase {
     this.sendMessage("detectActors");
 
     this.innerHTML = `
-    <moso-header></moso-header>
+    <fedifox-header></fedifox-header>
     <nav>
       <button id="showTimeline" data-i18n="viewMainButtonFeed"></button>
       <button id="share" data-i18n="viewMainButtonShare"></button>
@@ -24,7 +24,7 @@ customElements.define('view-main', class ViewMain extends ViewBase {
     `
 
     for (const view of ["timeline", "share", "detectedactors"]) {
-      const el = document.createElement(`moso-${view}`)
+      const el = document.createElement(`fedifox-${view}`)
       el.initialize(this)
       el.hidden = true;
       this.append(el)

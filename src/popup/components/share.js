@@ -2,9 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import MosoMainBase from './mainbase.js';
+import FedifoxMainBase from './mainbase.js';
 
-customElements.define('moso-share', class MosoShare extends MosoMainBase {
+customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBase {
   #in_reply_to_id = undefined;
 
   connectedCallback() {

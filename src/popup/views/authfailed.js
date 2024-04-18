@@ -7,7 +7,7 @@ import ViewBase from './base.js';
 customElements.define('view-authfailed', class ViewAuthFailed extends ViewBase {
   connectedCallback() {
     this.innerHTML = `
-    <moso-header></moso-header>
+    <fedifox-header></fedifox-header>
     <main>
       <h2 data-i18n="viewAuthFailedTitle"></h2>
       <button id="retry" data-i18n="viewAuthFailedButtonRetry"></button>

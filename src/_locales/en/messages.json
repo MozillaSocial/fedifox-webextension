@@ -1,6 +1,6 @@
 {
   "extensionDescription": {
-    "message": "A proof of concept to run Mozilla.social into the browser",
+    "message": "A Mastodon client for Firefox",
     "description": "Description of the extension."
   },
   "contextMenuShareWebsite": {

@@ -9,7 +9,7 @@ customElements.define('view-error', class ViewError extends ViewBase {
     super.connectedCallback();
 
     this.innerHTML = `
-    <moso-header></moso-header>
+    <fedifox-header></fedifox-header>
     <main>
       <h2>Error: ${data}</h2>
     </main>`;

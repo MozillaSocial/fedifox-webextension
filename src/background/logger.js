@@ -37,7 +37,7 @@ export class Logger extends Component {
     const now = dateTimeFormat(Date.now());
     const r = rest.map(r => JSON.stringify(r)).join(", ");
 
-    const m = `*** MoSo *** [${now}] [${category}] - ${msg} ${r}`;
+    const m = `*** FediFox *** [${now}] [${category}] - ${msg} ${r}`;
     console.log(m);
   }
 }

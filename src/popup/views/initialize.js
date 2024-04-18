@@ -9,14 +9,14 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
     this.sendMessage("fetchServerList");
 
     this.innerHTML = `
-    <moso-header></moso-header>
+    <fedifox-header></fedifox-header>
     <main>
       <p data-i18n="viewInitializeMsg1"></p>
       <p data-i18n="viewInitializeMsg2"></p>
       <fieldset>
         <legend data-i18n="viewInitializeConnectToMoSo"></legend>
-        <button class="primary" id="moso-register-btn" data-i18n="viewInitializeButtonRegister"></button>
-        <button class="secondary" id="moso-login-btn" data-i18n="viewInitializeButtonSignIn"></button>
+        <button class="primary" id="fedifox-register-btn" data-i18n="viewInitializeButtonRegister"></button>
+        <button class="secondary" id="fedifox-login-btn" data-i18n="viewInitializeButtonSignIn"></button>
       </fieldset>
       <hr>
       <fieldset>
@@ -46,8 +46,8 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
 
   async handleEvent(e) {
     switch (e.target.id) {
-      case 'moso-register-btn':
-      case 'moso-login-btn':
+      case 'fedifox-register-btn':
+      case 'fedifox-login-btn':
         this.sendMessage('connectToHost', 'stage.moztodon.nonprod.webservices.mozgcp.net');
         window.close()
         break

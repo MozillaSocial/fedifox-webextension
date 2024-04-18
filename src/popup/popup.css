@@ -62,7 +62,7 @@ body{
 }
 
 /*** TIMELINE STYLES ***/
-moso-timeline ol{
+fedifox-timeline ol{
   display: flex;
   flex-direction: column;
   gap: var(--padding-md);
@@ -262,7 +262,7 @@ preview-card p:empty{
 }
 
 /*** SHARE STYLES ***/
-moso-share fieldset{
+fedifox-share fieldset{
   display: flex;
   flex-direction: column;
   gap: var(--padding-sm);
@@ -270,7 +270,7 @@ moso-share fieldset{
 }
 
 /*** DETECTED ACTORS STYLES ***/
-moso-detectedactors ul{
+fedifox-detectedactors ul{
   display: flex;
   flex-direction: column;
   gap: var(--padding-md);
