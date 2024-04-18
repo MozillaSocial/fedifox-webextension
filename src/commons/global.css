@@ -162,6 +162,11 @@ button.primary, .button.primary {
   transition: opacity .3s ease-out;
 }
 
+button:disabled{
+  cursor: default;
+  pointer-events: none;
+}
+
 button.primary:hover, .button.primary:hover {
   opacity: .8;
 }

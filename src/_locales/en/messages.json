@@ -83,6 +83,10 @@
     "message": "Follow",
     "description": ""
   },
+  "componentActorCardButtonFollowing": {
+    "message": "Following ✓",
+    "description": ""
+  },
   "componentActorCardFollowerCount": {
     "message": "$1 followers",
     "description": "$1 is the number of followers"
