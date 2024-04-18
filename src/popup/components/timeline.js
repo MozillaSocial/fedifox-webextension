@@ -33,7 +33,7 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
       ${this.#navItems.map(item => `<button data-list-type="${item.listType}">${chrome.i18n.getMessage(item.name)}</button>`).join('')}
     </nav>
     <h2></h2>
-    <ol></ol>
+    <ol class="loading"></ol>
     `
   }
 
@@ -48,6 +48,7 @@ customElements.define('moso-timeline', class MosoTimeline extends MosoMainBase {
   #renderList() {
     const ol = this.querySelector("ol");
     ol.replaceChildren()
+    ol.classList.remove('loading')
 
     this.querySelector('h2').textContent = chrome.i18n.getMessage(this.#navItems.find(item => item.listType === this.#currentList).name);
 

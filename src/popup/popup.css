@@ -308,3 +308,19 @@ actor-card footer{
   border-top: var(--border-1px);
   color: var(--medium-gray);
 }
+
+/*** LOADING STYLES ***/
+.loading{
+  position: relative;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.loading::after {
+  content: url(../commons/images/loading.svg);
+  width: 48px;
+  height: 48px;
+}
