@@ -1,0 +1,36 @@
+name: Build
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  gen:
+    name: Gen Server List
+    runs-on: ubuntu-22.04
+    env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - name: Use Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Create the dist
+        shell: bash
+        run: |
+          npm i
+          ./node_modules/.bin/web-ext build
+          cp dist/fedifox-*.zip fedifox.zip
+
+      - name: Storing addon as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: addon
+          path: fedifox.zip
