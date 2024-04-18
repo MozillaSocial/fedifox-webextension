@@ -60,14 +60,16 @@ export class HCard extends Component {
 
       const actorIDs = actors.map(({ id }) => id);
       const uniqueActors = actors.filter(({ id }, index) => !actorIDs.includes(id, index + 1))
-      log('Unique AP Actors:', uniqueActors.length)
       const followingIDs = (await this.sendMessage("fetchFollowingIDs")).flat();
-      const unknownActors = uniqueActors.filter(actor => !followingIDs.includes(actor.id));
-      log("Filtered AP Actors:", unknownActors.length);
+      uniqueActors.forEach(actor => {
+        if (followingIDs.includes(actor.id)) actor.isFollowing = true
+      })
 
-      if (unknownActors.length > 0 && this.#ports.includes(port)) {
+      log('Unique AP Actors:', uniqueActors.length)
+
+      if (this.#ports.includes(port)) {
         this.sendMessage('apActorDetected', {
-          actors: unknownActors,
+          actors: uniqueActors,
           tabId: port.sender?.tab?.id
         });
       }
