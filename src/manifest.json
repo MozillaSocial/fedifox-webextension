@@ -24,7 +24,11 @@
 
   "action": {
     "default_area": "navbar",
-    "default_icon": "icons/logo.svg",
+    "default_icon": {
+      "16": "icons/logo16.png",
+      "24": "icons/logo24.png",
+      "32": "icons/logo32.png"
+     },
     "default_title": "FediFox",
     "default_popup": "popup/popup.html",
     "theme_icons": [{
