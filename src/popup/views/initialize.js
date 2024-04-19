@@ -5,8 +5,14 @@
 import ViewBase from './base.js';
 
 customElements.define('view-initialize', class ViewInitialize extends ViewBase {
+  #permissionGranted = false;
+
   async connectedCallback() {
     this.sendMessage("fetchServerList");
+
+    this.#permissionGranted = await browser.permissions.contains({
+      origins: ["<all_urls>"]
+    });
 
     this.innerHTML = `
     <fedifox-header></fedifox-header>
@@ -48,6 +54,7 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
     switch (e.target.id) {
       case 'fedifox-register-btn':
       case 'fedifox-login-btn':
+        await this.#permissionCheck();
         this.sendMessage('connectToHost', 'stage.moztodon.nonprod.webservices.mozgcp.net');
         window.close()
         break
@@ -57,6 +64,7 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
         if (!hostname) {
           return alert("Mastodon URL is not valid");
         }
+        await this.#permissionCheck();
         this.sendMessage('connectToHost', hostname);
         window.close()
         break
@@ -72,6 +80,14 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
         const opt = document.createElement("option");
         opt.value = server;
         servers.append(opt);
+      });
+    }
+  }
+
+  async #permissionCheck() {
+    if (!this.#permissionGranted) {
+      await browser.permissions.request({
+        origins: ["<all_urls>"]
       });
     }
   }
