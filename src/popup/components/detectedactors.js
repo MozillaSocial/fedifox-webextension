@@ -27,12 +27,17 @@ customElements.define('fedifox-detectedactors', class FedifoxDetectedActors exte
       return li
     })
 
-    this.querySelector('ul').replaceChildren(...items)
+    const ul = this.querySelector('ul')
+    console.log('removing "loading" classname...')
+    ul.classList.remove('loading')
+    ul.replaceChildren(...items)
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     // We are now visible!
     if (name === "hidden" && !this.hidden) {
+      console.log('Detected Actors view is now visible: adding "loading" classname')
+      this.querySelector('ul').classList.add('loading')
       this.sendMessage("detectActors");
     }
   }
