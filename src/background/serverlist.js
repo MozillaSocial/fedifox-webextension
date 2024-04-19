@@ -29,7 +29,7 @@ export class ServerList extends Component {
   async #fetchServerList() {
     log("Fetching server list");
 
-    this.#servers = await fetch('https://mozillasocial.github.io/moso-addon/servers.json').then(r => r.json());
+    this.#servers = await fetch('https://mozillasocial.github.io/fedifox-webextension/servers.json').then(r => r.json());
     await StorageUtils.setServerList(this.#servers);
   }
 
