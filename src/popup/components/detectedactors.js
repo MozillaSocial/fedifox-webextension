@@ -30,15 +30,6 @@ customElements.define('fedifox-detectedactors', class FedifoxDetectedActors exte
     this.querySelector('ul').replaceChildren(...items)
   }
 
-  async handleEvent(e) {
-    switch (e.target.id) {
-      case 'followActor':
-        this.sendMessage("followActor", e.target.dataset.actorid);
-        window.close();
-        break;
-    }
-  }
-
   attributeChangedCallback(name, oldValue, newValue) {
     // We are now visible!
     if (name === "hidden" && !this.hidden) {

@@ -256,6 +256,15 @@ export class Masto extends Component {
     }
   }
 
+  async #unfollowActor(id) {
+    log("Unfollow actor id", id);
+    try {
+      await this.#fetchPOSTJson(`/api/v1/accounts/${id}/unfollow`);
+    } catch (e) {
+      log("Unable to remove the follower", e);
+    }
+  }
+
   async handleEvent(type, data) {
     switch (type) {
       case 'connectToHost':
@@ -279,6 +288,11 @@ export class Masto extends Component {
 
       case 'followActor':
         await this.#followActor(data);
+        await this.#updateFollowing();
+        break;
+
+      case 'unfollowActor':
+        await this.#unfollowActor(data);
         await this.#updateFollowing();
         break;
 

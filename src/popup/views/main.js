@@ -34,7 +34,16 @@ customElements.define('view-main', class ViewMain extends ViewBase {
 
     this.#render('timeline');
 
-    for (const eventName of ["reblogStatus", "unreblogStatus", "favouriteStatus", "unfavouriteStatus", "bookmarkStatus", "unbookmarkStatus", "replyStatus"]) {
+    for (const eventName of ["reblogStatus",
+        "unreblogStatus",
+        "favouriteStatus",
+        "unfavouriteStatus",
+        "bookmarkStatus",
+        "unbookmarkStatus",
+        "replyStatus",
+        "followActor",
+        "unfollowActor"
+      ]) {
       document.addEventListener(eventName, e => {
         this.sendMessage(eventName, e.detail);
         e.stopPropagation();

@@ -175,7 +175,19 @@ export class UI extends Component {
       }
 
       case 'followActor': {
-        return Object.entries(this.#tabs).forEach(entry => this.#tabs[entry[0]] = entry[1].filter(account => account.id !== data));
+        Object.entries(this.#tabs).forEach(entry => {
+          const account = entry[1].find(account => account.id === data);
+          if (account) account.isFollowing = true;
+        });
+        break;
+      }
+
+      case 'unfollowActor': {
+        Object.entries(this.#tabs).forEach(entry => {
+          const account = entry[1].find(account => account.id === data);
+          if (account) account.isFollowing = false;
+        });
+        break;
       }
 
       case 'timelineRefreshNeeded': {
