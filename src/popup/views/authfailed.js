@@ -7,10 +7,15 @@ import ViewBase from './base.js';
 customElements.define('view-authfailed', class ViewAuthFailed extends ViewBase {
   connectedCallback() {
     this.innerHTML = `
+    <style>
+      main{
+        align-items: center;
+      }
+    </style>
     <fedifox-header></fedifox-header>
     <main>
       <h2 data-i18n="viewAuthFailedTitle"></h2>
-      <button id="retry" data-i18n="viewAuthFailedButtonRetry"></button>
+      <button class="primary" id="retry" data-i18n="viewAuthFailedButtonRetry"></button>
     </main>
     `;
 
