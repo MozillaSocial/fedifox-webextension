@@ -100,7 +100,7 @@
     "description": ""
   },
   "componentDetectedActorsMsg": {
-    "message": "Social accounts detected on the current web page will be listed here. This could include any entity capable of performing an activity, such as a person, organization, or service. A green notification dot on the extension icon will appear when accounts are detected",
+    "message": "Social accounts detected in the current web page will be listed here. Look for a green notification dot on the FediFox toolbar icon to alert you if accounts are detected.",
     "description": ""
   },
   "componentSensitiveToggleTitle": {
