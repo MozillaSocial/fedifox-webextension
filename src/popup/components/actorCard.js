@@ -59,7 +59,7 @@ customElements.define("actor-follow", class ActorFollow extends HTMLElement {
 
     this.#button = document.createElement('button');
     this.#button.setAttribute('class', 'secondary');
-    span.append(this.#button);
+    this.append(this.#button);
 
     this.#text = document.createTextNode('')
 

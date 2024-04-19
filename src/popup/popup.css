@@ -309,6 +309,12 @@ actor-card footer{
   color: var(--medium-gray);
 }
 
+actor-follow{
+  display: flex;
+  align-items: center;
+  gap: var(--padding-sm);
+}
+
 /*** LOADING STYLES ***/
 .loading{
   position: relative;
