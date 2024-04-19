@@ -17,7 +17,7 @@ customElements.define('view-main', class ViewMain extends ViewBase {
       <button id="showTimeline" data-i18n="viewMainButtonFeed"></button>
       <button id="share" data-i18n="viewMainButtonShare"></button>
       <button id="shareCurrentPage" data-i18n="viewMainButtonShareCurrentPage"></button>
-      <button id="showDetectedActors" disabled data-i18n="viewMainButtonShowDetectedActors"></button>
+      <button id="showDetectedActors" data-i18n="viewMainButtonShowDetectedActors"></button>
       <button id="openInstance" data-i18n="viewMainButtonOpenInstance"></button>
       <button id="reset" data-i18n="viewMainButtonSignOut"></button>
     </nav>
@@ -92,10 +92,8 @@ customElements.define('view-main', class ViewMain extends ViewBase {
         break;
 
       case 'actorsDetected': {
-        var menu = document.getElementById("showDetectedActors");
-        menu.disabled = msg.actors.length === 0;
-        if (menu.disabled) break
-
+        // this is called multiple times: once with empty object, and a second time when actors are present
+        // it's not a reliable way to know if background script is done fetching actor data.
         this.#views.detectedactors.setData(msg.actors);
         this.localize();
         break;
