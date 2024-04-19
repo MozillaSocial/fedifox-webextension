@@ -6,13 +6,14 @@ import ViewBase from './base.js';
 
 customElements.define('view-initialize', class ViewInitialize extends ViewBase {
   #permissionGranted = false;
+  #permissionObj = {
+    origins: ["<all_urls>"]
+  }
 
   async connectedCallback() {
     this.sendMessage("fetchServerList");
 
-    this.#permissionGranted = await chrome.permissions.contains({
-      origins: ["<all_urls>"]
-    });
+    this.#permissionGranted = await chrome.permissions.contains(this.#permissionObj);
 
     this.innerHTML = `
     <fedifox-header></fedifox-header>
@@ -51,10 +52,11 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
   }
 
   async handleEvent(e) {
+    if (!this.#permissionGranted) await this.#getPermission(this.#permissionObj)
+
     switch (e.target.id) {
       case 'fedifox-register-btn':
       case 'fedifox-login-btn':
-        await this.#permissionCheck();
         this.sendMessage('connectToHost', 'stage.moztodon.nonprod.webservices.mozgcp.net');
         window.close()
         break
@@ -64,7 +66,6 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
         if (!hostname) {
           return alert("Mastodon URL is not valid");
         }
-        await this.#permissionCheck();
         this.sendMessage('connectToHost', hostname);
         window.close()
         break
@@ -84,12 +85,10 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
     }
   }
 
-  async #permissionCheck() {
-    if (!this.#permissionGranted) {
-      await chrome.permissions.request({
-        origins: ["<all_urls>"]
-      });
-    }
+  async #getPermission(permission) {
+    const granted = chrome.permissions.request(permission)
+    window.close() // close popup due to permission dialog hidden behind: https://bugzilla.mozilla.org/show_bug.cgi?id=1798454
+    return await granted
   }
 
   #validateHost(input) {
