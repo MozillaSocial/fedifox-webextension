@@ -10,7 +10,7 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
   async connectedCallback() {
     this.sendMessage("fetchServerList");
 
-    this.#permissionGranted = await browser.permissions.contains({
+    this.#permissionGranted = await chrome.permissions.contains({
       origins: ["<all_urls>"]
     });
 
@@ -86,7 +86,7 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
 
   async #permissionCheck() {
     if (!this.#permissionGranted) {
-      await browser.permissions.request({
+      await chrome.permissions.request({
         origins: ["<all_urls>"]
       });
     }
