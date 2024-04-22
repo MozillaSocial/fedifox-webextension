@@ -28,7 +28,7 @@ customElements.define('fedifox-detectedactors', class FedifoxDetectedActors exte
     })
 
     const ul = this.querySelector('ul')
-    console.log('removing "loading" classname...')
+    // TODO: detected actors loading indicator doesn't work as expected, because of multiple calls to `setData` – the first of which is usually empty
     ul.classList.remove('loading')
     ul.replaceChildren(...items)
   }
@@ -36,7 +36,7 @@ customElements.define('fedifox-detectedactors', class FedifoxDetectedActors exte
   attributeChangedCallback(name, oldValue, newValue) {
     // We are now visible!
     if (name === "hidden" && !this.hidden) {
-      console.log('Detected Actors view is now visible: adding "loading" classname')
+      // TODO: detected actors loading indicator doesn't work as expected – see above
       this.querySelector('ul').classList.add('loading')
       this.sendMessage("detectActors");
     }
