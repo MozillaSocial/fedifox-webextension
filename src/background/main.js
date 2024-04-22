@@ -135,10 +135,12 @@ class Main {
       } catch (e) {}
     }
 
+    const results = (await Promise.all(returnValues)).filter(a => a !== undefined);
+
     this.#handlingEvent = false;
     this.#processPendingEvents();
 
-    return (await Promise.all(returnValues)).filter(a => a !== undefined);
+    return results;
   }
 
   #processPendingEvents() {

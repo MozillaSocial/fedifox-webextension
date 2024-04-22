@@ -27,6 +27,7 @@ export class Masto extends Component {
 
   #userData;
   #following;
+  #lists;
 
   async init() {
     log("init");
@@ -68,6 +69,7 @@ export class Masto extends Component {
       await this.#verifyCredentials();
       await this.#updateFollowing();
       await this.#updateInstance();
+      await this.#updateLists();
     } catch (e) {
       this.setState(utils.STATE_AUTH_FAILED);
     }
@@ -108,6 +110,17 @@ export class Masto extends Component {
       icon: data.thumbnail?.url,
       title: data.title,
     });
+  }
+
+  async #updateLists() {
+    assert(this.state === utils.STATE_MAIN, "Invalid state");
+    log("Fetching the home timeline, favourites and bookmarks");
+
+    this.#lists = {
+      timeline: await this.#fetchGETJson('/api/v1/timelines/home'),
+      favourites: await this.#fetchGETJson('/api/v1/favourites'),
+      bookmarks: await this.#fetchGETJson('/api/v1/bookmarks'),
+    };
   }
 
   async #connectToHost(hostname) {
@@ -196,11 +209,11 @@ export class Masto extends Component {
     assert(this.state === utils.STATE_MAIN, "Invalid state");
     log("Fetching the home timeline, favourites and bookmarks");
 
-    this.sendMessage('mastoLists', {
-      timeline: await this.#fetchGETJson('/api/v1/timelines/home'),
-      favourites: await this.#fetchGETJson('/api/v1/favourites'),
-      bookmarks: await this.#fetchGETJson('/api/v1/bookmarks'),
-    });
+    if (!this.#lists) {
+      await this.#updateLists();
+    }
+
+    this.sendMessage('mastoLists', this.#lists);
   }
 
   async #openInstance() {
@@ -281,6 +294,7 @@ export class Masto extends Component {
 
       case 'post':
         await this.#post(data);
+        this.#invalidateLists();
         break;
 
       case 'searchOnMasto':
@@ -289,34 +303,52 @@ export class Masto extends Component {
       case 'followActor':
         await this.#followActor(data);
         await this.#updateFollowing();
+        this.#invalidateLists();
         break;
 
       case 'unfollowActor':
         await this.#unfollowActor(data);
         await this.#updateFollowing();
+        this.#invalidateLists();
         break;
 
       case 'fetchFollowingIDs':
         return this.#following?.map(a => a.id);
 
       case 'reblogStatus':
-        return this.#genericAction("reblog", data);
+        await this.#genericAction("reblog", data);
+        this.#invalidateLists();
+        break;
 
       case 'unreblogStatus':
-        return this.#genericAction("unreblog", data);
+        await this.#genericAction("unreblog", data);
+        this.#invalidateLists();
+        break;
 
       case 'favouriteStatus':
-        return this.#genericAction("favourite", data);
+        await this.#genericAction("favourite", data);
+        this.#invalidateLists();
+        break;
 
       case 'unfavouriteStatus':
-        return this.#genericAction("unfavourite", data);
+        await this.#genericAction("unfavourite", data);
+        this.#invalidateLists();
+        break;
 
       case 'bookmarkStatus':
-        return this.#genericAction("bookmark", data);
+        await this.#genericAction("bookmark", data);
+        this.#invalidateLists();
+        break;
 
       case 'unbookmarkStatus':
-        return this.#genericAction("unbookmark", data);
+        await this.#genericAction("unbookmark", data);
+        this.#invalidateLists();
+        break;
     }
+  }
+
+  #invalidateLists() {
+    this.#lists = undefined;
   }
 
   async #genericAction(action, id) {
