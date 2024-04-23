@@ -86,8 +86,6 @@ class Main {
       return states.STATE_INITIALIZE;
     }
 
-    // TODO: validate the access-token?
-
     return state;
   }
 
