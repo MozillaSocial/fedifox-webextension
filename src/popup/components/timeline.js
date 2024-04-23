@@ -53,7 +53,6 @@ customElements.define('fedifox-timeline', class FedifoxTimeline extends FedifoxM
     this.querySelector('h2').textContent = chrome.i18n.getMessage(this.#navItems.find(item => item.listType === this.#currentList).name);
 
     this.#lists[this.#currentList]?.forEach(status => {
-      if (status.in_reply_to_id) return // hide replies
       const li = document.createElement('li')
       const card = document.createElement('status-card')
       card.setAttribute("action", true);
