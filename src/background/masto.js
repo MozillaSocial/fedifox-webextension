@@ -62,6 +62,10 @@ export class Masto extends Component {
 
   async #maybeUpdateData() {
     if (this.state !== utils.STATE_MAIN) {
+      await StorageUtils.setInstanceData({
+        icon: null,
+        title: null,
+      });
       return;
     }
 

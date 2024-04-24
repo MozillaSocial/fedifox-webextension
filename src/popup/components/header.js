@@ -9,7 +9,7 @@ customElements.define('fedifox-header', class ViewHeader extends HTMLElement {
     this.innerHTML = `
       <header>
         <img src="${data?.instanceData?.icon || '../icons/logo.svg' }">
-        <h1>${data?.instanceData?.title || 'Mozilla.Social'}</h1>
+        <h1>${data?.instanceData?.title || 'FediFox'}</h1>
       </header>`;
   }
 
