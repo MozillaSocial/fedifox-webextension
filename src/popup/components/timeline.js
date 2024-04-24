@@ -52,14 +52,31 @@ customElements.define('fedifox-timeline', class FedifoxTimeline extends FedifoxM
 
     this.querySelector('h2').textContent = chrome.i18n.getMessage(this.#navItems.find(item => item.listType === this.#currentList).name);
 
+    const replyMap = new Map()
+
     this.#lists[this.#currentList]?.forEach(status => {
       const li = document.createElement('li')
       const card = document.createElement('status-card')
+      card.setAttribute("id", status.id);
       card.setAttribute("action", true);
       card.initialize(status);
       li.append(card)
       ol.append(li)
-    });
+      if (status.in_reply_to_id) {
+        replyMap.has(status.in_reply_to_id) ? replyMap.get(status.in_reply_to_id).unshift(li) : replyMap.set(status.in_reply_to_id, [li])
+      }
+    })
+
+    replyMap.forEach((value, key) => {
+      const originalStatus = ol.querySelector(`status-card[id="${key}"]`)
+      // if original status is present in timeline, thread replies
+      // otherwise leave replies as-is: detatched in chronological order
+      if (originalStatus) {
+        const ol = document.createElement('ol')
+        ol.append(...value) // value is an array of <li> replies 
+        originalStatus.parentElement.append(ol)
+      }
+    })
   }
 
   setData(data) {
