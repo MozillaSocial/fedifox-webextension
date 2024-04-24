@@ -57,7 +57,7 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
     switch (e.target.id) {
       case 'fedifox-register-btn':
       case 'fedifox-login-btn':
-        this.sendMessage('connectToHost', 'stage.moztodon.nonprod.webservices.mozgcp.net');
+        this.sendMessage('connectToHost', 'mozilla.social');
         window.close()
         break
       case 'other-server-btn': {
