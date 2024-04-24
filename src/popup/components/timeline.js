@@ -30,7 +30,7 @@ customElements.define('fedifox-timeline', class FedifoxTimeline extends FedifoxM
 
     this.innerHTML = `
     <nav>
-      ${this.#navItems.map(item => `<button data-list-type="${item.listType}">${chrome.i18n.getMessage(item.name)}</button>`).join('')}
+      ${this.#navItems.map(item => `<button id="button-${item.listType}" data-list-type="${item.listType}">${chrome.i18n.getMessage(item.name)}</button>`).join('')}
     </nav>
     <h2></h2>
     <ol class="loading"></ol>
@@ -94,6 +94,15 @@ customElements.define('fedifox-timeline', class FedifoxTimeline extends FedifoxM
 
     if (this.#currentList in data) {
       this.#renderList();
+    }
+
+    this.#showAvailableLists();
+  }
+
+  #showAvailableLists() {
+    for (const item of this.#navItems) {
+      const button = document.getElementById(`button-${item.listType}`);
+      button.disabled = this.#lists[item.listType]?.length === 0;
     }
   }
 
