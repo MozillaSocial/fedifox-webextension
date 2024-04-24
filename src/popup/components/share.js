@@ -7,13 +7,15 @@ import FedifoxMainBase from './mainbase.js';
 customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBase {
   #in_reply_to_id = undefined;
 
-  connectedCallback() {
+  async connectedCallback() {
+    const data = await this.#getInstanceData();
+
     super.connectedCallback();
 
     this.innerHTML = `
     <h2 data-i18n="componentShareTitle"></h2>
     <fieldset>
-      <textarea id="shareBody"></textarea>
+      <textarea id="shareBody" maxlength="${data?.instanceData?.status_max_characters}"></textarea>
       <button class="primary" id="share" data-i18n="componentShareButtonPost"></button>
     </fieldset>
     `;
@@ -23,7 +25,7 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
 
   setData(url, status) {
     const textarea = document.getElementById("shareBody");
-    textarea.value = '';
+    //textarea.value = '';
 
     if (url) {
       textarea.value = `\n\n${url}`;
@@ -52,5 +54,9 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
 
       // TODO: show a loading icon...
     }
+  }
+
+  async #getInstanceData() {
+    return chrome.storage.local.get(['instanceData']);
   }
 });

@@ -113,6 +113,7 @@ export class Masto extends Component {
     await StorageUtils.setInstanceData({
       icon: data.thumbnail?.url,
       title: data.title,
+      status_max_characters: data.configuration?.statuses?.max_characters || 500,
     });
   }
 
