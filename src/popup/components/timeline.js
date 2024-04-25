@@ -63,20 +63,47 @@ customElements.define('fedifox-timeline', class FedifoxTimeline extends FedifoxM
       li.append(card)
       ol.append(li)
       if (status.in_reply_to_id) {
+        // add reply to array of replies associated with original status ID
         replyMap.has(status.in_reply_to_id) ? replyMap.get(status.in_reply_to_id).unshift(li) : replyMap.set(status.in_reply_to_id, [li])
       }
     })
 
-    replyMap.forEach((value, key) => {
+    replyMap.forEach((value, key, map) => {
       const originalStatus = ol.querySelector(`status-card[id="${key}"]`)
-      // if original status is present in timeline, thread replies
-      // otherwise leave replies as-is: detatched in chronological order
+
       if (originalStatus) {
+        // if original status is present in timeline, thread replies
         const ol = document.createElement('ol')
         ol.append(...value) // value is an array of <li> replies 
         originalStatus.parentElement.append(ol)
+      } else {
+        // otherwise remove from replyMap and leave reply as-is: detatched in chronological order
+        map.delete(key)
       }
     })
+
+    replyMap.forEach(value => {
+      // after items are rendered to DOM, assign class and thread-line height property to status-card elements
+      for (const li of value) {
+        const thisCard = li.firstElementChild
+        const prevCard = li.previousElementSibling?.firstElementChild
+        const parentCard = li.parentElement.previousElementSibling?.firstElementChild
+
+        thisCard.rect = thisCard.getBoundingClientRect()
+
+        if (prevCard) {
+          // 2 cards in a row: we need full height between cards including gap
+          thisCard.threadHeight = thisCard.rect.bottom - prevCard.getBoundingClientRect().bottom
+        } else {
+          // card directly below original status: we need half the reply height plus gap between cards
+          thisCard.threadHeight = thisCard.rect.height / 2 + (thisCard.rect.top - parentCard.getBoundingClientRect().bottom)
+        }
+
+        thisCard.style.setProperty('--thread-h', `${thisCard.threadHeight}px`)
+        thisCard.classList.add('thread')
+      }
+    })
+
   }
 
   setData(data) {
