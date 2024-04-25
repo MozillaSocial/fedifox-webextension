@@ -32,7 +32,6 @@ customElements.define("status-card", class StatusCard extends HTMLElement {
       article.insertAdjacentHTML('beforebegin', `
       <div class="boost-credit">
         <a href="${this.#status.account.url}">
-          <img src="${this.#status.account.avatar}">
           <span>${this.#status.account.display_name || this.#status.account.username}</span>
         </a>
         <span>boosted</span>
@@ -48,6 +47,25 @@ customElements.define("status-card", class StatusCard extends HTMLElement {
           </a>
         </header>
       `
+    } else if (this.#status.in_reply_to_id) {
+      article.className = 'replied'
+      article.insertAdjacentHTML('beforebegin', `
+      <div class="reply-credit">
+        <a href="${this.#status.url}">
+          <span>${this.#status.account.display_name || this.#status.account.username} replied</span>
+        </a>
+      </div>
+      `)
+
+      article.innerHTML = `
+        <header>
+          <a href="${this.#status.url}">
+            <img src="${this.#status.account.avatar}">
+            <address>${this.#status.account.display_name || this.#status.account.username}</address>
+            <time datetime="${this.#status.created_at}">${this.#formatDate(this.#status.created_at)}</time>
+          </a>
+        </header>
+      `
     } else {
       article.innerHTML = `
         <header>
@@ -57,7 +75,7 @@ customElements.define("status-card", class StatusCard extends HTMLElement {
             <time datetime="${this.#status.created_at}">${this.#formatDate(this.#status.created_at)}</time>
           </a>
         </header>
-      `;
+      `
     }
 
     const content = document.createElement('status-content');

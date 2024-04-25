@@ -225,7 +225,7 @@ article.boosted{
   background-image: radial-gradient(circle at top left, hsl(0 10% 80% / .2), transparent);
 }
 
-.boost-credit{
+.boost-credit, .reply-credit{
   display: flex;
   height: 16px;
   gap: var(--padding-xs);
@@ -234,22 +234,33 @@ article.boosted{
   font-style: italic;
 }
 
-.boost-credit::before{
+.boost-credit::before, .reply-credit::before{
   content: '';
   display: inline-block;
   width: 16px;
   height: 16px;
   margin-right: var(--padding-xs);
   background-color: var(--medium-gray);
+}
+
+.boost-credit::before{
   -webkit-mask: url(../commons/images/boost.svg) no-repeat;
   mask: url(../commons/images/boost.svg) no-repeat;
 }
 
-.boost-credit a{
+.reply-credit::before{
+  -webkit-mask: url(../commons/images/reply.svg) no-repeat;
+  mask: url(../commons/images/reply.svg) no-repeat;
+}
+
+.boost-credit a, .reply-credit a{
   display: contents;
   color: inherit;
   text-decoration: none;
-  font-weight: bold;
+}
+
+status-card.thread .reply-credit{
+  display: none;
 }
 
 preview-card{
