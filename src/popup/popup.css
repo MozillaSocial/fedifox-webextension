@@ -235,10 +235,14 @@ article.boosted{
 }
 
 .boost-credit::before{
-  content: url(../commons/images/boost.svg);
+  content: '';
   display: inline-block;
   width: 16px;
-  opacity: .5;
+  height: 16px;
+  margin-right: var(--padding-xs);
+  background-color: var(--medium-gray);
+  -webkit-mask: url(../commons/images/boost.svg) no-repeat;
+  mask: url(../commons/images/boost.svg) no-repeat;
 }
 
 .boost-credit a{
