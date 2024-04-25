@@ -219,11 +219,10 @@ status-actions{
 }
 
 article.boosted{
-  border-left: 2px solid var(--light-gray);
-  border-top: 2px solid var(--light-gray);
+  border: 2px solid light-dark(var(--light-gray), var(--dark-gray));
   border-radius: var(--border-radius);
   padding: var(--padding-sm);
-  background-image: radial-gradient(circle at top left, hsl(0 0 96), transparent);
+  background-image: radial-gradient(circle at top left, hsl(0 10% 80% / .2), transparent);
 }
 
 .boost-credit{
