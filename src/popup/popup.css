@@ -90,8 +90,8 @@ status-card.thread::before{
   left: 0;
   width: var(--padding-lg);
   height: var(--thread-h);
-  border: dashed light-dark(var(--light-gray), var(--dark-gray));
-  border-width: 0 0 2px 2px;
+  border: solid light-dark(var(--light-gray), var(--dark-gray));
+  border-width: 0 0 1px 1px;
   border-radius: var(--border-radius);
   transform: translateX(-100%);
   z-index: -1;

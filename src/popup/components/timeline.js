@@ -87,7 +87,6 @@ customElements.define('fedifox-timeline', class FedifoxTimeline extends FedifoxM
       for (const li of value) {
         const thisCard = li.firstElementChild
         const prevCard = li.previousElementSibling?.firstElementChild
-        const parentCard = li.parentElement.previousElementSibling?.firstElementChild
 
         thisCard.rect = thisCard.getBoundingClientRect()
 
@@ -96,7 +95,7 @@ customElements.define('fedifox-timeline', class FedifoxTimeline extends FedifoxM
           thisCard.threadHeight = thisCard.rect.bottom - prevCard.getBoundingClientRect().bottom
         } else {
           // card directly below original status: we need half the reply height plus gap between cards
-          thisCard.threadHeight = thisCard.rect.height / 2 + (thisCard.rect.top - parentCard.getBoundingClientRect().bottom)
+          thisCard.threadHeight = thisCard.rect.height / 2
         }
 
         thisCard.style.setProperty('--thread-h', `${thisCard.threadHeight}px`)
