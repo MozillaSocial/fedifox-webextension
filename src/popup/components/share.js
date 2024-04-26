@@ -5,7 +5,9 @@
 import FedifoxMainBase from './mainbase.js';
 
 customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBase {
+  static observedAttributes = ['hidden'];
   #in_reply_to_id = undefined;
+  textArea
 
   async connectedCallback() {
     const data = await this.#getInstanceData();
@@ -15,40 +17,37 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
     this.innerHTML = `
     <h2 data-i18n="componentShareTitle"></h2>
     <fieldset>
-      <textarea id="shareBody" maxlength="${data?.instanceData?.status_max_characters}"></textarea>
+      <textarea maxlength="${data?.instanceData?.status_max_characters}"></textarea>
       <button class="primary" id="share" data-i18n="componentShareButtonPost"></button>
     </fieldset>
     `;
 
-    document.getElementById("shareBody").focus();
+    this.textArea = this.querySelector('textarea')
+    this.textArea.focus()
   }
 
   setData(url, status) {
-    const textarea = document.getElementById("shareBody");
-    //textarea.value = '';
-
     if (url) {
-      textarea.value = `\n\n${url}`;
-      textarea.selectionEnd = 0;
+      this.textArea.value = `\n\n${url}`;
+      this.textArea.selectionEnd = 0;
     }
 
-    textarea.focus();
+    this.textArea.focus();
 
     if (status) {
       this.#in_reply_to_id = status.id;
 
       const card = document.createElement('status-card');
       card.initialize(status);
-      textarea.insertAdjacentElement('afterend', card)
+      this.textArea.insertAdjacentElement('afterend', card)
     }
   }
 
   async handleEvent(e) {
     if (e.target.id === 'share') {
-      const body = document.getElementById("shareBody").value; // TODO: validation
       this.sendMessage("post", {
         /* TODO: other flags */
-        body,
+        body: this.textArea.value,
         in_reply_to_id: this.#in_reply_to_id,
       });
 
@@ -58,5 +57,11 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
 
   async #getInstanceData() {
     return chrome.storage.local.get(['instanceData']);
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "hidden" && !this.hidden) {
+      this.textArea.style.removeProperty('height')
+    }
   }
 });
