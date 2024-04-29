@@ -11,6 +11,22 @@
     "message": "Share this URL",
     "description": ""
   },
+  "viewPermissionHeading": {
+    "message": "Permission Required",
+    "description": ""
+  },
+  "viewPermissionBody1": {
+    "message": "Welcome! To use this extension, you need to grant access to the websites you browse. This is to connect with the Fediverse, and allow features such as context-menu sharing and page insights. We do not store any personal data.",
+    "description": ""
+  },
+  "viewPermissionBody2": {
+    "message": "Pressing the button below will open a browser permission dialog. After allowing access, reopen FediFox and connect to the Fediverse!",
+    "description": ""
+  },
+  "viewPermissionButton": {
+    "message": "Open Permission Dialog",
+    "description": ""
+  },
   "viewAuthenticatingTitle": {
     "message": "Authenticating. Please wait.",
     "description": ""

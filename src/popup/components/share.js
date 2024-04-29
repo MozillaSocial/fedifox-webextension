@@ -15,11 +15,13 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
     super.connectedCallback();
 
     this.innerHTML = `
-    <h2 data-i18n="componentShareTitle"></h2>
-    <fieldset>
-      <textarea maxlength="${data?.instanceData?.status_max_characters}"></textarea>
-      <button class="primary" id="share" data-i18n="componentShareButtonPost"></button>
-    </fieldset>
+    <main>
+      <h2 data-i18n="componentShareTitle"></h2>
+      <fieldset>
+        <textarea maxlength="${data?.instanceData?.status_max_characters}"></textarea>
+        <button class="primary" id="share" data-i18n="componentShareButtonPost"></button>
+      </fieldset>
+    </main>
     `;
 
     this.textArea = this.querySelector('textarea')

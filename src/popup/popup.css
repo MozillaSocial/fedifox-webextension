@@ -50,18 +50,40 @@ nav button:not(.primary, .secondary, :disabled):hover{
 }
 
 main{
-  display: flex;
-  flex-flow: column wrap;
-  gap: var(--padding-md);
   margin-top: var(--padding-lg);
-  width: 100%;
-}
-
-body{
   width: 720px;
 }
 
-/*** TIMELINE STYLES ***/
+/*** PERMISSION VIEW ***/
+view-permission main{
+  display: grid;
+  grid-template-columns: 1fr .5fr;
+}
+
+view-permission div{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-md);
+}
+
+view-permission h2{
+  margin: 0;
+  padding: 0;
+}
+
+view-permission button{
+  grid-column: span 2;
+}
+
+
+/*** INITIALIZE VIEW ***/
+view-initialize main{
+  display: flex;
+  flex-flow: column wrap;
+  gap: var(--padding-md);
+}
+
+/*** TIMELINE ***/
 fedifox-timeline ol{
   display: flex;
   flex-direction: column;

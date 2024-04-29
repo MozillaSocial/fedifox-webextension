@@ -32,8 +32,10 @@ customElements.define('fedifox-timeline', class FedifoxTimeline extends FedifoxM
     <nav>
       ${this.#navItems.map(item => `<button id="button-${item.listType}" data-list-type="${item.listType}">${chrome.i18n.getMessage(item.name)}</button>`).join('')}
     </nav>
-    <h2></h2>
-    <ol class="loading"></ol>
+    <main>
+      <h2></h2>
+      <ol class="loading"></ol>
+    </main>
     `
   }
 

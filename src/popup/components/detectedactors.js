@@ -11,9 +11,11 @@ customElements.define('fedifox-detectedactors', class FedifoxDetectedActors exte
     super.connectedCallback();
 
     this.innerHTML = `
-    <h2 data-i18n="componentDetectedActorsTitle"></h2>
-    <p data-i18n="componentDetectedActorsMsg"></p>
-    <ul></ul>
+    <main>
+      <h2 data-i18n="componentDetectedActorsTitle"></h2>
+      <p data-i18n="componentDetectedActorsMsg"></p>
+      <ul></ul>
+    </main>
     `
   }
 
