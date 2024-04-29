@@ -29,6 +29,9 @@ import {
 import {
   Streaming
 } from './streaming.js';
+import {
+  Permission
+} from './permission.js';
 import StorageUtils from "./storageUtils.js";
 import * as states from './utils.js';
 
@@ -58,6 +61,7 @@ class Main {
     new HCard(this);
     new ServerList(this);
     new Streaming(this);
+    new Permission(this);
     this.#masto = new Masto(this);
   }
 
@@ -66,6 +70,7 @@ class Main {
     log('init');
 
     this.#state = await this.#computeInitialState();
+
     log(`current state: ${this.state}`);
 
     // Let's initialize the observers.
@@ -99,6 +104,14 @@ class Main {
     this.#state = state;
     for (const observer of this.#observers) {
       observer.stateChanged();
+    }
+  }
+
+  // Recompute the state
+  async recomputeState() {
+    const state = await this.#computeInitialState();
+    if (state !== this.#state) {
+      this.setState(state);
     }
   }
 

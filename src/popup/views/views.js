@@ -6,5 +6,6 @@ import './authfailed.js';
 import './authenticating.js';
 import './initialize.js';
 import './loading.js';
+import './permission.js';
 import './error.js';
 import './main.js';

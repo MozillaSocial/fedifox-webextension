@@ -28,6 +28,10 @@ export class Component {
     return this.#receiver.setState(state);
   }
 
+  recomputeState() {
+    return this.#receiver.recomputeState();
+  }
+
   // Returns an async response from the main
   sendMessage(type, data = null) {
     return this.#receiver.handleEvent(type, data);

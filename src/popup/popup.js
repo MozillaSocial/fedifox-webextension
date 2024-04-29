@@ -37,6 +37,10 @@ class Popup {
       // stateChanged requires a view change.
       if (msg.type === 'stateChanged') {
         switch (msg.state) {
+          case states.STATE_PERMISSION:
+            this.#showView("permission");
+            break;
+
           case states.STATE_INITIALIZE:
             this.#showView("initialize");
             break;

@@ -2,6 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Permission check is needed
+export const STATE_PERMISSION = "permission";
+
 // The user has not selected a default server.
 export const STATE_INITIALIZE = "initialize";
 
