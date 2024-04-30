@@ -43,6 +43,7 @@ body {
   color: light-dark(var(--black), var(--light-gray));
   background-color: light-dark(white, var(--black));
   background-image: var(--subtle-gradient);
+  overflow-x: hidden;
 }
 
 body > *{
