@@ -14,8 +14,8 @@ nav{
   position: relative;
   display: flex;
   gap: 0 var(--padding-md);
-  flex-wrap: wrap;
   justify-content: center;
+  white-space: nowrap;
 }
 
 nav::before{
@@ -49,15 +49,12 @@ nav button:not(.primary, .secondary, :disabled):hover{
   color: var(--medium-blue);
 }
 
-main{
-  margin-top: var(--padding-lg);
-  width: 720px;
-}
-
 /*** PERMISSION VIEW ***/
 view-permission main{
   display: grid;
   grid-template-columns: 1fr .5fr;
+  gap: var(--padding-md);
+  margin-top: var(--padding-lg);
 }
 
 view-permission div{
@@ -75,12 +72,19 @@ view-permission button{
   grid-column: span 2;
 }
 
-
 /*** INITIALIZE VIEW ***/
 view-initialize main{
   display: flex;
   flex-flow: column wrap;
   gap: var(--padding-md);
+  margin-top: var(--padding-lg);
+}
+
+/*** AUTH FAILED VIEW ***/
+view-authfailed{
+  text-align: center;
+  width: 480px;
+  padding-bottom: var(--padding-lg);
 }
 
 /*** TIMELINE ***/
@@ -323,8 +327,9 @@ preview-card p:empty{
 fedifox-share fieldset{
   display: flex;
   flex-direction: column;
-  gap: var(--padding-sm);
   align-items: end;
+  gap: var(--padding-sm);
+  margin-top: var(--padding-sm);
 }
 
 /*** DETECTED ACTORS STYLES ***/

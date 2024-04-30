@@ -16,7 +16,7 @@
   --subtle-gradient: radial-gradient(ellipse at top left, transparent, hsl(0 10% 80% / .2));
 
   --min-width: 320px;
-  --max-width: 800px;
+  --max-width: 720px;
   --padding-xs: 4px;
   --padding-sm: 8px;
   --padding-md: 16px;
@@ -38,17 +38,17 @@
   box-sizing: border-box;
 }
 
-html{
-  overflow-x: hidden;
-}
-
 body {
   font: normal .875rem/1.3 Inter, Inter-fallback, sans-serif;
   color: light-dark(var(--black), var(--light-gray));
   background-color: light-dark(white, var(--black));
-  max-width: var(--max-width);
-  padding: var(--padding-md);
   background-image: var(--subtle-gradient);
+}
+
+body > *{
+  display: block;
+  width: var(--max-width);
+  padding: var(--padding-md);
 }
 
 h1 {
