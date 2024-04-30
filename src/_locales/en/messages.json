@@ -147,6 +147,10 @@
     "message": "Share something!",
     "description": ""
   },
+  "componentShareBody": {
+    "message": "Post a status to your public feed, visible for all.",
+    "description": ""
+  },
   "componentStatusActionsButtonReply": {
     "message": "Replies",
     "description": ""

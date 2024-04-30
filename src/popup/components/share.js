@@ -17,6 +17,7 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
     this.innerHTML = `
     <main>
       <h2 data-i18n="componentShareTitle"></h2>
+      <p data-i18n="componentShareBody"></p>
       <fieldset>
         <textarea maxlength="${data?.instanceData?.status_max_characters}"></textarea>
         <button class="primary" id="share" data-i18n="componentShareButtonPost"></button>
