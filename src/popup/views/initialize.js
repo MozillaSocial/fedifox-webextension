@@ -4,6 +4,8 @@
 
 import ViewBase from './base.js';
 
+const DEFAULT_HOST = 'mozilla.social';
+
 customElements.define('view-initialize', class ViewInitialize extends ViewBase {
   async connectedCallback() {
     this.sendMessage("fetchServerList");
@@ -48,7 +50,7 @@ customElements.define('view-initialize', class ViewInitialize extends ViewBase {
     switch (e.target.id) {
       case 'fedifox-register-btn':
       case 'fedifox-login-btn':
-        this.sendMessage('connectToHost', 'mozilla.social');
+        this.sendMessage('connectToHost', DEFAULT_HOST);
         window.close()
         break
       case 'other-server-btn': {
