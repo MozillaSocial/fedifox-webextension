@@ -332,6 +332,11 @@ fedifox-share fieldset{
   margin-top: var(--padding-sm);
 }
 
+fedifox-share fieldset .share-buttons{
+  display: flex;
+  gap: var(--padding-sm);
+}
+
 /*** DETECTED ACTORS STYLES ***/
 fedifox-detectedactors ul{
   display: flex;

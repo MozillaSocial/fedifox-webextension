@@ -16,7 +16,6 @@ customElements.define('view-main', class ViewMain extends ViewBase {
     <nav>
       <button id="showTimeline" data-i18n="viewMainButtonFeed"></button>
       <button id="share" data-i18n="viewMainButtonShare"></button>
-      <button id="shareCurrentPage" data-i18n="viewMainButtonShareCurrentPage"></button>
       <button id="showDetectedActors" data-i18n="viewMainButtonShowDetectedActors"></button>
       <button id="openInstance" data-i18n="viewMainButtonOpenInstance"></button>
       <button id="reset" data-i18n="viewMainButtonSignOut"></button>
@@ -76,11 +75,6 @@ customElements.define('view-main', class ViewMain extends ViewBase {
       return;
     }
 
-    if (e.target.id === "shareCurrentPage") {
-      await this.sendMessage("shareCurrentPage");
-      return;
-    }
-
     if (e.target.id === 'showDetectedActors') {
       this.#render('detectedactors');
       return;
@@ -88,7 +82,6 @@ customElements.define('view-main', class ViewMain extends ViewBase {
   }
 
   handleMessage(msg) {
-    let el
     switch (msg.type) {
       case 'mastoLists':
         this.#views.timeline.setData(msg);
@@ -105,12 +98,6 @@ customElements.define('view-main', class ViewMain extends ViewBase {
         // it's not a reliable way to know if background script is done fetching actor data.
         this.#views.detectedactors.setData(msg.actors);
         this.localize();
-        break;
-      }
-
-      case 'urlShareable': {
-        var menu = document.getElementById("shareCurrentPage");
-        if (menu) menu.disabled = !msg.shareable;
         break;
       }
 

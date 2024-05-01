@@ -20,7 +20,10 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
       <p data-i18n="componentShareBody"></p>
       <fieldset>
         <textarea maxlength="${data?.instanceData?.status_max_characters}"></textarea>
-        <button class="primary" id="share" data-i18n="componentShareButtonPost"></button>
+        <div class="share-buttons">
+          <button class="secondary" id="insert-url" data-i18n="componentShareInsertURL"></button>
+          <button class="primary" id="share" data-i18n="componentShareButtonPost"></button>
+        </div>
       </fieldset>
     </main>
     `;
@@ -31,7 +34,7 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
 
   setData(url, status) {
     if (url) {
-      this.textArea.value = `\n\n${url}`;
+      this.textArea.value += `\n\n${url}`;
       this.textArea.selectionEnd = 0;
     }
 
@@ -55,6 +58,17 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
       });
 
       // TODO: show a loading icon...
+    }
+    if (e.target.id === 'insert-url') {
+      this.sendMessage("shareCurrentPage");
+    }
+  }
+
+  handleMessage(msg) {
+    switch (msg.type) {
+      case 'share':
+        this.setData(msg.url, msg.status)
+        break;
     }
   }
 

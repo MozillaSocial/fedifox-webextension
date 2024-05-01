@@ -79,10 +79,6 @@
     "message": "Share",
     "description": ""
   },
-  "viewMainButtonShareCurrentPage": {
-    "message": "Share Current Page",
-    "description": ""
-  },
   "viewMainButtonShowDetectedActors": {
     "message": "Page Insights",
     "description": ""
@@ -141,6 +137,10 @@
   },
   "componentShareButtonPost": {
     "message": "Post",
+    "description": ""
+  },
+  "componentShareInsertURL": {
+    "message": "Insert current page url",
     "description": ""
   },
   "componentShareTitle": {
