@@ -10,6 +10,8 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
   textArea
 
   async connectedCallback() {
+    this.sendMessage("urlShareable");
+
     const data = await this.#getInstanceData();
 
     super.connectedCallback();
@@ -21,7 +23,7 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
       <fieldset>
         <textarea maxlength="${data?.instanceData?.status_max_characters}"></textarea>
         <div class="share-buttons">
-          <button class="secondary" id="insert-url" data-i18n="componentShareInsertURL"></button>
+          <button disabled class="secondary" id="insert-url" data-i18n="componentShareInsertURL"></button>
           <button class="primary" id="share" data-i18n="componentShareButtonPost"></button>
         </div>
       </fieldset>
@@ -61,14 +63,6 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
     }
     if (e.target.id === 'insert-url') {
       this.sendMessage("shareCurrentPage");
-    }
-  }
-
-  handleMessage(msg) {
-    switch (msg.type) {
-      case 'share':
-        this.setData(msg.url, msg.status)
-        break;
     }
   }
 

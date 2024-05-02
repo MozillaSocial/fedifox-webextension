@@ -8,7 +8,6 @@ customElements.define('view-main', class ViewMain extends ViewBase {
   #views = {};
 
   connectedCallback() {
-    this.sendMessage("urlShareable");
     this.sendMessage("detectActors");
 
     this.innerHTML = `
@@ -105,6 +104,11 @@ customElements.define('view-main', class ViewMain extends ViewBase {
         if (this.#views.share.hidden === false) {
           setTimeout(() => window.close(), 1000);
         }
+        break;
+
+      case 'urlShareable':
+        document.getElementById("insert-url").disabled = !msg.shareable;
+        break;
     }
   }
 
