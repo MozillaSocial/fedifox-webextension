@@ -221,6 +221,13 @@ export class UI extends Component {
         }
         break;
       }
+
+      case 'instanceData':
+        this.#messageQueue.push({
+          type,
+          data
+        });
+        break
     }
   }
 

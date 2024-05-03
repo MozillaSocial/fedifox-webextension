@@ -109,6 +109,9 @@ customElements.define('view-main', class ViewMain extends ViewBase {
       case 'urlShareable':
         document.getElementById("insert-url").disabled = !msg.shareable;
         break;
+      case 'instanceData':
+        this.#views.share.setInstanceData(msg.data)
+        break
     }
   }
 

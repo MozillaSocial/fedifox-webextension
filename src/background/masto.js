@@ -110,11 +110,14 @@ export class Masto extends Component {
       throw new Error();
     }
 
-    await StorageUtils.setInstanceData({
+    const instanceData = {
       icon: data.thumbnail?.url,
       title: data.title,
       status_max_characters: data.configuration?.statuses?.max_characters || 500,
-    });
+    }
+
+    this.sendMessage('instanceData', instanceData);
+    await StorageUtils.setInstanceData(instanceData);
   }
 
   async #updateLists() {

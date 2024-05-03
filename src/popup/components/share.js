@@ -7,12 +7,13 @@ import FedifoxMainBase from './mainbase.js';
 customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBase {
   static observedAttributes = ['hidden'];
   #in_reply_to_id = undefined;
+  #instanceData = {
+    status_max_characters: 500 // default in case instance data not available/propagated
+  }
   textArea
 
   async connectedCallback() {
     this.sendMessage("urlShareable");
-
-    const data = await this.#getInstanceData();
 
     super.connectedCallback();
 
@@ -21,7 +22,7 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
       <h2 data-i18n="componentShareTitle"></h2>
       <p data-i18n="componentShareBody"></p>
       <fieldset>
-        <textarea maxlength="${data?.instanceData?.status_max_characters}"></textarea>
+        <textarea maxlength="${this.#instanceData.status_max_characters}"></textarea>
         <div class="share-buttons">
           <button disabled class="secondary" id="insert-url" data-i18n="componentShareInsertURL"></button>
           <button class="primary" id="share" data-i18n="componentShareButtonPost"></button>
@@ -49,6 +50,10 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
       card.initialize(status);
       this.textArea.insertAdjacentElement('afterend', card)
     }
+  }
+
+  setInstanceData(data) {
+    this.#instanceData = data
   }
 
   async handleEvent(e) {
