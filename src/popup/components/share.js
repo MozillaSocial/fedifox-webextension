@@ -22,7 +22,7 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
       <h2 data-i18n="componentShareTitle"></h2>
       <p data-i18n="componentShareBody"></p>
       <fieldset>
-        <textarea maxlength="${this.#instanceData.status_max_characters}"></textarea>
+        <textarea></textarea>
         <div class="share-buttons">
           <button disabled class="secondary" id="insert-url" data-i18n="componentShareInsertURL"></button>
           <button class="primary" id="share" data-i18n="componentShareButtonPost"></button>
@@ -33,6 +33,8 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
 
     this.textArea = this.querySelector('textarea')
     this.textArea.focus()
+
+    this.setInstanceData(this.#instanceData);
   }
 
   setData(url, status) {
@@ -54,6 +56,7 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
 
   setInstanceData(data) {
     this.#instanceData = data
+    this.textArea.maxlength = data.status_max_characters;
   }
 
   async handleEvent(e) {
