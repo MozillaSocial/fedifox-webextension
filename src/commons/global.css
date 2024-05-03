@@ -109,7 +109,7 @@ textarea, input, select {
 
 textarea{
   resize: vertical;
-  min-height: 5rem;
+  min-height: 8rem;
 }
 
 select{
