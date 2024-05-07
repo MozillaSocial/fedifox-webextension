@@ -332,6 +332,12 @@ fedifox-share fieldset{
   margin-top: var(--padding-sm);
 }
 
+fedifox-share status-card .close{
+  position: absolute;
+  top: var(--padding-sm);
+  right: var(--padding-sm);
+}
+
 fedifox-share fieldset .share-buttons{
   display: flex;
   gap: var(--padding-sm);

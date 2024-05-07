@@ -58,6 +58,7 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
         this.textArea.insertAdjacentElement('afterend', card)
       }
 
+      card.insertAdjacentHTML('beforeend', '<button class="close"></button>')
       this.#in_reply_to_card = card
     }
   }
@@ -79,6 +80,11 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
     }
     if (e.target.id === 'insert-url') {
       this.sendMessage("shareCurrentPage");
+    }
+    if (e.target.classList.contains('close')) {
+      this.#in_reply_to_card.remove()
+      this.#in_reply_to_card = null
+      this.#in_reply_to_id = null
     }
   }
 

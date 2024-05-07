@@ -192,6 +192,21 @@ button.secondary:hover, .button.secondary:hover {
   border-color: light-dark(var(--dark-gray), var(--light-gray));
 }
 
+button.close{
+  height: 24px;
+  aspect-ratio: 1/1;
+  border: 2px solid var(--medium-gray);
+  border-radius: var(--border-radius);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-weight: bold;
+}
+
+button.close::after{
+  content: '✕';
+}
+
 form:invalid button[type='submit'] {
   opacity: .5;
   cursor: not-allowed;
