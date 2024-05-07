@@ -141,6 +141,11 @@ input[type='checkbox'], input[type='radio'] {
 }
 
 a{
+  display: inline-block;
+  max-width: 500px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   color: var(--medium-blue);
 }
 
