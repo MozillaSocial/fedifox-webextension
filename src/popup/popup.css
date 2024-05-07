@@ -80,8 +80,8 @@ view-initialize main{
   margin-top: var(--padding-lg);
 }
 
-/*** AUTH FAILED VIEW ***/
-view-authfailed{
+/*** AUTH VIEWS ***/
+view-authenticating, view-authfailed{
   text-align: center;
   width: 480px;
   padding-bottom: var(--padding-lg);

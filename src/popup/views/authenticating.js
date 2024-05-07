@@ -8,8 +8,10 @@ customElements.define('view-authenticating', class ViewAuthenticating extends Vi
   connectedCallback() {
     this.innerHTML = `
     <fedifox-header></fedifox-header>
-    <h2 data-i18n="viewAuthenticatingTitle"></h2>
-    `;
+    <main>
+      <h2 data-i18n="viewAuthenticatingTitle"></h2>
+    </main>
+    `
 
     super.connectedCallback();
   }
