@@ -315,7 +315,7 @@ preview-card figure.default-img{
 
 preview-card figure.default-img img{
   height: 48px;
-  margin: var(--padding-md) 0 0 var(--padding-sm);
+  margin: var(--padding-md) 0 var(--padding-md) var(--padding-sm);
   opacity: .5;
 }
 
