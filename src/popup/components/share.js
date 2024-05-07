@@ -7,6 +7,7 @@ import FedifoxMainBase from './mainbase.js';
 customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBase {
   static observedAttributes = ['hidden'];
   #in_reply_to_id = undefined;
+  #in_reply_to_card
   #instanceData = {
     status_max_characters: 500 // default in case instance data not available/propagated
   }
@@ -50,7 +51,14 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
 
       const card = document.createElement('status-card');
       card.initialize(status);
-      this.textArea.insertAdjacentElement('afterend', card)
+
+      if (this.#in_reply_to_card) {
+        this.#in_reply_to_card.replaceWith(card)
+      } else {
+        this.textArea.insertAdjacentElement('afterend', card)
+      }
+
+      this.#in_reply_to_card = card
     }
   }
 
@@ -72,10 +80,6 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
     if (e.target.id === 'insert-url') {
       this.sendMessage("shareCurrentPage");
     }
-  }
-
-  async #getInstanceData() {
-    return chrome.storage.local.get(['instanceData']);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
