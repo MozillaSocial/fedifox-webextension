@@ -40,8 +40,7 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
 
   setData(url, status) {
     if (url) {
-      this.textArea.value += `\n\n${url}`;
-      this.textArea.selectionEnd = 0;
+      this.textArea.value += `\n${url}\n`;
     }
 
     this.textArea.focus();
