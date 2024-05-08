@@ -330,6 +330,7 @@ fedifox-share fieldset{
   align-items: end;
   gap: var(--padding-sm);
   margin-top: var(--padding-sm);
+  min-width: 0;
 }
 
 fedifox-share status-card .close{

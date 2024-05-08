@@ -142,7 +142,7 @@ input[type='checkbox'], input[type='radio'] {
 
 a{
   display: inline-block;
-  max-width: 500px;
+  max-width: 100%;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
