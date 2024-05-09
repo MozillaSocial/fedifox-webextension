@@ -6,7 +6,7 @@ header{
   border-bottom: var(--border-1px);
 }
 
-header > img{
+header > picture{
   height: 42px;
 }
 

@@ -5,10 +5,15 @@
 customElements.define('fedifox-header', class ViewHeader extends HTMLElement {
   async connectedCallback() {
     const data = await this.#getInstanceData();
+    const logoSrc = data?.instanceData?.icon ? `<img src="${data.instanceData.icon}" alt="Logo"></img>` : `
+    <source srcset="../icons/logo.svg" media="(prefers-color-scheme: light)">
+    <source srcset="../icons/logo-light.svg"  media="(prefers-color-scheme: dark)">
+    <img src="../icons/logo.svg" alt="Logo">
+    `
 
     this.innerHTML = `
       <header>
-        <img src="${data?.instanceData?.icon || '../icons/logo.svg' }">
+        <picture>${logoSrc}</picture>
         <h1>${data?.instanceData?.title || 'FediFox'}</h1>
       </header>`;
   }
