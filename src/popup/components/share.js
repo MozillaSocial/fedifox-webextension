@@ -33,7 +33,6 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
     `;
 
     this.textArea = this.querySelector('textarea')
-    this.textArea.focus()
 
     this.setInstanceData(this.#instanceData);
   }
@@ -90,6 +89,9 @@ customElements.define('fedifox-share', class FedifoxShare extends FedifoxMainBas
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "hidden" && !this.hidden) {
       this.textArea.style.removeProperty('height')
+      window.scrollTo(0, 0);
+      this.textArea.focus();
+      this.textArea.selectionEnd = 0
     }
   }
 });
